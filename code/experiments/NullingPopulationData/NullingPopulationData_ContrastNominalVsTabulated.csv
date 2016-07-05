@@ -1,0 +1,12 @@
+Nulling direction,Cone Class,Assumed contrast,Tabulated contrast
+LMS,L,0.1000,0.0954
+LMS,M,0.1000,0.1005
+LMS,S,0.1000,0.0995
+
+L-M,L,0.1000,0.1273
+L-M,M,-0.1000,-0.0996
+L-M,S,0.0000,0.0217
+
+S,L,-0.0000,-0.0003
+S,M,-0.0000,-0.0005
+S,S,0.1000,0.1022

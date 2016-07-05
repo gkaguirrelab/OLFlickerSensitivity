@@ -1,0 +1,63 @@
+%% Make the cache file
+theCalType = 'BoxARandomizedLongCableBEyePiece1_ND06';
+
+%% Standard parameters
+params.experiment = 'OLFlickerSensitivity';
+params.experimentSuffix = 'MaxMel';
+params.calibrationType = theCalType
+params.whichReceptorsToMinimize = [];
+params.CALCULATE_SPLATTER = false;
+params.maxPowerDiff = 10^(-1);
+params.photoreceptorClasses = 'LConeTabulatedAbsorbance,MConeTabulatedAbsorbance,SConeTabulatedAbsorbance,Melanopsin';
+params.fieldSizeDegrees = 27.5;
+params.pupilDiameterMm = 6;
+params.isActive = 1;
+params.useAmbient = 1;
+params.REFERENCE_OBSERVER_AGE = 32;
+params.primaryHeadRoom = 0.03;
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% 1) Find an optimal background for a melanopsin-directed stimulus
+params.pegBackground = false;
+params.modulationDirection = {'MelanopsinDirected'};
+params.modulationContrast = [];
+params.whichReceptorsToIsolate = {[4]};
+params.whichReceptorsToIgnore = {[]};
+params.whichReceptorsToMinimize = {[]};
+params.directionsYoked = [0];
+params.directionsYokedAbs = [0];
+params.receptorIsolateMode = 'Standard';
+
+% High mel
+params.backgroundType = 'BackgroundMaxMel';
+params.cacheFile = ['Cache-' params.backgroundType  '.mat'];
+[cacheData, olCache, params] = OLReceptorIsolateMakeBackground(params, true);
+OLReceptorIsolateSaveCache(cacheData, olCache, params);
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% 3) Around, the melanopsin-directed stimulus, find the LMS and L-M directions
+params.primaryHeadRoom = 0.02; 
+params.backgroundType = 'BackgroundMaxMel';
+params.modulationDirection = 'MelanopsinDirectedMaxMel';
+params.modulationContrast = [0.64];
+params.whichReceptorsToIsolate = [4];
+params.whichReceptorsToIgnore = [];
+params.whichReceptorsToMinimize = [];
+params.receptorIsolateMode = 'Standard';
+params.cacheFile = ['Cache-' params.modulationDirection '.mat'];
+[cacheData, olCache, params] = OLReceptorIsolateFindIsolatingPrimarySettings(params, true);
+OLReceptorIsolateSaveCache(cacheData, olCache, params);
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% 3) Around, the melanopsin-directed stimulus, find the LMS and L-M directions
+params.primaryHeadRoom = 0.01;
+params.backgroundType = 'MaxMelLow';
+params.modulationDirection = 'LMSDirectedMaxMel';
+params.modulationContrast = [0.05 0.05 0.05];
+params.whichReceptorsToIsolate = [1 2 3];
+params.whichReceptorsToIgnore = [];
+params.whichReceptorsToMinimize = [];
+params.receptorIsolateMode = 'Standard';
+params.cacheFile = ['Cache-' params.modulationDirection '.mat'];
+[cacheData, olCache, params] = OLReceptorIsolateFindIsolatingPrimarySettings(params, true);
+OLReceptorIsolateSaveCache(cacheData, olCache, params);

@@ -1,0 +1,13 @@
+In this part of the experiment you will see a series of images
+on the screen, one after the other, including faces, objects,
+scenes, and some scrambled images.
+ 
+-----
+Your task is to press a button whenever the same image appears
+twice in succession (whenever the same image repeats).
+-----
+ 
+Try to lie as still as you can, and do not close your
+eyes at any point during the experiment.
+ 
+Press any button when you are ready to start...
