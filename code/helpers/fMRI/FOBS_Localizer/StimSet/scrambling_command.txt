@@ -1,1 +1,0 @@
-imageScram_wregions('objects','objects_scrambled',40,20,-1)

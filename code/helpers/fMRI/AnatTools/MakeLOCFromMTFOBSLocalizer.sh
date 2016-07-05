@@ -1,6 +1,0 @@
-
-mri_binarize --i /Data/Imaging/Protocols/MTFOBSLocalizer/Subjects/G120413A/BOLD/FOBSLocalizer_xrun/stats/cope3.xhemi.osgm.ffx/osgm/sig.mgh --min `cat /Data/Imaging/Protocols/MTFOBSLocalizer/Subjects/G120413A/BOLD/FOBSLocalizer_xrun/stats/cope3.xhemi.osgm.ffx/osgm/sig.fdr_thresh` --o /Data/Imaging/Protocols/MTFOBSLocalizer/Subjects/G120413A/BOLD/FOBSLocalizer_xrun/stats/cope3.xhemi.osgm.ffx/osgm/sig_loc.mgh
-
-mri_binarize --i /Data/Imaging/Protocols/MTFOBSLocalizer/Subjects/M120413S/BOLD/FOBSLocalizer_xrun/stats/cope3.xhemi.osgm.ffx/osgm/sig.mgh --min `cat /Data/Imaging/Protocols/MTFOBSLocalizer/Subjects/M120413S/BOLD/FOBSLocalizer_xrun/stats/cope3.xhemi.osgm.ffx/osgm/sig.fdr_thresh` --o /Data/Imaging/Protocols/MTFOBSLocalizer/Subjects/M120413S/BOLD/FOBSLocalizer_xrun/stats/cope3.xhemi.osgm.ffx/osgm/sig_loc.mgh
-
-mri_binarize --i /Data/Imaging/Protocols/MTFOBSLocalizer/Subjects/M121113M/BOLD/FOBSLocalizer_xrun/stats/cope3.xhemi.osgm.ffx/osgm/sig.mgh --min `cat /Data/Imaging/Protocols/MTFOBSLocalizer/Subjects/M121113M/BOLD/FOBSLocalizer_xrun/stats/cope3.xhemi.osgm.ffx/osgm/sig.fdr_thresh` --o /Data/Imaging/Protocols/MTFOBSLocalizer/Subjects/M121113M/BOLD/FOBSLocalizer_xrun/stats/cope3.xhemi.osgm.ffx/osgm/sig_loc.mgh
