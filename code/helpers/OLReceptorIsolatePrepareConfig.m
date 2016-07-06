@@ -27,7 +27,7 @@ function params = OLReceptorIsolatePrepareConfig(configFileName)
 % use in our (BrainardLab) experiments.
 baseDir = fileparts(fileparts(which('OLReceptorIsolatePrepareConfig')));
 configDir = fullfile(baseDir, 'config', 'stimuli');
-cacheDir = fullfile(baseDir, 'cache', 'stimuli');
+cacheDir = fullfile(getpref('OneLight', 'cachePath'), 'stimuli');
 
 if ~isdir(cacheDir)
     mkdir(cacheDir);

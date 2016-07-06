@@ -8,7 +8,7 @@ function [cacheData, olCache, params] = OLMakePIPR(params)
 % use in our (BrainardLab) experiments.
 baseDir = fileparts(fileparts(which('OLMakePIPR')));
 configDir = fullfile(baseDir, 'config', 'stimuli');
-cacheDir = fullfile(baseDir, 'cache', 'stimuli');
+cacheDir = fullfile(getpref('OneLight', 'cachePath'), 'stimuli');
 
 if ~isdir(cacheDir)
     mkdir(cacheDir);
