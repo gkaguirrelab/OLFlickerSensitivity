@@ -136,7 +136,7 @@ for trial = params.whichTrialToStartAt:params.nTrials
         end
     end
     
-    breakTrials = 6:5:100;
+    breakTrials = params.BreakModulus:params.BreakModulus:100;
     if ismember(trial, breakTrials)
         gamePad = GamePad();
         resume = false;
@@ -160,7 +160,7 @@ for trial = params.whichTrialToStartAt:params.nTrials
     fprintf('* Start trial %i/%i - %s, %.2f Hz.\n', trial, params.nTrials, block(trial).direction, block(trial).carrierFrequencyHz);
     %Speak(['Trial ' num2str(trial)  ' of ' num2str(params.nTrials)]);
     
-    checkTrials = 1:5:100;
+    checkTrials = 1:params.BreakModulus:100;
     %checkTrials = [1 3 5];
     if ismember(trial, checkTrials)
         readyToResume = false; isBeingTracked = false; params.run = false;
