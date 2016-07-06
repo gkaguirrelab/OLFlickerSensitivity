@@ -10,7 +10,7 @@ function [params, block] = initParamsAndGenerateBlock(exp)
 
     % Convert all the ConfigFile parameters into simple struct values.
     params = convertToStruct(cfgFile);
-    params.cacheDir = fullfile(exp.baseDir, 'cache');
+    params.cacheDir = getpref('OneLight', 'cachePath');
 
     % Load the calibration file.
     cType = OLCalibrationTypes.(params.calibrationType);
@@ -78,18 +78,9 @@ function [params, block] = initParamsAndGenerateBlock(exp)
         % (brief stimulus offset).
         %block(i).attentionTask.flag = params.attentionTask(i);
         block(i).modulationMode = block(i).data.modulationMode;
-        if ~isempty(strfind(block(i).modulationMode, 'pulse')) && isempty(strfind(block(i).describe.params.preCacheFileFull, 'DoublePulse'))
+        if ~isempty(strfind(block(i).modulationMode, 'pulse'))
             block(i).direction = block(i).data.direction;
-
             block(i).contrastRelMax = block(i).describe.theContrastRelMax(params.theContrastRelMaxIndices(i));
-            block(i).carrierFrequencyHz = -1;
-            block(i).carrierPhaseDeg = -1;
-            block(i).phaseRandSec = block(i).data.phaseRandSec;
-            block(i).stepTimeSec = block(i).data.stepTimeSec;
-            block(i).preStepTimeSec = block(i).data.preStepTimeSec;
-        elseif ~isempty(strfind(block(i).describe.params.preCacheFileFull, 'DoublePulse'))
-            block(i).direction = block(i).data.direction;
-            block(i).contrastRelMax = block(i).describe.params.contrastScalars2(params.theContrastRelMaxIndices(i));
             block(i).carrierFrequencyHz = -1;
             block(i).carrierPhaseDeg = -1;
             block(i).phaseRandSec = block(i).data.phaseRandSec;
