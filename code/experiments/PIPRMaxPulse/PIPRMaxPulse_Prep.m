@@ -63,7 +63,7 @@ OLReceptorIsolateSaveCache(cacheDataBackground, olCache, params);
 params.primaryHeadRoom = 0.005;
 params.backgroundType = 'BackgroundMaxMel';
 params.modulationDirection = 'MelanopsinDirectedSuperMaxMel';
-params.modulationContrast = [0.72];
+params.modulationContrast = [0.715];
 params.whichReceptorsToIsolate = [4];
 params.whichReceptorsToIgnore = [];
 params.whichReceptorsToMinimize = [];
@@ -105,7 +105,7 @@ OLReceptorIsolateSaveCache(cacheDataBackground, olCache, params);
 params.primaryHeadRoom = 0.005;
 params.backgroundType = 'BackgroundMaxLMS';
 params.modulationDirection = 'LMSDirectedSuperMaxLMS';
-params.modulationContrast = [0.69 0.69 0.7];
+params.modulationContrast = [0.681 0.692 0.72];
 params.whichReceptorsToIsolate = [1 2 3];
 params.whichReceptorsToIgnore = [];
 params.whichReceptorsToMinimize = [];
@@ -151,8 +151,8 @@ OLReceptorIsolateSaveCache(cacheDataMaxLMS, olCacheMaxLMS, paramsMaxLMS);
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%
 theCalType = 'BoxDRandomizedLongCableAEyePiece2_ND06';
-for i = 1
-    theDirections = {'MelanopsinDirectedSuperMaxMel' 'LMSDirectedSuperMaxLMS'}% 'PIPRRed' 'PIPRBlue'};
+while true
+    theDirections = {'MelanopsinDirectedSuperMaxMel' 'LMSDirectedSuperMaxLMS'}% 'PIPRRed' 'PIPRBlue'}; ' 
     cacheDir = getpref('OneLight', 'cachePath');
     zeroVector = zeros(1, length(theDirections));
     theOnVector = zeroVector;
@@ -163,7 +163,7 @@ for i = 1
     WaitSecs(2);
     for d = 1:length(theDirections)
         [~, ~, validationPath{d}] = OLValidateCacheFile(fullfile(cacheDir, 'stimuli', ['Cache-' theDirections{d} '.mat']), 'mspits@sas.upenn.edu', 'PR-670', ...
-            theOnVector(d), theOffVector(d), 'FullOnMeas', true, 'ReducedPowerLevels', false, 'selectedCalType', theCalType, ...
+            theOnVector(d), theOffVector(d), 'FullOnMeas', false, 'ReducedPowerLevels', false, 'selectedCalType', theCalType, ...
             'CALCULATE_SPLATTER', false, 'powerLevels', [0 1.0000]);
         close all;
     end
