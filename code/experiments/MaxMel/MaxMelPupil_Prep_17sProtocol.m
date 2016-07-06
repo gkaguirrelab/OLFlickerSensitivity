@@ -1,6 +1,6 @@
 clear; close all; clc;
 %% Make the cache file
-theCalType = 'BoxDRandomizedLongCableAEyePiece2_ND07';
+theCalType = 'BoxDRandomizedLongCableAEyePiece2_ND06';
 
 %% Standard parameters
 params.experiment = 'MaxMelPupil';
@@ -83,7 +83,7 @@ OLReceptorIsolateSaveCache(cacheDataBackground, olCache, params);
 params.primaryHeadRoom = 0.005;
 params.backgroundType = 'BackgroundMaxLMS';
 params.modulationDirection = 'LMSDirectedSuperMaxLMS';
-params.modulationContrast = [2/3 2/3 2/3];
+params.modulationContrast = [2/3-0.001 2/3+0.001 2/3+0.002];
 params.whichReceptorsToIsolate = [1 2 3];
 params.whichReceptorsToIgnore = [];
 params.whichReceptorsToMinimize = [];
@@ -105,7 +105,7 @@ OLReceptorIsolateSaveCache(cacheDataMaxLMS, olCacheMaxLMS, paramsMaxLMS);
 
 
 %% Make the mod
-theCalType = 'BoxDRandomizedLongCableAEyePiece2_ND07';
+theCalType = 'BoxDRandomizedLongCableAEyePiece2_ND06';
 for o = [27 28 32 46]
     observerAgeInYrs = o;
     OLMakeModulations('Modulation-MelanopsinPupilMaxLMS-Background_45sSegment.cfg', observerAgeInYrs, theCalType, [], []) % Mel CRF
@@ -116,10 +116,10 @@ end
 
 %% Validate
 % [6] Validate
-theCalType = 'BoxDRandomizedLongCableAEyePiece2_ND07';
-for i = 1:5
-    theDirections = {'MelanopsinDirectedSuperMaxMel' 'LMSDirectedSuperMaxLMS'};
-    cacheDir = '/Users/Shared/Matlab/Experiments/OneLight/OLFlickerSensitivity/code/cache/stimuli';
+theCalType = 'BoxDRandomizedLongCableAEyePiece2_ND06';
+for i = 1
+    theDirections = {'LMSDirectedSuperMaxLMS'};
+    cacheDir = getpref('OneLight', 'cachePath');
     zeroVector = zeros(1, length(theDirections));
     theOnVector = zeroVector;
     theOnVector(1) = 1;
@@ -128,7 +128,7 @@ for i = 1:5
     theOffVector(end) = 1;
     WaitSecs(2);
     for d = 1:length(theDirections)
-        [~, ~, validationPath{d}] = OLValidateCacheFile(fullfile(cacheDir, ['Cache-' theDirections{d} '.mat']), 'mspits@sas.upenn.edu', 'PR-670', ...
+        [~, ~, validationPath{d}] = OLValidateCacheFile(fullfile(cacheDir, 'stimuli', ['Cache-' theDirections{d} '.mat']), 'mspits@sas.upenn.edu', 'PR-670', ...
             theOnVector(d), theOffVector(d), 'FullOnMeas', true, 'ReducedPowerLevels', false, 'selectedCalType', theCalType, ...
             'CALCULATE_SPLATTER', false, 'powerLevels', [0 1.0000]);
         close all;
