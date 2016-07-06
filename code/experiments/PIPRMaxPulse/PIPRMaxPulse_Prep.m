@@ -1,9 +1,10 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Generate the cache
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+theCalType = 'BoxDRandomizedLongCableAEyePiece2_ND06';
 
 %% Standard parameters
-params.experiment = 'SilentSUbstitution_PIPR';
+params.experiment = 'SilentSubstitution_PIPR';
 params.experimentSuffix = 'MaxMel';
 params.calibrationType = theCalType;
 params.whichReceptorsToMinimize = [];
@@ -62,7 +63,7 @@ OLReceptorIsolateSaveCache(cacheDataBackground, olCache, params);
 params.primaryHeadRoom = 0.005;
 params.backgroundType = 'BackgroundMaxMel';
 params.modulationDirection = 'MelanopsinDirectedSuperMaxMel';
-params.modulationContrast = [2/3];
+params.modulationContrast = [0.72];
 params.whichReceptorsToIsolate = [4];
 params.whichReceptorsToIgnore = [];
 params.whichReceptorsToMinimize = [];
@@ -104,7 +105,7 @@ OLReceptorIsolateSaveCache(cacheDataBackground, olCache, params);
 params.primaryHeadRoom = 0.005;
 params.backgroundType = 'BackgroundMaxLMS';
 params.modulationDirection = 'LMSDirectedSuperMaxLMS';
-params.modulationContrast = [2/3 2/3 2/3];
+params.modulationContrast = [0.69 0.69 0.7];
 params.whichReceptorsToIsolate = [1 2 3];
 params.whichReceptorsToIgnore = [];
 params.whichReceptorsToMinimize = [];
@@ -128,22 +129,22 @@ OLReceptorIsolateSaveCache(cacheDataMaxLMS, olCacheMaxLMS, paramsMaxLMS);
 % Generate the modulations
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% Make the mod
-theCalType = 'BoxDRandomizedLongCableAEyePiece2_ND06';
-for o = [20:60]
-    observerAgeInYrs = o;
-    % LMS
-    OLMakeModulations('Modulation-PIPRMaxPulse-BackgroundLMS_45sSegment.cfg', observerAgeInYrs, theCalType, [], []);
-    OLMakeModulations('Modulation-PIPRMaxPulse-PulseMaxLMS_3s_MaxContrast17sSegment.cfg', observerAgeInYrs, theCalType, [], []); % Attention task
-    
-    % Mel
-    OLMakeModulations('Modulation-PIPRMaxPulse-BackgroundMel_45sSegment.cfg', observerAgeInYrs, theCalType, [], []);
-    OLMakeModulations('Modulation-PIPRMaxPulse-PulseMaxMel_3s_MaxContrast17sSegment.cfg', observerAgeInYrs, theCalType, [], []); % Attention task
-    
-    % PIPR
-    OLMakeModulations('Modulation-PIPRMaxPulse-BackgroundPIPR_45sSegment.cfg', observerAgeInYrs, theCalType, [], []); % Background.
-    OLMakeModulations('Modulation-PIPRMaxPulse-PulsePIPRBlue_3s_MaxContrast17sSegment.cfg', observerAgeInYrs, theCalType, [], []); % Blue PIPR
-    OLMakeModulations('Modulation-PIPRMaxPulse-PulsePIPRRed_3s_MaxContrast17sSegment.cfg', observerAgeInYrs, theCalType, [], []); % Red PIPR
-end
+% theCalType = 'BoxDRandomizedLongCableAEyePiece2_ND06';
+% for o = [20:60]
+%     observerAgeInYrs = o;
+%     % LMS
+%     OLMakeModulations('Modulation-PIPRMaxPulse-BackgroundLMS_45sSegment.cfg', observerAgeInYrs, theCalType, [], []);
+%     OLMakeModulations('Modulation-PIPRMaxPulse-PulseMaxLMS_3s_MaxContrast17sSegment.cfg', observerAgeInYrs, theCalType, [], []); % Attention task
+%     
+%     % Mel
+%     OLMakeModulations('Modulation-PIPRMaxPulse-BackgroundMel_45sSegment.cfg', observerAgeInYrs, theCalType, [], []);
+%     OLMakeModulations('Modulation-PIPRMaxPulse-PulseMaxMel_3s_MaxContrast17sSegment.cfg', observerAgeInYrs, theCalType, [], []); % Attention task
+%     
+%     % PIPR
+%     OLMakeModulations('Modulation-PIPRMaxPulse-BackgroundPIPR_45sSegment.cfg', observerAgeInYrs, theCalType, [], []); % Background.
+%     OLMakeModulations('Modulation-PIPRMaxPulse-PulsePIPRBlue_3s_MaxContrast17sSegment.cfg', observerAgeInYrs, theCalType, [], []); % Blue PIPR
+%     OLMakeModulations('Modulation-PIPRMaxPulse-PulsePIPRRed_3s_MaxContrast17sSegment.cfg', observerAgeInYrs, theCalType, [], []); % Red PIPR
+% end
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Generate the validate
@@ -151,7 +152,7 @@ end
 %%
 theCalType = 'BoxDRandomizedLongCableAEyePiece2_ND06';
 for i = 1
-    theDirections = {'MelanopsinDirectedSuperMaxMel' 'LMSDirectedSuperMaxLMS' 'PIPRRed' 'PIPRBlue'};
+    theDirections = {'MelanopsinDirectedSuperMaxMel' 'LMSDirectedSuperMaxLMS'}% 'PIPRRed' 'PIPRBlue'};
     cacheDir = getpref('OneLight', 'cachePath');
     zeroVector = zeros(1, length(theDirections));
     theOnVector = zeroVector;
