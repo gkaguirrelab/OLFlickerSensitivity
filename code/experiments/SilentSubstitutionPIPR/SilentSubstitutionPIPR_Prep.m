@@ -4,7 +4,7 @@
 theCalType = 'BoxDRandomizedLongCableAEyePiece2_ND06';
 
 %% Standard parameters
-params.experiment = 'SilentSUbstitution_PIPR';
+params.experiment = 'SilentSubstitution_PIPR';
 params.experimentSuffix = 'MaxMel';
 params.calibrationType = theCalType;
 params.whichReceptorsToMinimize = [];
