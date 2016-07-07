@@ -152,7 +152,7 @@ end
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%
 theCalType = 'BoxDRandomizedLongCableAEyePiece2_ND06';
-while true
+for i = 1:5
     theDirections = {'MelanopsinDirectedSuperMaxMel' 'LMSDirectedSuperMaxLMS'}% 'PIPRRed' 'PIPRBlue'}; ' 
     cacheDir = getpref('OneLight', 'cachePath');
     spectroRadiometerOBJ = [];
@@ -160,7 +160,7 @@ while true
     
     WaitSecs(2);
     for d = 1:length(theDirections)
-        [~, ~, validationPath{d}, spectroRadiometerOBJ] = OLValidateCacheFile(...
+        [~, ~, validationPath{d}, spectroRadiometerOBJ] = OLValidateCacheFileOOC(...
             fullfile(cacheDir, 'stimuli', ['Cache-' theDirections{d} '.mat']), ...
             'mspits@sas.upenn.edu', ...
             'PR-670', spectroRadiometerOBJ, spectroRadiometerOBJWillShutdownAfterMeasurement, ...
