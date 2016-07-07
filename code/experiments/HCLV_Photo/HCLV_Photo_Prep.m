@@ -136,18 +136,30 @@ switch optIndex
         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
         %%
-        theDirections = {'LightFluxXEccentricity' 'LMinusMDirectedXEccentricity' 'SDirectedXEccentricity'};
-        cacheDir = '/Users/Shared/Matlab/Experiments/OneLight/OLFlickerSensitivity/code/cache/stimuli';
-        zeroVector = zeros(1, length(theDirections));
-        theOnVector = zeroVector;
-        theOnVector(1) = 1;
-        theOffVector = zeroVector;
-        theOffVector(end) = 1;
-        WaitSecs(2);
-        for d = 1:length(theDirections)
-            [~, ~, validationPath{d}] = OLValidateCacheFile(fullfile(cacheDir, ['Cache-' theDirections{d} '.mat']), 'mspits@sas.upenn.edu', 'PR-670', ...
-                theOnVector(d), theOffVector(d), 'FullOnMeas', true, 'ReducedPowerLevels', true, 'selectedCalType', params.calibrationType, 'CALCULATE_SPLATTER', false);
-            close all;
+        spectroRadiometerOBJ = [];
+        spectroRadiometerOBJWillShutdownAfterMeasurement = false;   
+        for i = 1:5
+            theDirections = {'LightFluxXEccentricity' 'LMinusMDirectedXEccentricity' 'SDirectedXEccentricity'};
+            cacheDir = getpref('OneLight', 'cachePath');
+            
+            WaitSecs(2);
+            for d = 1:length(theDirections)
+                [~, ~, validationPath{d}, spectroRadiometerOBJ] = OLValidateCacheFileOOC(...
+                    fullfile(cacheDir, 'stimuli', ['Cache-' theDirections{d} '.mat']), ...
+                    'mspits@sas.upenn.edu', ...
+                    'PR-670', spectroRadiometerOBJ, spectroRadiometerOBJWillShutdownAfterMeasurement, ...
+                    'FullOnMeas', false, ...
+                    'WigglyMeas', true, ...
+                    'ReducedPowerLevels', false, ...
+                    'selectedCalType', params.calibrationType, ...
+                    'CALCULATE_SPLATTER', false, ...
+                    'powerLevels', [0 1.0000]);
+                close all;
+            end
+        end
+        if (~isempty(spectroRadiometerOBJ))
+            spectroRadiometerOBJ.shutDown();
+            spectroRadiometerOBJ = [];
         end
         
         
