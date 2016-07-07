@@ -63,7 +63,7 @@ while iterationCount < numIterations
         % Send over the new stops.
         t(i) = mglGetSecs;
         counter(i) = setCount;
-        ol.setMirrors(starts, stops);
+        ol.setMirrors(starts(:, setCount)', stops(:, setCount)');
     end
 end
 end
