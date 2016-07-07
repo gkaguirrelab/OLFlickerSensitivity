@@ -24,3 +24,6 @@ setpref('OneLight', 'modulationPath', fullfile(dropboxBaseDir, 'MELA_materials',
 
 % Set the modulation path
 setpref('OneLight', 'cachePath', fullfile(dropboxBaseDir, 'MELA_materials', 'cache'));
+
+% Set the modulation path
+setpref('OneLight', 'SpeakRateDefault', 230);
