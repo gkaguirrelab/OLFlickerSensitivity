@@ -152,11 +152,12 @@ end
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%
 theCalType = 'BoxDRandomizedLongCableAEyePiece2_ND06';
+spectroRadiometerOBJ = [];
+spectroRadiometerOBJWillShutdownAfterMeasurement = false;
+
 for i = 1:5
-    theDirections = {'MelanopsinDirectedSuperMaxMel' 'LMSDirectedSuperMaxLMS'}% 'PIPRRed' 'PIPRBlue'}; ' 
+    theDirections = {'MelanopsinDirectedSuperMaxMel' 'LMSDirectedSuperMaxLMS'}% 'PIPRRed' 'PIPRBlue'};
     cacheDir = getpref('OneLight', 'cachePath');
-    spectroRadiometerOBJ = [];
-    spectroRadiometerOBJWillShutdownAfterMeasurement = false;
     
     WaitSecs(2);
     for d = 1:length(theDirections)
@@ -173,3 +174,8 @@ for i = 1:5
         close all;
     end
 end
+if (~isempty(spectroRadiometerOBJ))
+    spectroRadiometerOBJ.shutDown();
+    spectroRadiometerOBJ = [];
+end
+
