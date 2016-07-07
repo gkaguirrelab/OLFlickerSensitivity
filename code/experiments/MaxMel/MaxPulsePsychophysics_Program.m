@@ -9,7 +9,7 @@ SpeakRateDefault = getpref('OneLight', 'SpeakRateDefault');
 
 % Adaptation time
 params.adaptTime = 5; % 5 minutes
-
+params.frameDurationSecs = 1/64;
 params.observerID = GetWithDefault('> <strong>Enter the observer name</strong>', 'HERO_xxx1');
 params.observerAgeInYrs = GetWithDefault('> <strong>Enter the observer age?</strong>', 20);
 
@@ -87,6 +87,10 @@ for is = 1:params.NStimuli
             fprintf('\t- Repeat: <strong>%g</strong>\n', js);
             Speak(['For this stimulus, judge ' perceptualDimensions{ps} '. Press key to start.'], [], 200);
             WaitForKeyPress;
+            
+            fprintf('* Showing stimulus...')
+            modulationTrialSequenceFlickerStartsStops(ol, stimStarts{is}, stimStops{is}, params.frameDurationSecs, 1);
+            fprintf('Done.\n')
             
             % Show the stimulus
             Speak('Answer?', [], SpeakRateDefault);
