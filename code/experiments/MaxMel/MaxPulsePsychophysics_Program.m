@@ -27,7 +27,7 @@ end
 % Assemble the modulations
 modulationDir = fullfile(getpref('OneLight', 'modulationPath'));
 pathToModFileLMS = ['Modulation-PIPRMaxPulse-PulseMaxLMS_3s_MaxContrast3sSegment-' num2str(params.observerAgeInYrs) '.mat'];
-pathToModFileMel = ['Modulation-PIPRMaxPulse-PulseMaxLMS_3s_MaxContrast3sSegment-' num2str(params.observerAgeInYrs) '.mat'];
+pathToModFileMel = ['Modulation-PIPRMaxPulse-PulseMaxMel_3s_MaxContrast3sSegment-' num2str(params.observerAgeInYrs) '.mat'];
 
 % Load in the files
 modFileLMS = load(fullfile(modulationDir, pathToModFileLMS));

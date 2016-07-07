@@ -8,7 +8,7 @@ function MaxPulsePsychophysics_Demo
 SpeakRateDefault = getpref('OneLight', 'SpeakRateDefault');
 
 % Adaptation time
-params.adaptTimeSecs = 30; % 30 seconds
+params.adaptTimeSecs = 2; % 30 seconds
 params.frameDurationSecs = 1/64;
 params.observerAgeInYrs = GetWithDefault('> <strong>Enter the observer age?</strong>', 20);
 params.ISISecs = 5;
@@ -18,7 +18,7 @@ params.NStimuli = 2;
 % Assemble the modulations
 modulationDir = fullfile(getpref('OneLight', 'modulationPath'));
 pathToModFileLMS = ['Modulation-PIPRMaxPulse-PulseMaxLMS_3s_MaxContrast3sSegment-' num2str(params.observerAgeInYrs) '.mat'];
-pathToModFileMel = ['Modulation-PIPRMaxPulse-PulseMaxLMS_3s_MaxContrast3sSegment-' num2str(params.observerAgeInYrs) '.mat'];
+pathToModFileMel = ['Modulation-PIPRMaxPulse-PulseMaxMel_3s_MaxContrast3sSegment-' num2str(params.observerAgeInYrs) '.mat'];
 
 % Load in the files
 modFileLMS = load(fullfile(modulationDir, pathToModFileLMS));
@@ -43,9 +43,6 @@ fprintf('* <strong>Experiment started</strong>\n');
 % Open the OneLight
 ol = OneLight;
 
-% Open the file to save to
-f = fopen(fullfile(savePath, saveFileCSV), 'w');
-
 for is = 1:params.NStimuli
     % Set to background
     ol.setMirrors(stimStartsBG{is}', stimStopsBG{is}');
@@ -61,7 +58,7 @@ for is = 1:params.NStimuli
     fprintf('\n\tAdaption completed.\n\t');
     toc;
     
-    for js = 1:params.NRepeats
+    for js = 1:params.NRepeatsPerStimulus
         fprintf('\t- Stimulus: <strong>%s</strong>\n', stimLabels{is});
         fprintf('\t- Repeat: <strong>%g</strong>\n', js);
         Speak(['Press key to start.'], [], 200);
@@ -72,3 +69,6 @@ for is = 1:params.NStimuli
         fprintf('Done.\n')
     end
 end
+
+% Inform user
+Speak('End of demo.', [], SpeakRateDefault);
