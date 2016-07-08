@@ -8,7 +8,7 @@ function MaxPulsePsychophysics_Program
 SpeakRateDefault = getpref('OneLight', 'SpeakRateDefault');
 
 % Adaptation time
-params.adaptTimeSecs = 300; % 5 minutes
+params.adaptTimeSecs = 2; % 5 minutes
 params.frameDurationSecs = 1/64;
 params.observerID = GetWithDefault('> <strong>Enter the observer name</strong>', 'HERO_xxx1');
 params.observerAgeInYrs = GetWithDefault('> <strong>Enter the observer age?</strong>', 20);
@@ -69,7 +69,7 @@ for is = 1:params.NStimuli
     ol.setMirrors(stimStartsBG{is}', stimStopsBG{is}');
     
     % Adapt to background for 5 minutes
-    Speak(sprintf('Adapt to background for %.2f minutes. Press key to start adaptation', params.adaptTimeSecs/60), [], SpeakRateDefault);
+    Speak(sprintf('Adapt to background for %g minutes. Press key to start adaptation', params.adaptTimeSecs/60), [], SpeakRateDefault);
     WaitForKeyPress;
     fprintf('\tAdaption started.');
     Speak('Adaptation started', [], SpeakRateDefault);
