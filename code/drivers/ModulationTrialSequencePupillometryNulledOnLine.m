@@ -155,8 +155,9 @@ for trial = params.whichTrialToStartAt:params.nTrials
         % Enforce a break here
         Speak('Readapt for 30 seconds');
         mglWaitSecs(30);
+        Speak('Starting now. For 2 minutes.');
     end
-    
+
     fprintf('* Start trial %i/%i - %s, %.2f Hz.\n', trial, params.nTrials, block(trial).direction, block(trial).carrierFrequencyHz);
     %Speak(['Trial ' num2str(trial)  ' of ' num2str(params.nTrials)]);
     
