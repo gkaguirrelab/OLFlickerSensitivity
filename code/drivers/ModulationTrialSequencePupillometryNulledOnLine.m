@@ -149,18 +149,19 @@ for trial = params.whichTrialToStartAt:params.nTrials
                 case gamePad.buttonChange
                     %sound(hintSound.y, hintSound.fs);
                     resume = true;
+                    sound(hintSound.y, hintSound.fs);
             end
         end%
         
         % Enforce a break here
-        Speak('Readapt for 30 seconds');
-        mglWaitSecs(30);
         Speak('Starting now. Focus on stimulus for 2 minutes.');
+        mglWaitSecs(30);
     end
 
     fprintf('* Start trial %i/%i - %s, %.2f Hz.\n', trial, params.nTrials, block(trial).direction, block(trial).carrierFrequencyHz);
     %Speak(['Trial ' num2str(trial)  ' of ' num2str(params.nTrials)]);
     
+    abort = false;
     checkTrials = 1:params.BreakModulus:100;
     %checkTrials = [1 3 5];
     if ismember(trial, checkTrials)
