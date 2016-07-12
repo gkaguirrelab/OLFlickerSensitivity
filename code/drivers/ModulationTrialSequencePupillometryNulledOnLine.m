@@ -130,13 +130,14 @@ for trial = params.whichTrialToStartAt:params.nTrials
             % If a key was pressed, get the key and exit.
             switch (action)
                 case gamePad.buttonChange
-                    %sound(hintSound.y, hintSound.fs);
+                    sound(hintSound.y, hintSound.fs);
                     resume = true;
             end
         end
     end
     
-    breakTrials = params.BreakModulus:params.BreakModulus:100;
+    breakTrials = (params.BreakModulus:params.BreakModulus:100)+1;
+        
     if ismember(trial, breakTrials)
         gamePad = GamePad();
         resume = false;
@@ -158,22 +159,21 @@ for trial = params.whichTrialToStartAt:params.nTrials
         mglWaitSecs(30);
     end
 
+    % Report the trial number to the screen. Reporting the option by voice
+    % is currently de-activated
     fprintf('* Start trial %i/%i - %s, %.2f Hz.\n', trial, params.nTrials, block(trial).direction, block(trial).carrierFrequencyHz);
     %Speak(['Trial ' num2str(trial)  ' of ' num2str(params.nTrials)]);
     
     abort = false;
-    
-    % This is currently hard-coded to check for connectivity every 6
-    % trials, whcih constitutes a stimulus block. A more flexible
-    % implementation is needed.
-%    checkTrials = 1:params.BreakModulus:100;
-    checkTrials = 1:6:100;
+
+    % This variable defines when there is checking for the quality of pupil
+    % tracking before proceeding with the experiment.
+    checkTrials = 1:params.BreakModulus:100;
+
     if ismember(trial, checkTrials)
         readyToResume = false; isBeingTracked = false; params.run = false;
         % Check the tracking function of VET system
         while (params.run == false)
-            % PLay stopping sound
-            %sound(stopSound.y, stopSound.fs);
             
             % Check whether the user is good to resume
             [readyToResume, abort] = OLVSGhelper.checkResume(readyToResume, hintSound);
@@ -205,6 +205,7 @@ for trial = params.whichTrialToStartAt:params.nTrials
             % If we have to redo the tracking, play a tone
             if (isBeingTracked == false)
                 sound(stopSound.y, stopSound.fs);
+                Speak('Cannot track eye position. Please open your eyes and hold still.');
             end
             
             % Is everything OK? Then proceed.
@@ -218,10 +219,7 @@ for trial = params.whichTrialToStartAt:params.nTrials
     if (abort == true)
         break;
     end
-    
-    % Play starting sound
-    %sound(startSound.y, startSound.fs);
-    
+        
     % === Send the 'startTracking' command ============================
     OLVSG.sendParamValue({OLVSG.EYE_TRACKER_STATUS, 'startTracking'}, ...
         'timeOutSecs', 5, 'maxAttemptsNum', 3, ...
