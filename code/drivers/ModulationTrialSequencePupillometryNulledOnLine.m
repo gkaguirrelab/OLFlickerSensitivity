@@ -162,8 +162,12 @@ for trial = params.whichTrialToStartAt:params.nTrials
     %Speak(['Trial ' num2str(trial)  ' of ' num2str(params.nTrials)]);
     
     abort = false;
-    checkTrials = 1:params.BreakModulus:100;
-    %checkTrials = [1 3 5];
+    
+    % This is currently hard-coded to check for connectivity every 6
+    % trials, whcih constitutes a stimulus block. A more flexible
+    % implementation is needed.
+%    checkTrials = 1:params.BreakModulus:100;
+    checkTrials = 1:6:100;
     if ismember(trial, checkTrials)
         readyToResume = false; isBeingTracked = false; params.run = false;
         % Check the tracking function of VET system
