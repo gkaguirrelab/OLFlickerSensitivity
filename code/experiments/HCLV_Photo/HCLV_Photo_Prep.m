@@ -48,7 +48,7 @@ switch params.whichScanner
     case '7T'
         params.calibrationType = 'BoxCRandomizedLongCableCStubby1NoLens_ND10_ContactLens_0_5mm';
     case '3T'
-        params.calibrationType = 'OLBoxCRandomizedLongCableCStubby1_ND10';
+        params.calibrationType = 'BoxBRandomizedLongCableBStubby1_ND10';
 end
 params.whichReceptorsToMinimize = [];
 params.CALCULATE_SPLATTER = false;
