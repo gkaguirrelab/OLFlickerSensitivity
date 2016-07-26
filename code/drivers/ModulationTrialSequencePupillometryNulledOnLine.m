@@ -28,7 +28,7 @@ OLVSG = OLVSGcommunicator( ...
     'localIP', params.macHostIP, ...    % required: the IP of this computer
     'remoteIP', params.winHostIP, ...    % required: the IP of the computer we want to conenct to
     'udpPort', params.udpPort, ...      % optional, with default value: 2007
-    'verbosity', 'none' ...                % optional, with default value: 'normal', and possible values: {'none', 'min', 'normal', 'max'},
+    'verbosity', 'max' ...                % optional, with default value: 'normal', and possible values: {'none', 'min', 'normal', 'max'},
     );
 
 % == Wake the Windows machine up ======================================
