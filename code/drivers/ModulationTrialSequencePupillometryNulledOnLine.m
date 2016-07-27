@@ -180,11 +180,11 @@ for trial = params.whichTrialToStartAt:params.nTrials
             
             % ==  Send user ready status ==================================
             OLVSG.sendParamValue({OLVSG.USER_READY_STATUS, 'user ready to move on'}, ...
-                'timeOutSecs', 2.0, 'maxAttemptsNum', 1, 'consoleMessage', 'User input acquired');
+                'timeOutSecs', 4.0, 'maxAttemptsNum', 1, 'consoleMessage', 'User input acquired');
             
             % == Wait to receive the userReady (continue or abort) ========
             continueCheck = OLVSG.receiveParamValue(OLVSG.USER_READY_STATUS,  ...
-                'timeOutSecs', 2.0, 'consoleMessage', 'Continue checking ?');
+                'timeOutSecs', 4.0, 'consoleMessage', 'Continue checking ?');
             
             if strcmp(continueCheck, 'abort');
                 abort = true;

@@ -12,7 +12,7 @@ function isBeingTracked = eyeTrackerCheck(OLVSG)
     
     % === Send the startEyeTrackerCheck ===================================
     OLVSG.sendParamValue({OLVSG.EYE_TRACKER_STATUS, 'startEyeTrackerCheck'}, ...
-        'timeOutSecs', 2.0, 'maxAttemptsNum', 1, 'consoleMessage', 'Start eye tracking check.');
+        'timeOutSecs', 4.0, 'maxAttemptsNum', 1, 'consoleMessage', 'Start eye tracking check.');
     % =====================================================================
  
     tStart = mglGetSecs;
