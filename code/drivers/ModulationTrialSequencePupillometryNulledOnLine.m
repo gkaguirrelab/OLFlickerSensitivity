@@ -28,7 +28,7 @@ OLVSG = OLVSGcommunicator( ...
     'localIP', params.macHostIP, ...    % required: the IP of this computer
     'remoteIP', params.winHostIP, ...    % required: the IP of the computer we want to conenct to
     'udpPort', params.udpPort, ...      % optional, with default value: 2007
-    'verbosity', 'none' ...                % optional, with default value: 'normal', and possible values: {'none', 'min', 'normal', 'max'},
+    'verbosity', 'max' ...                % optional, with default value: 'normal', and possible values: {'none', 'min', 'normal', 'max'},
     );
 
 % == Wake the Windows machine up ======================================
@@ -180,11 +180,11 @@ for trial = params.whichTrialToStartAt:params.nTrials
             
             % ==  Send user ready status ==================================
             OLVSG.sendParamValue({OLVSG.USER_READY_STATUS, 'user ready to move on'}, ...
-                'timeOutSecs', 2.0, 'maxAttemptsNum', 1, 'consoleMessage', 'User input acquired');
+                'timeOutSecs', 4.0, 'maxAttemptsNum', 1, 'consoleMessage', 'User input acquired');
             
             % == Wait to receive the userReady (continue or abort) ========
             continueCheck = OLVSG.receiveParamValue(OLVSG.USER_READY_STATUS,  ...
-                'timeOutSecs', 2.0, 'consoleMessage', 'Continue checking ?');
+                'timeOutSecs', 4.0, 'consoleMessage', 'Continue checking ?');
             
             if strcmp(continueCheck, 'abort');
                 abort = true;
