@@ -24,7 +24,7 @@ params.modulationDirection = 'PIPRBlue';
 params.receptorIsolateMode = 'PIPR';
 params.peakWavelengthNm = 475;
 params.fwhmNm = 25;
-params.filteredRetinalIrradianceLogPhotons = 12.35; % In log quanta/cm2/sec
+params.filteredRetinalIrradianceLogPhotons = 12.3; % In log quanta/cm2/sec
 params.cacheFile = ['Cache-' params.modulationDirection '.mat'];
 [cacheData, olCache, params] = OLMakePIPR(params);
 OLReceptorIsolateSaveCache(cacheData, olCache, params);
@@ -35,7 +35,7 @@ params.modulationDirection = 'PIPRRed';
 params.receptorIsolateMode = 'PIPR';
 params.peakWavelengthNm = 623;
 params.fwhmNm = 25;
-params.filteredRetinalIrradianceLogPhotons = 12.35; % In log quanta/cm2/sec
+params.filteredRetinalIrradianceLogPhotons = 12.3; % In log quanta/cm2/sec
 params.cacheFile = ['Cache-' params.modulationDirection '.mat'];
 [cacheData, olCache, params] = OLMakePIPR(params);
 OLReceptorIsolateSaveCache(cacheData, olCache, params);
@@ -163,7 +163,7 @@ for i = 1:5
     for d = 1:length(theDirections)
         [~, ~, validationPath{d}, spectroRadiometerOBJ] = OLValidateCacheFileOOC(...
             fullfile(cacheDir, 'stimuli', ['Cache-' theDirections{d} '.mat']), ...
-            'mspits@sas.upenn.edu', ...
+            'igdalova@mail.med.upenn.edu', ...
             'PR-670', spectroRadiometerOBJ, spectroRadiometerOBJWillShutdownAfterMeasurement, ...
             'FullOnMeas', false, ...
             'WigglyMeas', true, ...
