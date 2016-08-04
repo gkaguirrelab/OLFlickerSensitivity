@@ -1,4 +1,4 @@
- %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Generate the cache
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 theCalType = 'BoxDRandomizedLongCableAEyePiece2_ND06';
@@ -12,7 +12,7 @@ params.CALCULATE_SPLATTER = false;
 params.maxPowerDiff = 10^(-1);
 params.photoreceptorClasses = 'LConeTabulatedAbsorbance,MConeTabulatedAbsorbance,SConeTabulatedAbsorbance,Melanopsin';
 params.fieldSizeDegrees = 27.5;
-params.pupilDiameterMm = 8;
+params.pupilDiameterMm = 6;
 params.isActive = 1;
 params.useAmbient = 1;
 params.REFERENCE_OBSERVER_AGE = 32;
@@ -24,7 +24,7 @@ params.modulationDirection = 'PIPRBlue';
 params.receptorIsolateMode = 'PIPR';
 params.peakWavelengthNm = 475;
 params.fwhmNm = 25;
-params.filteredRetinalIrradianceLogPhotons = 12.5; % In log quanta/cm2/sec
+params.filteredRetinalIrradianceLogPhotons = 12.35; % In log quanta/cm2/sec
 params.cacheFile = ['Cache-' params.modulationDirection '.mat'];
 [cacheData, olCache, params] = OLMakePIPR(params);
 OLReceptorIsolateSaveCache(cacheData, olCache, params);
@@ -35,7 +35,7 @@ params.modulationDirection = 'PIPRRed';
 params.receptorIsolateMode = 'PIPR';
 params.peakWavelengthNm = 623;
 params.fwhmNm = 25;
-params.filteredRetinalIrradianceLogPhotons = 12.5; % In log quanta/cm2/sec
+params.filteredRetinalIrradianceLogPhotons = 12.35; % In log quanta/cm2/sec
 params.cacheFile = ['Cache-' params.modulationDirection '.mat'];
 [cacheData, olCache, params] = OLMakePIPR(params);
 OLReceptorIsolateSaveCache(cacheData, olCache, params);
@@ -148,7 +148,7 @@ for o = [20:60]
 end
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Generate the validate
+% Validate
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%
 theCalType = 'BoxDRandomizedLongCableAEyePiece2_ND06';
