@@ -76,7 +76,7 @@ for observerAgeInYears = 20:60
     fprintf('  - Intensity: \t<strong>%.2f</strong> [max.] [log quanta/cm2/sec]\n', log10(sum(irradianceQuantaPerCm2SecMax)));
     fprintf('  \t\t<strong>%.2f</strong> [pegged] [log quanta/cm2/sec]\n', log10(sum(irradianceQuantaPerCm2Sec)));
     fprintf('  - Scalar: \t<strong>%.2f</strong>\n', scalar);
-
+    
     %% Save out important information
     cacheData.data(observerAgeInYears).describe.params = params; % Parameters
     cacheData.cal = cal;
@@ -98,6 +98,12 @@ for observerAgeInYears = 20:60
     
     cacheData.data(observerAgeInYears).ambientSpd = cal.computed.pr650MeanDark;
     cacheData.data(observerAgeInYears).operatingPoint = backgroundPrimary;
+    
+    photoreceptorClasses = allwords(params.photoreceptorClasses, ',');
+    cacheData.data(observerAgeInYears).describe.photoreceptors = photoreceptorClasses;     % Photoreceptors
+    cacheData.data(observerAgeInYears).describe.S = S;     % Photoreceptors
+    T_receptors = GetHumanPhotoreceptorSS(S, photoreceptorClasses, params.fieldSizeDegrees, observerAgeInYears, params.pupilDiameterMm, [], []);
+    cacheData.data(observerAgeInYears).describe.T_receptors = T_receptors;
     
     % Include the compute method
     cacheData.data(observerAgeInYears).computeMethod = OLComputeMethods.ReceptorIsolate;
