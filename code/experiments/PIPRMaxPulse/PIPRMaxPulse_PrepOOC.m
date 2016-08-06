@@ -154,11 +154,11 @@ end
 theCalType = 'BoxDRandomizedLongCableAEyePiece2_ND06';
 spectroRadiometerOBJ = [];
 spectroRadiometerOBJWillShutdownAfterMeasurement = false;
+theDirections = {'MelanopsinDirectedSuperMaxMel' 'LMSDirectedSuperMaxLMS' 'PIPRRed' 'PIPRBlue'};
+cacheDir = getpref('OneLight', 'cachePath');
+materialsPath = getpref('OneLight', 'materialsPath');
 
 for i = 1:5
-    theDirections = {'MelanopsinDirectedSuperMaxMel' 'LMSDirectedSuperMaxLMS' 'PIPRRed' 'PIPRBlue'};
-    cacheDir = getpref('OneLight', 'cachePath');
-    
     WaitSecs(2);
     for d = 1:length(theDirections)
         [~, ~, validationPath{d}, spectroRadiometerOBJ] = OLValidateCacheFileOOC(...
@@ -170,7 +170,8 @@ for i = 1:5
             'ReducedPowerLevels', false, ...
             'selectedCalType', theCalType, ...
             'CALCULATE_SPLATTER', false, ...
-            'powerLevels', [0 1.0000]);
+            'powerLevels', [0 1.0000], ...
+            'outDir', fullfile(materialsPath, 'PIPRMaxPulse', datestr(now, 'mmddyy')));
         close all;
     end
 end
