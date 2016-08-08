@@ -141,6 +141,7 @@ switch optIndex
         for i = 1:5
             theDirections = {'LightFluxXEccentricity' 'LMinusMDirectedXEccentricity' 'SDirectedXEccentricity'};
             cacheDir = getpref('OneLight', 'cachePath');
+            materialsPath = getpref('OneLight', 'materialsPath');
             
             WaitSecs(2);
             for d = 1:length(theDirections)
