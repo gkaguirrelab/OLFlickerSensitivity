@@ -12,7 +12,7 @@ params.CALCULATE_SPLATTER = false;
 params.maxPowerDiff = 10^(-1);
 params.photoreceptorClasses = 'LConeTabulatedAbsorbance,MConeTabulatedAbsorbance,SConeTabulatedAbsorbance,Melanopsin';
 params.fieldSizeDegrees = 27.5;
-params.pupilDiameterMm = 8;
+params.pupilDiameterMm = 6;
 params.isActive = 1;
 params.useAmbient = 1;
 params.REFERENCE_OBSERVER_AGE = 32;
@@ -24,7 +24,7 @@ params.modulationDirection = 'PIPRBlue';
 params.receptorIsolateMode = 'PIPR';
 params.peakWavelengthNm = 475;
 params.fwhmNm = 25;
-params.filteredRetinalIrradianceLogPhotons = 12.5; % In log quanta/cm2/sec
+params.filteredRetinalIrradianceLogPhotons = 12.3; % In log quanta/cm2/sec
 params.cacheFile = ['Cache-' params.modulationDirection '.mat'];
 [cacheData, olCache, params] = OLMakePIPR(params);
 OLReceptorIsolateSaveCache(cacheData, olCache, params);
@@ -35,7 +35,7 @@ params.modulationDirection = 'PIPRRed';
 params.receptorIsolateMode = 'PIPR';
 params.peakWavelengthNm = 623;
 params.fwhmNm = 25;
-params.filteredRetinalIrradianceLogPhotons = 12.5; % In log quanta/cm2/sec
+params.filteredRetinalIrradianceLogPhotons = 12.3; % In log quanta/cm2/sec
 params.cacheFile = ['Cache-' params.modulationDirection '.mat'];
 [cacheData, olCache, params] = OLMakePIPR(params);
 OLReceptorIsolateSaveCache(cacheData, olCache, params);
@@ -148,29 +148,30 @@ for o = [20:60]
 end
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Generate the validate
+% Validate
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%
 theCalType = 'BoxDRandomizedLongCableAEyePiece2_ND06';
 spectroRadiometerOBJ = [];
 spectroRadiometerOBJWillShutdownAfterMeasurement = false;
+theDirections = {'MelanopsinDirectedSuperMaxMel' 'LMSDirectedSuperMaxLMS' 'PIPRRed' 'PIPRBlue'};
+cacheDir = getpref('OneLight', 'cachePath');
+materialsPath = getpref('OneLight', 'materialsPath');
 
 for i = 1:5
-    theDirections = {'MelanopsinDirectedSuperMaxMel' 'LMSDirectedSuperMaxLMS' 'PIPRRed' 'PIPRBlue'};
-    cacheDir = getpref('OneLight', 'cachePath');
-    
     WaitSecs(2);
     for d = 1:length(theDirections)
         [~, ~, validationPath{d}, spectroRadiometerOBJ] = OLValidateCacheFileOOC(...
             fullfile(cacheDir, 'stimuli', ['Cache-' theDirections{d} '.mat']), ...
-            'mspits@sas.upenn.edu', ...
+            'igdalova@mail.med.upenn.edu', ...
             'PR-670', spectroRadiometerOBJ, spectroRadiometerOBJWillShutdownAfterMeasurement, ...
             'FullOnMeas', false, ...
             'WigglyMeas', true, ...
             'ReducedPowerLevels', false, ...
             'selectedCalType', theCalType, ...
             'CALCULATE_SPLATTER', false, ...
-            'powerLevels', [0 1.0000]);
+            'powerLevels', [0 1.0000], ...
+            'outDir', fullfile(materialsPath, 'PIPRMaxPulse', datestr(now, 'mmddyy')));
         close all;
     end
 end
