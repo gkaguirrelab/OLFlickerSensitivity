@@ -42,7 +42,7 @@ OLReceptorIsolateSaveCache(cacheData, olCache, params);
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% Silent substitution
-% MaxMel
+%% MaxMel
 params.pegBackground = false;
 params.modulationDirection = {'MelanopsinDirected'};
 params.modulationContrast = [2/3];
@@ -84,7 +84,7 @@ paramsMaxMel.modulationDirection = 'MelanopsinDirectedSuperMaxMel';
 paramsMaxMel.cacheFile = ['Cache-' paramsMaxMel.modulationDirection '.mat'];
 OLReceptorIsolateSaveCache(cacheDataMaxMel, olCacheMaxMel, paramsMaxMel);
 
-% MaxLMS
+%% MaxLMS
 params.pegBackground = false;
 params.modulationDirection = {'LMSDirected'};
 params.modulationContrast = {[2/3 2/3 2/3]};
@@ -154,7 +154,8 @@ end
 theCalType = 'BoxDRandomizedLongCableAEyePiece2_ND06';
 spectroRadiometerOBJ = [];
 spectroRadiometerOBJWillShutdownAfterMeasurement = false;
-theDirections = {'MelanopsinDirectedSuperMaxMel' 'LMSDirectedSuperMaxLMS' 'PIPRRed' 'PIPRBlue'};
+%theDirections = {'MelanopsinDirectedSuperMaxMel' 'LMSDirectedSuperMaxLMS' 'PIPRRed' 'PIPRBlue'};
+theDirections = {'LMSDirectedSuperMaxLMS'};
 cacheDir = getpref('OneLight', 'cachePath');
 materialsPath = getpref('OneLight', 'materialsPath');
 
