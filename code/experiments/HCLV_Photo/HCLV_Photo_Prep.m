@@ -63,7 +63,7 @@ params.primaryHeadRoom = 0.02;
 
 switch optIndex
     case 1
-        OLCalibrateOOC;
+        OLCalibrateWithStateTrackingOOC;
     case 2
         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
