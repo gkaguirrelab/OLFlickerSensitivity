@@ -151,6 +151,9 @@ end
 % Validate
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%
+% OOC_checkPR670;
+% ol = OneLight;
+% 
 
 theCalType = 'BoxDRandomizedLongCableAEyePiece2_ND06';
 spectroRadiometerOBJ = [];
@@ -159,16 +162,16 @@ spectroRadiometerOBJWillShutdownAfterMeasurement = false;
 theDirections = {'MelanopsinDirectedSuperMaxMel' 'LMSDirectedSuperMaxLMS'};
 cacheDir = getpref('OneLight', 'cachePath');
 materialsPath = getpref('OneLight', 'materialsPath');
-OLWarmUpOOC;
+%OLWarmUpOOC;
 
-for i = 1:5
+while true
     WaitSecs(2);
     for d = 1:length(theDirections)
         [~, ~, validationPath{d}, spectroRadiometerOBJ] = OLValidateCacheFileOOC(...
             fullfile(cacheDir, 'stimuli', ['Cache-' theDirections{d} '.mat']), ...
             'igdalova@mail.med.upenn.edu', ...
             'PR-670', spectroRadiometerOBJ, spectroRadiometerOBJWillShutdownAfterMeasurement, ...
-            'FullOnMeas', true/Users/melanopsin/Documents/MATLAB/localToolboxHooks/OneLight.m, ...
+            'FullOnMeas', true, ...
             'WigglyMeas', true, ...
             'DarkMeas', true, ...
             'ReducedPowerLevels', false, ...
