@@ -38,7 +38,7 @@ spd1 = OLMakeMonochromaticSpd(cal, params.peakWavelengthNm, params.fwhmNm);
 [maxSpd1, scaleFactor1] = OLFindMaxSpectrum(cal, spd1, lambda);
 
 % Find the primaries for that
-primary0 = OLSpdToPrimary(cal, maxSpd1, lambda);
+primary0 = OLSpdToPrimary(cal, maxSpd1, 'lambda', lambda);
 backgroundPrimary = zeros(size(primary0));
 
 for observerAgeInYears = 20:60
