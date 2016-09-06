@@ -1,5 +1,5 @@
-function OneLightLocalHookTemplate
-% OneLight
+function OneLightConfig
+% OneLightConfig
 %
 % Configure things for working on OneLight projects.
 %
@@ -28,9 +28,6 @@ switch userID
     case {'melanopsin' 'pupillab'}
         dropboxBaseDir = ['/Users/' userID '/Dropbox (Aguirre-Brainard Lab)/'];
         dataPath = ['/Users/' userID '/Dropbox (Aguirre-Brainard Lab)/MELA_data/'];
-    case 'connectome'
-        dropboxBaseDir = ['/Users/' userID '/Dropbox (Aguirre-Brainard Lab)'];
-        dataPath = ['/Users/' userID '/Dropbox (Aguirre-Brainard Lab)/TOME_data/'];
     otherwise
         dropboxBaseDir = ['/Users/' userID '/Dropbox (Aguirre-Brainard Lab)'];
         dataPath = ['/Users/' userID '/Dropbox (Aguirre-Brainard Lab)/MELA_data/'];
