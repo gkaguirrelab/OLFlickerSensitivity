@@ -153,7 +153,7 @@ end
 %%
 % OOC_checkPR670;
 % ol = OneLight;
-% 
+%
 %%
 
 theCalType = 'BoxDRandomizedLongCableAEyePiece2_ND06_Warmup';
@@ -188,11 +188,7 @@ materialsPath = getpref('OneLight', 'materialsPath');
 % end
 c = 1;
 while true
-    if mod(10, c)
-        powerLevels = [0 0.2 0.4 0.6 0.8 1.0]
-    else
-        powerLevels = [0 1.0];
-    end
+    powerLevels = [0 1.0];
     WaitSecs(2);
     for d = 1:length(theDirections)
         [~, ~, validationPath{d}, spectroRadiometerOBJ] = OLValidateCacheFileOOC(...
