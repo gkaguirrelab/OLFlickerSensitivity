@@ -53,7 +53,7 @@ while true
 		% this loop.
 		subject = availableSubjects{subjectIndex};
 		subjectDataDir = sprintf('%s/%s/%s/%s', protocolDataDir, ...
-			subject, datestr(now, 'mmddyy'), 'MatFiles');
+			subject, datestr(now, 'mmddyy'), 'Stimuli');
         mkdir(subjectDataDir);
 		break;
 	else
