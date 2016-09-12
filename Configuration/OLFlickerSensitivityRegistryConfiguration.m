@@ -50,5 +50,5 @@ config = [ ...
     ];
 
 %% Write the config to a JSON file.
-configPath = 'OLFlickerSensitivity.json';
+configPath = 'OLFlickerSensitivityConfig.json';
 tbWriteConfig(config, 'configPath', configPath);
