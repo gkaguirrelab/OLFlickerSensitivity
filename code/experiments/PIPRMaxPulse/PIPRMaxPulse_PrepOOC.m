@@ -124,6 +124,7 @@ end
 paramsMaxLMS.modulationDirection = 'LMSDirectedSuperMaxLMS';
 paramsMaxLMS.cacheFile = ['Cache-' paramsMaxLMS.modulationDirection '.mat'];
 OLReceptorIsolateSaveCache(cacheDataMaxLMS, olCacheMaxLMS, paramsMaxLMS);
+<<<<<<< HEAD
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Generate the modulations
@@ -213,3 +214,5 @@ if (~isempty(spectroRadiometerOBJ))
     spectroRadiometerOBJ.shutDown();
     spectroRadiometerOBJ = [];
 end
+=======
+>>>>>>> Updates
