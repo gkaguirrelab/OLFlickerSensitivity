@@ -57,5 +57,9 @@ setpref('OneLight', 'OneLightCalData', fullfile(dropboxBaseDir, 'MELA_materials'
 % Set the default speak rate
 setpref('OneLight', 'SpeakRateDefault', 230);
 
+% Set the default speak rate
+olFlickerBaseDir = ['/Users/' userID '/Documents/MATLAB/Experiments/OneLight/OLFlickerSensitivity/code/'];
+setpref('OneLight', 'OLFlickerSensitivityBaseDir', olFlickerBaseDir);
+
 % Add OLFlickerSensitivity to the path
-addpath(genpath(['/Users/' userID '/Documents/MATLAB/Experiments/OneLight/OLFlickerSensitivity/code/']));
+addpath(genpath(olFlickerBaseDir));
