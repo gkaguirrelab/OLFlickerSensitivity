@@ -3,8 +3,8 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Ask for the observer age
 commandwindow;
-observerID = GetWithDefault('>> Enter user name', 'HERO_test');
-observerAgeInYrs = GetWithDefault('>> Enter observer age:', 32);
+observerID = GetWithDefault('>> Enter <strong>user name</strong>', 'HERO_test');
+observerAgeInYrs = GetWithDefault('>> Enter <strong>observer age</strong>:', 32);
 todayDate = datestr(now, 'mmddyy');
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -18,11 +18,13 @@ cacheDir = getpref('OneLight', 'cachePath');
 materialsPath = getpref('OneLight', 'materialsPath');
 
 for d = 1:length(theDirections)
-    fprintf('>> Correcting direction <strong>%s</strong>\n', theDirections{d});
-    fprintf('>> Observer:\t%s\n', observerID);
-    fprintf('>> Date:\t%s\n', todayDate);
+    % Print out some information
+    fprintf(' * Direction:\t<strong>%s</strong>\n', theDirections{d});
+    fprintf(' * Observer:\t<strong>%s</strong>\n', observerID);
+    fprintf(' * Date:\t<strong>%s</strong>\n', todayDate);
     
     % Correct the cache
+    fprintf(' * Starting spectrum-seeking loop...\n');
     [cacheData olCache openSpectroRadiometerOBJ] = OLCorrectCacheFileOOC(...
         fullfile(cacheDir, 'stimuli', ['Cache-' theDirections{d} '.mat']), ...
         'igdalova@mail.med.upenn.edu', ...
@@ -38,13 +40,16 @@ for d = 1:length(theDirections)
         'NIter', 8, ...
         'powerLevels', [0 1.0000], ...
         'outDir', fullfile(materialsPath, 'PIPRMaxPulse', todayDate));
+    fprintf(' * Spectrum seeking finished!\n');
     
     % Save the cache
+    fprintf(' * Saving cache ...');
     params = cacheData.data(observerAgeInYears).describe.params;
     params.modulationDirection = 'MelanopsinDirectedSuperMaxMel';
     params.cacheFile = ['Cache-' paramsMaxMel.modulationDirection '_' observerID '_' todayDate '.mat'];
     
     OLReceptorIsolateSaveCache(cacheData, olCache, params);
+    fprintf('done!\n');
 end
 
 if (~isempty(spectroRadiometerOBJ))
