@@ -16,7 +16,7 @@ cacheDir = getpref('OneLight', 'cachePath');
 materialsPath = getpref('OneLight', 'materialsPath');
 
 for d = 1:length(theDirections)
-    [~, ~, validationPath{d}, spectroRadiometerOBJ] = OLCorrectCacheFileOOC(...
+    [cacheData openSpectroRadiometerOBJ] = OLCorrectCacheFileOOC(...
         fullfile(cacheDir, 'stimuli', ['Cache-' theDirections{d} '.mat']), ...
         'igdalova@mail.med.upenn.edu', ...
         'PR-670', spectroRadiometerOBJ, spectroRadiometerOBJWillShutdownAfterMeasurement, ...
@@ -32,6 +32,11 @@ for d = 1:length(theDirections)
         'powerLevels', [0 1.0000], ...
         'pr670sensitivityMode', 'STANDARD', ...
         'outDir', fullfile(materialsPath, 'PIPRMaxPulse', datestr(now, 'mmddyy'), num2str(theLearningRate)));
+end
+
+if (~isempty(spectroRadiometerOBJ))
+    spectroRadiometerOBJ.shutDown();
+    spectroRadiometerOBJ = [];
 end
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -83,7 +88,6 @@ for d = 1:length(theDirections)
     close all;
 end
 
-%end
 if (~isempty(spectroRadiometerOBJ))
     spectroRadiometerOBJ.shutDown();
     spectroRadiometerOBJ = [];
