@@ -46,7 +46,7 @@ for d = 1:length(theDirections)
     fprintf(' * Saving cache ...');
     params = cacheData.data(observerAgeInYears).describe.params;
     params.modulationDirection = 'MelanopsinDirectedSuperMaxMel';
-    params.cacheFile = ['Cache-' paramsMaxMel.modulationDirection '_' observerID '_' todayDate '.mat'];
+    params.cacheFile = ['Cache-' params.modulationDirection '_' observerID '_' todayDate '.mat'];
     
     OLReceptorIsolateSaveCache(cacheData, olCache, params);
     fprintf('done!\n');
@@ -62,12 +62,15 @@ end
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Make the mod
 % LMS
-OLMakeModulations('Modulation-PIPRMaxPulse-BackgroundLMS_45sSegment.cfg', observerAgeInYrs, theCalType, [], []);
-OLMakeModulations('Modulation-PIPRMaxPulse-PulseMaxLMS_3s_MaxContrast17sSegment.cfg', observerAgeInYrs, theCalType, [], []); % Attention task
+%%
+customCacheFile = ['Cache-LMSDirectedSuperMaxLMS' observerID '_' todayDate '.mat'];
+OLMakeModulations('Modulation-PIPRMaxPulse-BackgroundLMS_45sSegment.cfg', observerAgeInYrs, theCalType, [], customCacheFile);
+OLMakeModulations('Modulation-PIPRMaxPulse-PulseMaxLMS_3s_MaxContrast17sSegment.cfg', observerAgeInYrs, theCalType, [], customCacheFile); % Attention task
 
 % Mel
-OLMakeModulations('Modulation-PIPRMaxPulse-BackgroundMel_45sSegment.cfg', observerAgeInYrs, theCalType, [], []);
-OLMakeModulations('Modulation-PIPRMaxPulse-PulseMaxMel_3s_MaxContrast17sSegment.cfg', observerAgeInYrs, theCalType, [], []); % Attention task
+customCacheFile = ['Cache-MelanopsinDirectedSuperMaxMel' observerID '_' todayDate '.mat'];
+OLMakeModulations('Modulation-PIPRMaxPulse-BackgroundMel_45sSegment.cfg', observerAgeInYrs, theCalType, [], customCacheFile);
+OLMakeModulations('Modulation-PIPRMaxPulse-PulseMaxMel_3s_MaxContrast17sSegment.cfg', observerAgeInYrs, theCalType, [], customCacheFile); % Attention task
 
 % PIPR
 OLMakeModulations('Modulation-PIPRMaxPulse-BackgroundPIPR_45sSegment.cfg', observerAgeInYrs, theCalType, [], []); % Background.
@@ -79,7 +82,10 @@ OLMakeModulations('Modulation-PIPRMaxPulse-PulsePIPRRed_3s_MaxContrast17sSegment
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Validate the spectrum before and after the experiment
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-observerAgeInYrs = GetWithDefault('>> Enter observer age:', 32);
+commandwindow;
+observerID = GetWithDefault('>> Enter <strong>user name</strong>', 'HERO_test');
+observerAgeInYrs = GetWithDefault('>> Enter <strong>observer age</strong>:', 32);
+todayDate = datestr(now, 'mmddyy');
 
 theCalType = 'BoxDRandomizedLongCableAEyePiece2_ND06_Warmup';
 spectroRadiometerOBJ = [];
