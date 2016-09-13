@@ -3,7 +3,9 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Ask for the observer age
 commandwindow;
+observerID = GetWithDefault('>> Enter user name', 'HERO_test');
 observerAgeInYrs = GetWithDefault('>> Enter observer age:', 32);
+todayDate = datestr(now, 'mmddyy');
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Correct the spectrum
@@ -16,7 +18,12 @@ cacheDir = getpref('OneLight', 'cachePath');
 materialsPath = getpref('OneLight', 'materialsPath');
 
 for d = 1:length(theDirections)
-    [cacheData openSpectroRadiometerOBJ] = OLCorrectCacheFileOOC(...
+    fprintf('>> Correcting direction <strong>%s</strong>\n', theDirections{d});
+    fprintf('>> Observer:\t%s\n', observerID);
+    fprintf('>> Date:\t%s\n', todayDate);
+    
+    % Correct the cache
+    [cacheData olCache openSpectroRadiometerOBJ] = OLCorrectCacheFileOOC(...
         fullfile(cacheDir, 'stimuli', ['Cache-' theDirections{d} '.mat']), ...
         'igdalova@mail.med.upenn.edu', ...
         'PR-670', spectroRadiometerOBJ, spectroRadiometerOBJWillShutdownAfterMeasurement, ...
@@ -30,8 +37,14 @@ for d = 1:length(theDirections)
         'lambda', 0.8, ...
         'NIter', 8, ...
         'powerLevels', [0 1.0000], ...
-        'pr670sensitivityMode', 'STANDARD', ...
-        'outDir', fullfile(materialsPath, 'PIPRMaxPulse', datestr(now, 'mmddyy'), num2str(theLearningRate)));
+        'outDir', fullfile(materialsPath, 'PIPRMaxPulse', todayDate));
+    
+    % Save the cache
+    params = cacheData.data(observerAgeInYears).describe.params;
+    params.modulationDirection = 'MelanopsinDirectedSuperMaxMel';
+    params.cacheFile = ['Cache-' paramsMaxMel.modulationDirection '_' observerID '_' todayDate '.mat'];
+    
+    OLReceptorIsolateSaveCache(cacheData, olCache, params);
 end
 
 if (~isempty(spectroRadiometerOBJ))
