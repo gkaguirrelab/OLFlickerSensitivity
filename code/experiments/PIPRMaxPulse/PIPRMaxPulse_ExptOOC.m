@@ -63,14 +63,14 @@ end
 % Make the mod
 % LMS
 %%
-customCacheFile = ['Cache-LMSDirectedSuperMaxLMS' observerID '_' todayDate '.mat'];
-OLMakeModulations('Modulation-PIPRMaxPulse-BackgroundLMS_45sSegment.cfg', observerAgeInYrs, theCalType, [], customCacheFile);
-OLMakeModulations('Modulation-PIPRMaxPulse-PulseMaxLMS_3s_MaxContrast17sSegment.cfg', observerAgeInYrs, theCalType, [], customCacheFile); % Attention task
+customSuffix = ['_' observerID '_' todayDate];
+OLMakeModulations('Modulation-PIPRMaxPulse-BackgroundLMS_45sSegment.cfg', observerAgeInYrs, theCalType, [], customSuffix);
+OLMakeModulations('Modulation-PIPRMaxPulse-PulseMaxLMS_3s_MaxContrast17sSegment.cfg', observerAgeInYrs, theCalType, [], customSuffix); % Attention task
 
 % Mel
-customCacheFile = ['Cache-MelanopsinDirectedSuperMaxMel' observerID '_' todayDate '.mat'];
-OLMakeModulations('Modulation-PIPRMaxPulse-BackgroundMel_45sSegment.cfg', observerAgeInYrs, theCalType, [], customCacheFile);
-OLMakeModulations('Modulation-PIPRMaxPulse-PulseMaxMel_3s_MaxContrast17sSegment.cfg', observerAgeInYrs, theCalType, [], customCacheFile); % Attention task
+customSuffix = ['_' observerID '_' todayDate];
+OLMakeModulations('Modulation-PIPRMaxPulse-BackgroundMel_45sSegment.cfg', observerAgeInYrs, theCalType, [], customSuffix);
+OLMakeModulations('Modulation-PIPRMaxPulse-PulseMaxMel_3s_MaxContrast17sSegment.cfg', observerAgeInYrs, theCalType, [], customSuffix); % Attention task
 
 % PIPR
 OLMakeModulations('Modulation-PIPRMaxPulse-BackgroundPIPR_45sSegment.cfg', observerAgeInYrs, theCalType, [], []); % Background.
