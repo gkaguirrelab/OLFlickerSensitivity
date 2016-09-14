@@ -45,7 +45,7 @@ for d = 1:length(theDirections)
     % Save the cache
     fprintf(' * Saving cache ...');
     params = cacheData.data(observerAgeInYears).describe.params;
-    params.modulationDirection = 'MelanopsinDirectedSuperMaxMel';
+    params.modulationDirection = theDirections{d};
     params.cacheFile = ['Cache-' params.modulationDirection '_' observerID '_' todayDate '.mat'];
     
     OLReceptorIsolateSaveCache(cacheData, olCache, params);
