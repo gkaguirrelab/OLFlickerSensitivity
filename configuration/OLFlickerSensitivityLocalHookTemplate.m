@@ -1,12 +1,12 @@
 function OLFlickerSensitivityLocalHookTemplate
-% OLFlickerSensitivity
+% OLFlickerSensitivityConfig
 %
 % Configure things for working on OneLight projects.
 %
 % For use with the ToolboxToolbox.  If you copy this into your
 % ToolboxToolbox localToolboxHooks directory (by defalut,
 % ~/localToolboxHooks) and delete "LocalHooksTemplate" from the filename,
-% this will get run when you execute tbUse({'IBIOColorDetect'}) to set up for
+% this will get run when you execute tbUse({'OLFlickerSensitivityConfig'}) to set up for
 % this project.  You then edit your local copy to match your local machine.
 %
 % The thing that this does is add subfolders of the project to the path as
@@ -17,7 +17,7 @@ function OLFlickerSensitivityLocalHookTemplate
 % to match what is true on your computer.
 
 %% Say hello
-fprintf('Running OneLight local hook\n');
+fprintf('Running OLFlickerSensitivityConfig local hook\n');
 
 %% Set preferences
 
