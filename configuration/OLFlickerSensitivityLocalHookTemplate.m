@@ -57,6 +57,9 @@ setpref('OneLight', 'OneLightCalData', fullfile(dropboxBaseDir, 'MELA_materials'
 % Set the default speak rate
 setpref('OneLight', 'SpeakRateDefault', 230);
 
+% Add OmniDriver.jar to java path
+JavaAddToPath(['/Users/' userID '/Documents/MATLAB/Toolboxes/OneLightDriver/xOceanOpticsJava/OmniDriver.jar'],'OmniDriver.jar');
+
 % Set the default speak rate
 olFlickerBaseDir = ['/Users/' userID '/Documents/MATLAB/Experiments/OneLight/OLFlickerSensitivity/code/'];
 setpref('OneLight', 'OLFlickerSensitivityBaseDir', olFlickerBaseDir);
