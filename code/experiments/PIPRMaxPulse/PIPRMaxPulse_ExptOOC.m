@@ -49,7 +49,6 @@ for d = 1:length(theDirections)
     params = cacheData.data(observerAgeInYrs).describe.params;
     params.modulationDirection = theDirections{d};
     params.cacheFile = ['Cache-' params.modulationDirection '_' observerID '_' todayDate '.mat'];
-    
     OLReceptorIsolateSaveCache(cacheData, olCache, params);
     fprintf('done!\n');
 end
