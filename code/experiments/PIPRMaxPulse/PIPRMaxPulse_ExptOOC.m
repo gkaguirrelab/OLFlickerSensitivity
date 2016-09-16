@@ -52,22 +52,6 @@ for d = 1:length(theDirections)
     params.cacheFile = ['Cache-' params.modulationDirection '_' observerID '_' todayDate '.mat'];
     OLReceptorIsolateSaveCache(cacheData, olCache, params);
     fprintf('done!\n');
-    
-    % Validate
-    [~, ~, validationPath{d}, spectroRadiometerOBJ] = OLValidateCacheFileOOC(...
-        fullfile(cacheDir, 'stimuli', theDirections{d}), ...
-        'igdalova@mail.med.upenn.edu', ...
-        'PR-670', spectroRadiometerOBJ, spectroRadiometerOBJWillShutdownAfterMeasurement, ...
-        'FullOnMeas', false, ...
-        'CalStateMeas', true, ...
-        'DarkMeas', false, ...
-        'REFERENCE_OBSERVER_AGE', observerAgeInYrs, ...
-        'ReducedPowerLevels', false, ...
-        'selectedCalType', theCalType, ...
-        'CALCULATE_SPLATTER', false, ...
-        'powerLevels', [0 1.0000], ...
-        'pr670sensitivityMode', 'STANDARD', ...
-        'outDir', fullfile(materialsPath, 'PIPRMaxPulse', datestr(now, 'mmddyy')));
 end
 
 if (~isempty(spectroRadiometerOBJ))
@@ -81,6 +65,7 @@ toc;
 % Make the mod
 % LMS
 %%
+tic;
 customSuffix = ['_' observerID '_' todayDate];
 OLMakeModulations('Modulation-PIPRMaxPulse-BackgroundLMS_45sSegment.cfg', observerAgeInYrs, theCalType, [], customSuffix);
 OLMakeModulations('Modulation-PIPRMaxPulse-PulseMaxLMS_3s_MaxContrast17sSegment.cfg', observerAgeInYrs, theCalType, [], customSuffix); % Attention task
@@ -94,12 +79,13 @@ OLMakeModulations('Modulation-PIPRMaxPulse-PulseMaxMel_3s_MaxContrast17sSegment.
 OLMakeModulations('Modulation-PIPRMaxPulse-BackgroundPIPR_45sSegment.cfg', observerAgeInYrs, theCalType, [], customSuffix); % Background.
 OLMakeModulations('Modulation-PIPRMaxPulse-PulsePIPRBlue_3s_MaxContrast17sSegment.cfg', observerAgeInYrs, theCalType, [], customSuffix); % Blue PIPR
 OLMakeModulations('Modulation-PIPRMaxPulse-PulsePIPRRed_3s_MaxContrast17sSegment.cfg', observerAgeInYrs, theCalType, [], customSuffix); % Red PIPR
-
+toc;
 
 %%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Validate the spectrum before and after the experiment
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+tic;
 commandwindow;
 observerID = GetWithDefault('>> Enter <strong>user name</strong>', 'HERO_test');
 observerAgeInYrs = GetWithDefault('>> Enter <strong>observer age</strong>:', 32);
@@ -140,3 +126,4 @@ if (~isempty(spectroRadiometerOBJ))
     spectroRadiometerOBJ.shutDown();
     spectroRadiometerOBJ = [];
 end
+toc;
