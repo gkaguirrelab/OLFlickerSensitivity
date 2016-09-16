@@ -10,10 +10,11 @@ todayDate = datestr(now, 'mmddyy');
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Correct the spectrum
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-theCalType = 'BoxDRandomizedLongCableAEyePiece2_ND06_Warmup';
+theCalType = 'BoxDRandomizedLongCableAEyePiece2_ND06';
 spectroRadiometerOBJ = [];
 spectroRadiometerOBJWillShutdownAfterMeasurement = false;
-theDirections = {'MelanopsinDirectedSuperMaxMel' 'LMSDirectedSuperMaxLMS'};
+theDirections = {'MelanopsinDirectedSuperMaxMel' 'LMSDirectedSuperMaxLMS' 'PIPRBlue', 'PIPRRed'};
+theDirectionsCorrect = [1 1 0 0];
 cacheDir = getpref('OneLight', 'cachePath');
 materialsPath = getpref('OneLight', 'materialsPath');
 
@@ -39,6 +40,7 @@ for d = 1:length(theDirections)
         'lambda', 0.8, ...
         'NIter', 10, ...
         'powerLevels', [0 1.0000], ...
+        'doCorrection', theDirectionsCorrect(d), ...
         'outDir', fullfile(materialsPath, 'PIPRMaxPulse', todayDate));
     fprintf(' * Spectrum seeking finished!\n');
     
@@ -87,7 +89,7 @@ observerID = GetWithDefault('>> Enter <strong>user name</strong>', 'HERO_test');
 observerAgeInYrs = GetWithDefault('>> Enter <strong>observer age</strong>:', 32);
 todayDate = datestr(now, 'mmddyy');
 
-theCalType = 'BoxDRandomizedLongCableAEyePiece2_ND06_Warmup';
+theCalType = 'BoxDRandomizedLongCableAEyePiece2_ND06';
 spectroRadiometerOBJ = [];
 spectroRadiometerOBJWillShutdownAfterMeasurement = false;
 theDirections = {['Cache-MelanopsinDirectedSuperMaxMel_' observerID '_' todayDate '.mat'] ...
