@@ -22,8 +22,8 @@ S = val.describe.S;
 
 switch mode
     case 'short'
-        theCanonicalPhotoreceptors = data(32).describe.photoreceptors;%{'LCone', 'MCone', 'SCone', 'Melanopsin', 'Rods'};
-        T_receptors = data(32).describe.T_receptors;%GetHumanPhotoreceptorSS(S, theCanonicalPhotoreceptors, data(val.describe.REFERENCE_OBSERVER_AGE).describe.params.fieldSizeDegrees, val.describe.REFERENCE_OBSERVER_AGE, 4.7, [], data(val.describe.REFERENCE_OBSERVER_AGE).describe.fractionBleached);
+        theCanonicalPhotoreceptors = data(val.describe.REFERENCE_OBSERVER_AGE).describe.photoreceptors;%{'LCone', 'MCone', 'SCone', 'Melanopsin', 'Rods'};
+        T_receptors = data(val.describe.REFERENCE_OBSERVER_AGE).describe.T_receptors;%GetHumanPhotoreceptorSS(S, theCanonicalPhotoreceptors, data(val.describe.REFERENCE_OBSERVER_AGE).describe.params.fieldSizeDegrees, val.describe.REFERENCE_OBSERVER_AGE, 4.7, [], data(val.describe.REFERENCE_OBSERVER_AGE).describe.fractionBleached);
         
         load T_xyz1931
         T_xyz = SplineCmf(S_xyz1931,683*T_xyz1931,S);
@@ -32,7 +32,7 @@ switch mode
         fid = fopen(fullfile(validationDir, [valFileName '.txt']), 'w');
         fprintf(fid, 'Background luminance [cd/m2]: %.2f cd/m2\n', photopicLuminanceCdM2);
         fprintf('Background luminance [cd/m2]: %.2f cd/m2\n', photopicLuminanceCdM2);
-        if ~strcmp(val.describe.cache.data(32).describe.params.receptorIsolateMode, 'PIPR')
+        if ~strcmp(val.describe.cache.data(val.describe.REFERENCE_OBSERVER_AGE).describe.params.receptorIsolateMode, 'PIPR')
             % Calculate the receptor activations to the background
             backgroundReceptors = T_receptors* val.modulationBGMeas.meas.pr650.spectrum;
             %% Compute and report constrasts
