@@ -19,21 +19,6 @@ exp.baseDir = fileparts(which(exp.mFileName));
 i = strfind(exp.baseDir, '/code');
 exp.dataDir = sprintf('%sdata', exp.baseDir(1:i));
 
-% Dynamically add the program code to the path if it isn't already on it.
-if isempty(strfind(path, exp.baseDir))
-    fprintf('- Adding %s dynamically to the path...', exp.mFileName);
-    addpath(RemoveSVNPaths(genpath(exp.baseDir)), '-end');
-    fprintf('Done\n');
-end
-
-% Grab the subversion information now.  We'll add it the 'params' variable
-% later.  We do it here just in case we get an error with function which
-% would cause the program to terminate.  If we did it after the experiment
-% finished, we would get an error prior to saving, thus losing collected
-% data.
-svnInfo.(sprintf('%sSVNInfo', exp.mFileName)) = GetSVNInfo(exp.baseDir);
-svnInfo.toolboxSVNInfo = GetBrainardLabStandardToolboxesSVNInfo;
-
 %% Standard read of configuration information
 [exp.configFileDir,exp.configFileName,exp.protocolDataDir,exp.protocolList,exp.protocolIndex] = GetExperimentConfigInfo(exp.baseDir,exp.mFileName,exp.dataDir);
 exp
@@ -79,7 +64,7 @@ eval(driverCommand);
 
 %% Save the experimental data 'params' along with the experimental setup
 % data 'exp' and the SVN info.
-save(exp.saveFileName, 'params', 'exp', 'svnInfo');
+save(exp.saveFileName, 'params', 'exp');
 fprintf('- Data saved to %s\n', exp.saveFileName);
 
 if strcmp(exp.protocolList(exp.protocolIndex).driver, 'ModulationTrialSequencePupillometryNulledOnLine');
