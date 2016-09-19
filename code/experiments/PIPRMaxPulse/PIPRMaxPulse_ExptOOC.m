@@ -126,4 +126,7 @@ if (~isempty(spectroRadiometerOBJ))
     spectroRadiometerOBJ.shutDown();
     spectroRadiometerOBJ = [];
 end
+fprintf('\n************************************************');
+fprintf('\n*** <strong>Validation all complete</strong> ***');
+fprintf('\n************************************************\n');
 toc;
