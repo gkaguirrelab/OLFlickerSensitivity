@@ -7,9 +7,6 @@ function OLFlickerSensitivity
 % Set priority
 %Priority(1);
 
-% Set the config
-OLConfiguration;
-
 % Set dbstop if error
 dbstop if error;
 
