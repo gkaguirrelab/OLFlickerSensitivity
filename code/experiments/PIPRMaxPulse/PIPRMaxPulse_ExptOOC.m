@@ -87,9 +87,12 @@ toc;
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 tic;
 commandwindow;
-% observerID = GetWithDefault('>> Enter <strong>user name</strong>', 'HERO_test');
-% observerAgeInYrs = GetWithDefault('>> Enter <strong>observer age</strong>:', 32);
-% todayDate = datestr(now, 'mmddyy');
+if ~exist('observerID', 'var') || ~exist('observerAgeInYrs', 'var') || ~exist('todayDate', 'var')
+    observerID = GetWithDefault('>> Enter <strong>user name</strong>', 'HERO_test');
+    observerAgeInYrs = GetWithDefault('>> Enter <strong>observer age</strong>:', 32);
+    todayDate = datestr(now, 'mmddyy');
+end
+
 
 theCalType = 'BoxDRandomizedLongCableAEyePiece2_ND06';
 spectroRadiometerOBJ = [];
