@@ -165,4 +165,6 @@ fprintf('\n*** <strong>Validation all complete</strong> ***');
 fprintf('\n************************************************\n');
 toc;
 
+% Clear the choiceIndex. Note that this is only relevant for the
+% pre-experimental validations.
 clear choiceIndex;
