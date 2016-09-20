@@ -87,13 +87,18 @@ toc;
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 tic;
 commandwindow;
+
+% Prompt the user to state if we're before or after the experiment
+choiceIndex = ChoiceMenuFromList({'Before the experiment', 'After the experiment'}, '> Validation before or after the experiment?');
+
+% Ask for variables if they don't exist
 if ~exist('observerID', 'var') || ~exist('observerAgeInYrs', 'var') || ~exist('todayDate', 'var')
     observerID = GetWithDefault('>> Enter <strong>user name</strong>', 'HERO_test');
     observerAgeInYrs = GetWithDefault('>> Enter <strong>observer age</strong>:', 32);
     todayDate = datestr(now, 'mmddyy');
 end
 
-
+% Set up some parameters
 theCalType = 'BoxDRandomizedLongCableAEyePiece2_ND06';
 spectroRadiometerOBJ = [];
 spectroRadiometerOBJWillShutdownAfterMeasurement = false;
@@ -101,18 +106,36 @@ theDirections = {['Cache-MelanopsinDirectedSuperMaxMel_' observerID '_' todayDat
     ['Cache-LMSDirectedSuperMaxLMS_' observerID '_' todayDate '.mat'] ...
     ['Cache-PIPRRed_' observerID '_' todayDate '.mat'] ...
     ['Cache-PIPRBlue_' observerID '_' todayDate '.mat']};
+NDirections = length(theDirections);
 cacheDir = getpref('OneLight', 'cachePath');
 materialsPath = getpref('OneLight', 'materialsPath');
 NMeas = 5;
 
+% Set up a counter
+c = 1;
+NTotalMeas = NMeas*NDirections;
+
 for ii = 1:NMeas;
-    for d = 1:length(theDirections)
-        [~, ~, validationPath{d}, spectroRadiometerOBJ] = OLValidateCacheFileOOC(...
+    for d = 1:NDirections
+        % Inform the user where we are in the validation
+        fprintf('*** Validation %g / %g in total ***\n', c, NTotalMeas);
+        
+        % We also take state measurements, which we define here
+        if (choiceIndex == 1) && (c == 1)
+            calStateFlag = true;
+        elseif (choiceIndex == 2) && (c == NTotalMeas)
+            calStateFlag = true;
+        else
+            calStateFlag = false;
+        end
+        
+        % Take the measurement
+        [~, ~, ~, spectroRadiometerOBJ] = OLValidateCacheFileOOC(...
             fullfile(cacheDir, 'stimuli', theDirections{d}), ...
             'igdalova@mail.med.upenn.edu', ...
             'PR-670', spectroRadiometerOBJ, spectroRadiometerOBJWillShutdownAfterMeasurement, ...
             'FullOnMeas', false, ...
-            'CalStateMeas', false, ...
+            'CalStateMeas', calStateFlag, ...
             'DarkMeas', false, ...
             'REFERENCE_OBSERVER_AGE', observerAgeInYrs, ...
             'ReducedPowerLevels', false, ...
@@ -121,7 +144,9 @@ for ii = 1:NMeas;
             'powerLevels', [0 1.0000], ...
             'pr670sensitivityMode', 'STANDARD', ...
             'outDir', fullfile(materialsPath, 'PIPRMaxPulse', datestr(now, 'mmddyy')));
-        close all;
+        
+        % Increment the counter
+        c = c+1;
     end
 end
 
