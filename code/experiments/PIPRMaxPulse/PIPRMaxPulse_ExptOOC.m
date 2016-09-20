@@ -81,6 +81,10 @@ OLMakeModulations('Modulation-PIPRMaxPulse-PulsePIPRBlue_3s_MaxContrast17sSegmen
 OLMakeModulations('Modulation-PIPRMaxPulse-PulsePIPRRed_3s_MaxContrast17sSegment.cfg', observerAgeInYrs, theCalType, [], customSuffix); % Red PIPR
 toc;
 
+% Assign the default choice index the first time we run this script. We
+% clear this after the pre-experimental validation.
+choiceIndex = 1;
+
 %%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Validate the spectrum before and after the experiment
@@ -89,7 +93,9 @@ tic;
 commandwindow;
 
 % Prompt the user to state if we're before or after the experiment
-choiceIndex = ChoiceMenuFromList({'Before the experiment', 'After the experiment'}, '> Validation before or after the experiment?');
+if ~exist('choiceIndex', 'var')
+    choiceIndex = ChoiceMenuFromList({'Before the experiment', 'After the experiment'}, '> Validation before or after the experiment?');
+end
 
 % Ask for variables if they don't exist
 if ~exist('observerID', 'var') || ~exist('observerAgeInYrs', 'var') || ~exist('todayDate', 'var')
@@ -158,3 +164,5 @@ fprintf('\n************************************************');
 fprintf('\n*** <strong>Validation all complete</strong> ***');
 fprintf('\n************************************************\n');
 toc;
+
+clear choiceIndex;
