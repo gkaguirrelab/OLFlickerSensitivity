@@ -34,18 +34,16 @@ if ~strcmp(val.describe.cache.data(val.describe.REFERENCE_OBSERVER_AGE).describe
     % Calculate the receptor activations to the background
     bgSpd = val.modulationBGMeas.meas.pr650.spectrum;
     modSpd = val.modulationMaxMeas.meas.pr650.spectrum;
-    [contrasts postreceptorContrasts postreceptorStrings] = ComputeAndReportContrastsFromSpds('Mel-directed',theReceptors,T_receptors,bgSpd,modSpd,postreceptoralCombinations,[]);
+    [contrasts postreceptorContrasts postreceptorStrings] = ComputeAndReportContrastsFromSpds(val.describe.cache.cacheFileName,theReceptors,T_receptors,bgSpd,modSpd,[1 1 1 0 ; 1 -1 0 0 ; 0 0 1 0],[]);
     
     % Save contrasts
     for j = 1:size(T_receptors,1)
         fprintf(fid, '  - %s: contrast = \t%f \n',theReceptors{j},contrasts(j));
-        fprintf('  - %s: contrast = \t%f \n',theReceptors{j},contrasts(j));
     end
     
     % Save postreceptoral contrasts
-    for j = 1:size(postreceptorStrings,1)
+    for j = 1:length(postreceptorStrings)
         fprintf(fid, '  - %s: contrast = \t%f \n',postreceptorStrings{j},postreceptorContrasts(j));
-        fprintf('  - %s: contrast = \t%f \n',postreceptorStrings{j},postreceptorContrasts(j));
     end
     fclose(fid);
 end
