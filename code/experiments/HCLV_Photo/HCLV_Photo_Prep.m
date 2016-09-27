@@ -12,6 +12,7 @@ end
 %% Set up options
 theOptions = {'Calibrate the OneLight' ; ...
     'Generate isolating primary settings' ; ...
+    'Spectrum-seeking + validation' ; ...
     'Validate isolating primary settings' ; ...
     'Generate the modulation cfg files' ; ...
     'Generate the modulations' ; ...
@@ -129,7 +130,7 @@ switch optIndex
         
         
         
-    case 3
+    case 4
         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
         % VALIDATION THE PHOTORECEPTOR-DIRECTED MODULATIONS
@@ -137,7 +138,7 @@ switch optIndex
         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
         %%
         spectroRadiometerOBJ = [];
-        spectroRadiometerOBJWillShutdownAfterMeasurement = false;   
+        spectroRadiometerOBJWillShutdownAfterMeasurement = false;
         for i = 1:5
             theDirections = {'LightFluxXEccentricity' 'LMinusMDirectedXEccentricity' 'SDirectedXEccentricity'};
             cacheDir = getpref('OneLight', 'cachePath');
@@ -164,7 +165,7 @@ switch optIndex
         end
         
         
-    case 4
+    case 5
         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
         % MAKE THE STIMULUS FILES
@@ -214,47 +215,47 @@ switch optIndex
         end
         
         
-          %%
-          % Make the scotopic file
-          theDirections = {'LightFluxXEccentricity'};
-          for d = 1:length(theDirections)
-              % Make the config file
-              % Create an empty config file
-              basePath = '/Users/Shared/MATLAB/Experiments/OneLight/OLFlickerSensitivity/code/config/modulations';
-              modulationFileName = ['Modulation-' theDirections{d} 'Scotopic-12sWindowedFrequencyModulation' params.whichScanner '.cfg'];
-              fullPathCfgFile = fullfile(basePath, modulationFileName);
-              fclose(fopen(fullPathCfgFile, 'w'));
-              
-              % Make a cfg file struct
-              cfgFile = ConfigFile(fullPathCfgFile);
-              
-              % Add parameters
-              cfgFile = addParam(cfgFile, 'trialDuration', 'd', '12', 'Total duration of segment');
-              cfgFile = addParam(cfgFile, 'timeStep', 'd', '1/256', 'Time step');
-              cfgFile = addParam(cfgFile, 'cosineWindowIn', 'd', '1', 'Cosine windowing at onset?');
-              cfgFile = addParam(cfgFile, 'cosineWindowOut', 'd', '1', 'Cosine windowing at offset?');
-              cfgFile = addParam(cfgFile, 'cosineWindowDurationSecs', 'd', '1.5', 'Duration of cosine window');
-              cfgFile = addParam(cfgFile, 'nFrequencies', 'd', '7', 'Number of frequencies'); % The number of frequencies are defined here
-              cfgFile = addParam(cfgFile, 'nPhases', 'd', '1', 'Number of phases');
-              cfgFile = addParam(cfgFile, 'phaseRandSec', 'd', '[]', 'Empty here');
-              cfgFile = addParam(cfgFile, 'modulationMode', 's', 'FM', 'Total duration of each trial');
-              cfgFile = addParam(cfgFile, 'modulationWaveForm', 's', 'sin', 'Parametric form');
-              cfgFile = addParam(cfgFile, 'modulationFrequencyTrials', 'd', '[]', 'Sequence of modulation frequencies');
-              cfgFile = addParam(cfgFile, 'modulationPhase', 'd', '[]', 'Phases of envelope');
-              cfgFile = addParam(cfgFile, 'carrierFrequency', 'd', '[0 0.5 1 2 4 8 16]', 'Frequencies used'); % The frequencies are defined here
-              cfgFile = addParam(cfgFile, 'carrierPhase', 'd', '[0]', 'Phases of carrier');
-              cfgFile = addParam(cfgFile, 'nContrastScalars', 'd', '1', 'Number of different contrast scales');
-              cfgFile = addParam(cfgFile, 'contrastScalars', 'd', '[1]', 'Contrast scalars (as proportion of max.)');
-              cfgFile = addParam(cfgFile, 'direction', 's', [theDirections{d} 'Scotopic'], 'Name of modulation direction');
-              cfgFile = addParam(cfgFile, 'directionCacheFile', 's', ['Cache-' theDirections{d} '.mat'], 'Cache file to be used');
-              cfgFile = addParam(cfgFile, 'preCacheFile', 's', ['Modulation-' theDirections{d} 'Scotopic-12sWindowedFrequencyModulation' params.whichScanner '.mat'], 'Output file name');
-              
-              cfgFile = setRawText(cfgFile, ['% 12s flicker of ' theDirections{d} '  flicker at 0, 2, 4, 8, 16, 32 and 64 Hz, ' datestr(now, 30)]);
-              
-              % Write to file
-              cfgFile.write;
+        %%
+        % Make the scotopic file
+        theDirections = {'LightFluxXEccentricity'};
+        for d = 1:length(theDirections)
+            % Make the config file
+            % Create an empty config file
+            basePath = '/Users/Shared/MATLAB/Experiments/OneLight/OLFlickerSensitivity/code/config/modulations';
+            modulationFileName = ['Modulation-' theDirections{d} 'Scotopic-12sWindowedFrequencyModulation' params.whichScanner '.cfg'];
+            fullPathCfgFile = fullfile(basePath, modulationFileName);
+            fclose(fopen(fullPathCfgFile, 'w'));
+            
+            % Make a cfg file struct
+            cfgFile = ConfigFile(fullPathCfgFile);
+            
+            % Add parameters
+            cfgFile = addParam(cfgFile, 'trialDuration', 'd', '12', 'Total duration of segment');
+            cfgFile = addParam(cfgFile, 'timeStep', 'd', '1/256', 'Time step');
+            cfgFile = addParam(cfgFile, 'cosineWindowIn', 'd', '1', 'Cosine windowing at onset?');
+            cfgFile = addParam(cfgFile, 'cosineWindowOut', 'd', '1', 'Cosine windowing at offset?');
+            cfgFile = addParam(cfgFile, 'cosineWindowDurationSecs', 'd', '1.5', 'Duration of cosine window');
+            cfgFile = addParam(cfgFile, 'nFrequencies', 'd', '7', 'Number of frequencies'); % The number of frequencies are defined here
+            cfgFile = addParam(cfgFile, 'nPhases', 'd', '1', 'Number of phases');
+            cfgFile = addParam(cfgFile, 'phaseRandSec', 'd', '[]', 'Empty here');
+            cfgFile = addParam(cfgFile, 'modulationMode', 's', 'FM', 'Total duration of each trial');
+            cfgFile = addParam(cfgFile, 'modulationWaveForm', 's', 'sin', 'Parametric form');
+            cfgFile = addParam(cfgFile, 'modulationFrequencyTrials', 'd', '[]', 'Sequence of modulation frequencies');
+            cfgFile = addParam(cfgFile, 'modulationPhase', 'd', '[]', 'Phases of envelope');
+            cfgFile = addParam(cfgFile, 'carrierFrequency', 'd', '[0 0.5 1 2 4 8 16]', 'Frequencies used'); % The frequencies are defined here
+            cfgFile = addParam(cfgFile, 'carrierPhase', 'd', '[0]', 'Phases of carrier');
+            cfgFile = addParam(cfgFile, 'nContrastScalars', 'd', '1', 'Number of different contrast scales');
+            cfgFile = addParam(cfgFile, 'contrastScalars', 'd', '[1]', 'Contrast scalars (as proportion of max.)');
+            cfgFile = addParam(cfgFile, 'direction', 's', [theDirections{d} 'Scotopic'], 'Name of modulation direction');
+            cfgFile = addParam(cfgFile, 'directionCacheFile', 's', ['Cache-' theDirections{d} '.mat'], 'Cache file to be used');
+            cfgFile = addParam(cfgFile, 'preCacheFile', 's', ['Modulation-' theDirections{d} 'Scotopic-12sWindowedFrequencyModulation' params.whichScanner '.mat'], 'Output file name');
+            
+            cfgFile = setRawText(cfgFile, ['% 12s flicker of ' theDirections{d} '  flicker at 0, 2, 4, 8, 16, 32 and 64 Hz, ' datestr(now, 30)]);
+            
+            % Write to file
+            cfgFile.write;
         end
-    case 5
+    case 6
         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
         % MAKE THE STIMULI FOR A GIVEN OBSERVER
@@ -274,7 +275,7 @@ switch optIndex
         
         
         
-    case 6
+    case 7
         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
         % MAKE THE PROTOCOL FILES
@@ -336,8 +337,8 @@ switch optIndex
                 fclose(fid);
             end
         end
-    case 7
-        
+    case 8
+        % Do nothing
 end
 
 end
