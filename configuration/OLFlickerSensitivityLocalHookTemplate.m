@@ -1,12 +1,12 @@
-function OneLightConfig
-% OneLightConfig
+function OLFlickerSensitivityLocalHookTemplate
+% OLFlickerSensitivityConfig
 %
 % Configure things for working on OneLight projects.
 %
 % For use with the ToolboxToolbox.  If you copy this into your
 % ToolboxToolbox localToolboxHooks directory (by defalut,
 % ~/localToolboxHooks) and delete "LocalHooksTemplate" from the filename,
-% this will get run when you execute tbUse({'IBIOColorDetect'}) to set up for
+% this will get run when you execute tbUse({'OLFlickerSensitivityConfig'}) to set up for
 % this project.  You then edit your local copy to match your local machine.
 %
 % The thing that this does is add subfolders of the project to the path as
@@ -17,7 +17,7 @@ function OneLightConfig
 % to match what is true on your computer.
 
 %% Say hello
-fprintf('Running OneLight local hook\n');
+fprintf('Running OLFlickerSensitivityConfig local hook\n');
 
 %% Set preferences
 
@@ -28,6 +28,9 @@ switch userID
     case {'melanopsin' 'pupillab'}
         dropboxBaseDir = ['/Users/' userID '/Dropbox (Aguirre-Brainard Lab)/'];
         dataPath = ['/Users/' userID '/Dropbox (Aguirre-Brainard Lab)/MELA_data/'];
+    case 'connectome'
+        dropboxBaseDir = ['/Users/' userID '/Dropbox (Aguirre-Brainard Lab)'];
+        dataPath = ['/Users/' userID '/Dropbox (Aguirre-Brainard Lab)/TOME_data/'];
     otherwise
         dropboxBaseDir = ['/Users/' userID '/Dropbox (Aguirre-Brainard Lab)'];
         dataPath = ['/Users/' userID '/Dropbox (Aguirre-Brainard Lab)/MELA_data/'];
@@ -54,5 +57,12 @@ setpref('OneLight', 'OneLightCalData', fullfile(dropboxBaseDir, 'MELA_materials'
 % Set the default speak rate
 setpref('OneLight', 'SpeakRateDefault', 230);
 
+% Add OmniDriver.jar to java path
+JavaAddToPath(['/Users/' userID '/Documents/MATLAB/Toolboxes/OneLightDriver/xOceanOpticsJava/OmniDriver.jar'],'OmniDriver.jar');
+
+% Set the default speak rate
+olFlickerBaseDir = ['/Users/' userID '/Documents/MATLAB/Experiments/OneLight/OLFlickerSensitivity/code/'];
+setpref('OneLight', 'OLFlickerSensitivityBaseDir', olFlickerBaseDir);
+
 % Add OLFlickerSensitivity to the path
-addpath(genpath('/Users/Shared/Matlab/Experiments/OneLight/OLFlickerSensitivity/code/'));
+addpath(genpath(olFlickerBaseDir));
