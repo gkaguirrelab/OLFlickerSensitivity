@@ -12,7 +12,7 @@ function isBeingTracked = eyeTrackerCheck(OLVSG)
     
     % === Send the startEyeTrackerCheck ===================================
     OLVSG.sendParamValue({OLVSG.EYE_TRACKER_STATUS, 'startEyeTrackerCheck'}, ...
-        'timeOutSecs', 4.0, 'maxAttemptsNum', 1, 'consoleMessage', 'Start eye tracking check.');
+        'timeOutSecs', 6.0, 'maxAttemptsNum', 1, 'consoleMessage', 'Start eye tracking check.');
     % =====================================================================
  
     tStart = mglGetSecs;
@@ -22,7 +22,7 @@ function isBeingTracked = eyeTrackerCheck(OLVSG)
 
     % === Retrieve the number of eye tracking data points =================
     numTrackedData = OLVSG.receiveParamValue(OLVSG.EYE_TRACKER_DATA_POINTS_NUM,  ...
-        'timeOutSecs', 2.0, 'consoleMessage', 'Waiting for eye tracker data');
+        'timeOutSecs', 6.0, 'consoleMessage', 'Waiting for eye tracker data');
     % =====================================================================
   
     % Clear the buffer
@@ -32,13 +32,13 @@ function isBeingTracked = eyeTrackerCheck(OLVSG)
         isBeingTracked = true;
         % ====  Send the eye tracker status ===============================
         OLVSG.sendParamValue({OLVSG.EYE_TRACKER_STATUS, 'isTracking'}, ...
-            'timeOutSecs', 2, 'consoleMessage', 'Eye tracking check was successful.');
+            'timeOutSecs', 4, 'consoleMessage', 'Eye tracking check was successful.');
         % =================================================================
     else
         isBeingTracked = false;
         % ====  Send the eye tracker status ===============================
         OLVSG.sendParamValue({OLVSG.EYE_TRACKER_STATUS, 'isNotTracking'}, ...
-            'timeOutSecs', 2, 'consoleMessage', 'Eye tracking check failed');
+            'timeOutSecs', 4, 'consoleMessage', 'Eye tracking check failed');
         % =================================================================
     end
 end
