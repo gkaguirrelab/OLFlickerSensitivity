@@ -196,9 +196,21 @@ switch optIndex
         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
         %%
+        
+        commandwindow;
+        observerID = GetWithDefault('>> Enter <strong>user name</strong>', 'HERO_test');
+        observerAgeInYrs = GetWithDefault('>> Enter <strong>observer age</strong>:', 32);
+        todayDate = datestr(now, 'mmddyy');
+        
         spectroRadiometerOBJ = [];
         spectroRadiometerOBJWillShutdownAfterMeasurement = false;
         for i = 1:5
+            % Print out some information
+            fprintf(' * Direction:\t<strong>%s</strong>\n', theDirections{d});
+            fprintf(' * Observer:\t<strong>%s</strong>\n', observerID);
+            fprintf(' * Date:\t<strong>%s</strong>\n', todayDate);
+            
+            
             theDirections = {'LightFluxXEccentricity' 'LMinusMDirectedXEccentricity' 'SDirectedXEccentricity'};
             cacheDir = getpref('OneLight', 'cachePath');
             materialsPath = getpref('OneLight', 'materialsPath');
@@ -214,6 +226,7 @@ switch optIndex
                     'selectedCalType', params.calibrationType, ...
                     'CALCULATE_SPLATTER', false, ...
                     'powerLevels', [0 1.0000], ...
+                    'postreceptoralCombinations', [1 1 1 0 0 0 ; 0 0 0 1 1 1 ; 1 -1 0 0 0 0 ; 0 0 0 1 -1 0 ; 0 0 1 0 0 0 ; 0 0 0 0 0 1], ...
                     'outDir', fullfile(materialsPath, 'HCLV_Photo', datestr(now, 'mmddyy')));
                 close all;
             end
