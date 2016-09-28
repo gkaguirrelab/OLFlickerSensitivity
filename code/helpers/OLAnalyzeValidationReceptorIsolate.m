@@ -41,13 +41,13 @@ if ~strcmp(val.describe.cache.data(val.describe.REFERENCE_OBSERVER_AGE).describe
     end
 
     % Save contrasts
-    for j = 1:size(T_receptors,1)
+    for j = 1:length(T_receptors)
         fprintf(fid, '  - %s: contrast = \t%f \n',theReceptors{j},contrasts(j));
     end
     
     if exist('postreceptorContrasts', 'var')
         % Save postreceptoral contrasts
-        for j = 1:size(postreceptorStrings,1)
+        for j = 1:length(postreceptorStrings)
             fprintf(fid, '  - %s: contrast = \t%f \n',postreceptorStrings{j},postreceptorContrasts(j));
         end
     end
