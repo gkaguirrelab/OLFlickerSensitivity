@@ -49,7 +49,7 @@ switch params.whichScanner
     case '7T'
         params.calibrationType = 'BoxCRandomizedLongCableCStubby1NoLens_ND10_ContactLens_0_5mm';
     case '3T'
-        params.calibrationType = 'BoxCRandomizedLongCableBStubby1_ND00';
+        params.calibrationType = 'BoxBRandomizedLongCableBStubby1_ND00';
 end
 params.whichReceptorsToMinimize = [];
 params.CALCULATE_SPLATTER = false;
@@ -143,7 +143,7 @@ switch optIndex
         spectroRadiometerOBJ = [];
         spectroRadiometerOBJWillShutdownAfterMeasurement = false;
         theDirections = {'LightFluxXEccentricity' 'LMinusMDirectedXEccentricity' 'SDirectedXEccentricity'};
-        theDirectionsCorrect = [true true false false];
+        theDirectionsCorrect = [true true true];
         cacheDir = getpref('OneLight', 'cachePath');
         materialsPath = getpref('OneLight', 'materialsPath');
         
