@@ -41,7 +41,7 @@ if ~strcmp(val.describe.cache.data(val.describe.REFERENCE_OBSERVER_AGE).describe
     end
 
     % Save contrasts
-    for j = 1:length(T_receptors)
+    for j = 1:size(T_receptors, 1)
         fprintf(fid, '  - %s: contrast = \t%f \n',theReceptors{j},contrasts(j));
     end
     
