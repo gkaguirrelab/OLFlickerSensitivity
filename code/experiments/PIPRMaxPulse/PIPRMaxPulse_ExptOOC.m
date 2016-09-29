@@ -171,12 +171,12 @@ toc;
 clear choiceIndex;
 
 %% PIPR 5 sec
-commandwindow;
-observerID = GetWithDefault('>> Enter <strong>user name</strong>', 'HERO_test');
-observerAgeInYrs = GetWithDefault('>> Enter <strong>observer age</strong>:', 32);
-todayDate = datestr(now, 'mmddyy');
-customSuffix = ['_' observerID '_' todayDate];
-theCalType = 'BoxDRandomizedLongCableAEyePiece2_ND03';
-OLMakeModulations('Modulation-PIPRMaxPulse-BackgroundPIPR_45sSegment.cfg', observerAgeInYrs, theCalType, [], customSuffix); % Background.
-OLMakeModulations('Modulation-PIPRMaxPulse-PulsePIPRBlue_5s_MaxContrast17sSegment.cfg', observerAgeInYrs, theCalType, [], customSuffix); % Blue PIPR
-OLMakeModulations('Modulation-PIPRMaxPulse-PulsePIPRRed_5s_MaxContrast17sSegment.cfg', observerAgeInYrs, theCalType, [], customSuffix); % Red PIPR
+% commandwindow;
+% observerID = GetWithDefault('>> Enter <strong>user name</strong>', 'HERO_test');
+% observerAgeInYrs = GetWithDefault('>> Enter <strong>observer age</strong>:', 32);
+% todayDate = datestr(now, 'mmddyy');
+% customSuffix = ['_' observerID '_' todayDate];
+% theCalType = 'BoxDRandomizedLongCableAEyePiece2_ND03';
+% OLMakeModulations('Modulation-PIPRMaxPulse-BackgroundPIPR_45sSegment.cfg', observerAgeInYrs, theCalType, [], customSuffix); % Background.
+% OLMakeModulations('Modulation-PIPRMaxPulse-PulsePIPRBlue_5s_MaxContrast17sSegment.cfg', observerAgeInYrs, theCalType, [], customSuffix); % Blue PIPR
+% OLMakeModulations('Modulation-PIPRMaxPulse-PulsePIPRRed_5s_MaxContrast17sSegment.cfg', observerAgeInYrs, theCalType, [], customSuffix); % Red PIPR
