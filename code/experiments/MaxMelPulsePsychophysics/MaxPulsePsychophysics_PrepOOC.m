@@ -105,11 +105,11 @@ OLReceptorIsolateSaveCache(cacheDataMaxLMS, olCacheMaxLMS, paramsMaxLMS);
 
 %% Light flux
 %% For the light flux, we'd like a background that is the average chromaticity
-% between the two MaxMel and MaxLMS backgrounds. These are:
-%   x = 0.55, y = 0.39
+% between the two MaxMel and MaxLMS backgrounds. These are (approx.):
+%   x = 0.54, y = 0.38
 
 % Modulation 
-desiredChromaticity = [0.55 0.39];
+desiredChromaticity = [0.54 0.38];
 modPrimary = OLInvSolveChrom(cal, desiredChromaticity);
 
 % Background
@@ -128,11 +128,13 @@ olCacheMaxPulseLightFlux = OLCache(cacheDir, cal);
 for observerAgeInYrs = [20:60]
     cacheDataMaxPulseLightFlux.data(observerAgeInYrs).backgroundPrimary = bgPrimary;
     cacheDataMaxPulseLightFlux.data(observerAgeInYrs).backgroundSpd = [];
-    cacheDataMaxPulseLightFlux.data(observerAgeInYrs).differencePrimary = modPrimary;
+    cacheDataMaxPulseLightFlux.data(observerAgeInYrs).differencePrimary = modPrimary-bgPrimary;
     cacheDataMaxPulseLightFlux.data(observerAgeInYrs).differenceSpd = [];
+    cacheDataMaxPulseLightFlux.data(observerAgeInYrs).modulationPrimarySignedPositive = [];
+    cacheDataMaxPulseLightFlux.data(observerAgeInYrs).modulationSpdSignedPositive = [];
     cacheDataMaxPulseLightFlux.data(observerAgeInYrs).modulationPrimarySignedNegative = [];
     cacheDataMaxPulseLightFlux.data(observerAgeInYrs).modulationSpdSignedNegative = [];
 end
 paramsMaxPulseLightFlux.modulationDirection = 'LightFluxMaxPulse';
 paramsMaxPulseLightFlux.cacheFile = ['Cache-' paramsMaxPulseLightFlux.modulationDirection '.mat'];
-OLReceptorIsolateSaveCache(cacheDataMaxPulseLightFlux, paramsMaxPulseLightFlux, paramsMaxPulseLightFlux);
+OLReceptorIsolateSaveCache(cacheDataMaxLMS, olCacheMaxPulseLightFlux, paramsMaxPulseLightFlux);
