@@ -7,18 +7,23 @@ function MaxPulsePsychophysics_Demo
 % 7/7/16    ms      Wrote it.
 SpeakRateDefault = getpref('OneLight', 'SpeakRateDefault');
 
+commandwindow;
+observerID = GetWithDefault('>> Enter <strong>user name</strong>', 'HERO_test');
+observerAgeInYrs = GetWithDefault('>> Enter <strong>observer age</strong>:', 32);
+todayDate = datestr(now, 'mmddyy');
+
 % Adaptation time
 params.adaptTimeSecs = 2; % 30 seconds
 params.frameDurationSecs = 1/64;
-params.observerAgeInYrs = GetWithDefault('> <strong>Enter the observer age?</strong>', 20);
+params.observerAgeInYrs = observerAgeInYrs;
 params.ISISecs = 5;
 params.NRepeatsPerStimulus = 5;
 params.NStimuli = 2;
 
 % Assemble the modulations
 modulationDir = fullfile(getpref('OneLight', 'modulationPath'));
-pathToModFileLMS = ['Modulation-PIPRMaxPulse-PulseMaxLMS_3s_MaxContrast3sSegment-' num2str(params.observerAgeInYrs) '.mat'];
-pathToModFileMel = ['Modulation-PIPRMaxPulse-PulseMaxMel_3s_MaxContrast3sSegment-' num2str(params.observerAgeInYrs) '.mat'];
+pathToModFileLMS = ['Modulation-MaxMelPulsePsychophysics-PulseMaxLMS_3s_MaxContrast3sSegment-' num2str(params.observerAgeInYrs) '_' observerID '_' todayDate '.mat'];
+pathToModFileMel = ['Modulation-MaxMelPulsePsychophysics-PulseMaxMel_3s_MaxContrast3sSegment-' num2str(params.observerAgeInYrs) '_' observerID '_' todayDate '.mat'];
 
 % Load in the files
 modFileLMS = load(fullfile(modulationDir, pathToModFileLMS));
