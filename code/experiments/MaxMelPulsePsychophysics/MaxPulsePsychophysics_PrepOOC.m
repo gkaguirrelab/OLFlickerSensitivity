@@ -108,6 +108,10 @@ OLReceptorIsolateSaveCache(cacheDataMaxLMS, olCacheMaxLMS, paramsMaxLMS);
 % between the two MaxMel and MaxLMS backgrounds. These are (approx.):
 %   x = 0.54, y = 0.38
 
+% Get the cal files
+cal = LoadCalFile(OLCalibrationTypes.(params.calibrationType).CalFileName, [], getpref('OneLight', 'OneLightCalData'));
+cacheDir = fullfile(getpref('OneLight', 'cachePath'), 'stimuli');
+
 % Modulation 
 desiredChromaticity = [0.54 0.38];
 modPrimary = OLInvSolveChrom(cal, desiredChromaticity);
@@ -120,8 +124,6 @@ cacheDataMaxPulseLightFlux = cacheDataMaxLMS;
 paramsMaxPulseLightFlux = paramsMaxLMS;
 
 % Set up the cache structure
-cal = LoadCalFile(OLCalibrationTypes.(params.calibrationType).CalFileName, [], getpref('OneLight', 'OneLightCalData'));
-cacheDir = fullfile(getpref('OneLight', 'cachePath'), 'stimuli');
 olCacheMaxPulseLightFlux = OLCache(cacheDir, cal);
 
 % Replace the values
