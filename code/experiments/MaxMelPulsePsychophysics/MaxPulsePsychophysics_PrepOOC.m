@@ -104,47 +104,6 @@ paramsMaxLMS.cacheFile = ['Cache-' paramsMaxLMS.modulationDirection '.mat'];
 OLReceptorIsolateSaveCache(cacheDataMaxLMS, olCacheMaxLMS, paramsMaxLMS);
 
 %% Light flux
-params.pegBackground = false;
-params.modulationDirection = {'LightFlux'};
-params.modulationContrast = {[2/3 2/3 2/3]};
-params.whichReceptorsToIsolate = {[1 2 3]};
-params.whichReceptorsToIgnore = {[]};
-params.whichReceptorsToMinimize = {[]};
-params.directionsYoked = [1];
-params.directionsYokedAbs = [0];
-params.receptorIsolateMode = 'Standard';
-
-% LMS shifted background
-params.backgroundType = 'BackgroundMaxLMS';
-params.cacheFile = ['Cache-' params.backgroundType  '.mat'];
-[cacheDataBackground, olCache, params] = OLReceptorIsolateMakeBackground(params, true);
-OLReceptorIsolateSaveCache(cacheDataBackground, olCache, params);
-
-% Now, make the modulation
-params.primaryHeadRoom = 0.005;
-params.backgroundType = 'BackgroundMaxLMS';
-params.modulationDirection = 'LMSDirectedSuperMaxLMS';
-params.modulationContrast = [2/3 2/3 2/3];
-params.whichReceptorsToIsolate = [1 2 3];
-params.whichReceptorsToIgnore = [];
-params.whichReceptorsToMinimize = [];
-params.receptorIsolateMode = 'Standard';
-params.cacheFile = ['Cache-' params.modulationDirection '.mat'];
-[cacheDataMaxLMS, olCacheMaxLMS, paramsMaxLMS] = OLReceptorIsolateFindIsolatingPrimarySettings(params, true);
-% Replace the backgrounds
-for observerAgeInYrs = [20:60]
-    cacheDataMaxLMS.data(observerAgeInYrs).backgroundPrimary = cacheDataMaxLMS.data(observerAgeInYrs).modulationPrimarySignedNegative;
-    cacheDataMaxLMS.data(observerAgeInYrs).backgroundSpd = cacheDataMaxLMS.data(observerAgeInYrs).modulationSpdSignedNegative;
-    cacheDataMaxLMS.data(observerAgeInYrs).differencePrimary = cacheDataMaxLMS.data(observerAgeInYrs).modulationPrimarySignedPositive-cacheDataMaxLMS.data(observerAgeInYrs).modulationPrimarySignedNegative;
-    cacheDataMaxLMS.data(observerAgeInYrs).differenceSpd = cacheDataMaxLMS.data(observerAgeInYrs).modulationSpdSignedPositive-cacheDataMaxLMS.data(observerAgeInYrs).modulationSpdSignedNegative;
-    cacheDataMaxLMS.data(observerAgeInYrs).modulationPrimarySignedNegative = [];
-    cacheDataMaxLMS.data(observerAgeInYrs).modulationSpdSignedNegative = [];
-end
-paramsMaxLMS.modulationDirection = 'LMSDirectedSuperMaxLMS';
-paramsMaxLMS.cacheFile = ['Cache-' paramsMaxLMS.modulationDirection '.mat'];
-OLReceptorIsolateSaveCache(cacheDataMaxLMS, olCacheMaxLMS, paramsMaxLMS);
-
-
 %% For the light flux, we'd like a background that is the average chromaticity
 % between the two MaxMel and MaxLMS backgrounds. These are:
 %   x = 0.55, y = 0.39
@@ -155,3 +114,25 @@ modPrimary = OLInvSolveChrom(cal, desiredChromaticity);
 
 % Background
 bgPrimary = modPrimary/5;
+
+% We copy over the information from the LMS cache file
+cacheDataMaxPulseLightFlux = cacheDataMaxLMS;
+paramsMaxPulseLightFlux = paramsMaxLMS;
+
+% Set up the cache structure
+cal = LoadCalFile(OLCalibrationTypes.(params.calibrationType).CalFileName, [], getpref('OneLight', 'OneLightCalData'));
+cacheDir = fullfile(getpref('OneLight', 'cachePath'), 'stimuli');
+olCacheMaxPulseLightFlux = OLCache(cacheDir, cal);
+
+% Replace the values
+for observerAgeInYrs = [20:60]
+    cacheDataMaxPulseLightFlux.data(observerAgeInYrs).backgroundPrimary = bgPrimary;
+    cacheDataMaxPulseLightFlux.data(observerAgeInYrs).backgroundSpd = [];
+    cacheDataMaxPulseLightFlux.data(observerAgeInYrs).differencePrimary = modPrimary;
+    cacheDataMaxPulseLightFlux.data(observerAgeInYrs).differenceSpd = [];
+    cacheDataMaxPulseLightFlux.data(observerAgeInYrs).modulationPrimarySignedNegative = [];
+    cacheDataMaxPulseLightFlux.data(observerAgeInYrs).modulationSpdSignedNegative = [];
+end
+paramsMaxPulseLightFlux.modulationDirection = 'LightFluxMaxPulse';
+paramsMaxPulseLightFlux.cacheFile = ['Cache-' paramsMaxPulseLightFlux.modulationDirection '.mat'];
+OLReceptorIsolateSaveCache(cacheDataMaxPulseLightFlux, paramsMaxPulseLightFlux, paramsMaxPulseLightFlux);
