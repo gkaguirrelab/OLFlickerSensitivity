@@ -14,7 +14,7 @@ tic;
 theCalType = 'BoxBRandomizedLongCableBEyePiece2_ND00';
 spectroRadiometerOBJ = [];
 spectroRadiometerOBJWillShutdownAfterMeasurement = false;
-theDirections = {'MelanopsinDirectedSuperMaxMel' 'LMSDirectedSuperMaxLMS'};
+theDirections = {'MelanopsinDirectedSuperMaxMel' 'LMSDirectedSuperMaxLMS' 'LightFluxMaxPulse'};
 theDirectionsCorrect = [true true false false];
 cacheDir = getpref('OneLight', 'cachePath');
 materialsPath = getpref('OneLight', 'materialsPath');
@@ -70,6 +70,7 @@ tic;
 customSuffix = ['_' observerID '_' todayDate];
 OLMakeModulations('Modulation-MaxMelPulsePsychophysics-PulseMaxLMS_3s_MaxContrast3sSegment.cfg', observerAgeInYrs, theCalType, [], customSuffix);
 OLMakeModulations('Modulation-MaxMelPulsePsychophysics-PulseMaxLMS_3s_MaxContrast3sSegment.cfg', observerAgeInYrs, theCalType, [], customSuffix);
+OLMakeModulations('Modulation-MaxMelPulsePsychophysics-PulseLightFlux_3s_MaxContrast3sSegment.cfg', observerAgeInYrs, theCalType, [], customSuffix);
 toc;
 
 % Assign the default choice index the first time we run this script. We
