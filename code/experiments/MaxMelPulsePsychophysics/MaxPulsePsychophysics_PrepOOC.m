@@ -139,4 +139,4 @@ for observerAgeInYrs = [20:60]
 end
 paramsMaxPulseLightFlux.modulationDirection = 'LightFluxMaxPulse';
 paramsMaxPulseLightFlux.cacheFile = ['Cache-' paramsMaxPulseLightFlux.modulationDirection '.mat'];
-OLReceptorIsolateSaveCache(cacheDataMaxLMS, olCacheMaxPulseLightFlux, paramsMaxPulseLightFlux);
+OLReceptorIsolateSaveCache(cacheDataMaxPulseLightFlux, olCacheMaxPulseLightFlux, paramsMaxPulseLightFlux);
