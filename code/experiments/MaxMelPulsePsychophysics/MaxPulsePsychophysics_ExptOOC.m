@@ -15,7 +15,7 @@ theCalType = 'BoxBRandomizedLongCableBEyePiece2_ND00';
 spectroRadiometerOBJ = [];
 spectroRadiometerOBJWillShutdownAfterMeasurement = false;
 theDirections = {'MelanopsinDirectedSuperMaxMel' 'LMSDirectedSuperMaxLMS' 'LightFluxMaxPulse'};
-theDirectionsCorrect = [true true true];
+theDirectionsCorrect = [true true false]; % Do not correct the third one (LightFluxMaxPulse)
 cacheDir = getpref('OneLight', 'cachePath');
 materialsPath = getpref('OneLight', 'materialsPath');
 
