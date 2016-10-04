@@ -18,7 +18,7 @@ theContrastRelMaxIndices:d:[1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 
 trialDuration:d:[45 45 45 45 45 45 17 17 17 17 17 17 17 17 17 17 17 17 17 17 17 17 17 17 17 17 17 17 17 17]:Number of seconds to show each trial 
 
 % Stimulus (experiment)
-modulationFiles:s:Modulation-PIPRMaxPulse-PulsePIPRBlue_3s_MaxContrast17sSegment.mat,Modulation-PIPRMaxPulse-PulsePIPRRed_3s_MaxContrast17sSegment.mat,Modulation-PIPRMaxPulse-BackgroundPIPR_45sSegment.mat
+modulationFiles:s:Modulation-PIPRMaxPulse-PulsePIPRBlue_5s_MaxContrast17sSegment.mat,Modulation-PIPRMaxPulse-PulsePIPRRed_5s_MaxContrast17sSegment.mat,Modulation-PIPRMaxPulse-BackgroundPIPR_45sSegment.mat
 
 % Check keyboard
 checkKB:d:0:Include keyboard checks?

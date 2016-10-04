@@ -1,24 +1,26 @@
-clear; close all; clc;
-%% Make the cache file
-theCalType = 'BoxARandomizedLongCableBStubby1_ND03CassetteB';
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Generate the cache
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+theCalType = 'BoxBRandomizedLongCableBEyePiece2_ND00';
 
 %% Standard parameters
-params.experiment = 'MaxMelfMRI';
-params.experimentSuffix = 'MaxMel';
+params.experiment = 'MaxMelPulsePsychophysics';
+params.experimentSuffix = 'MaxMelPulsePsychophysics';
 params.calibrationType = theCalType;
 params.whichReceptorsToMinimize = [];
 params.CALCULATE_SPLATTER = false;
 params.maxPowerDiff = 10^(-1);
 params.photoreceptorClasses = 'LConeTabulatedAbsorbance,MConeTabulatedAbsorbance,SConeTabulatedAbsorbance,Melanopsin';
-params.fieldSizeDegrees = 64;
-params.pupilDiameterMm = 8;
+params.fieldSizeDegrees = 27.5;
+params.pupilDiameterMm = 6;
 params.isActive = 1;
 params.useAmbient = 1;
 params.REFERENCE_OBSERVER_AGE = 32;
 params.primaryHeadRoom = 0.01;
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%% 1) Find an optimal background for a melanopsin-directed stimulus
+%% Silent substitution
+%% MaxMel
 params.pegBackground = false;
 params.modulationDirection = {'MelanopsinDirected'};
 params.modulationContrast = [2/3];
@@ -29,14 +31,13 @@ params.directionsYoked = [0];
 params.directionsYokedAbs = [0];
 params.receptorIsolateMode = 'Standard';
 
-% High mel
+% Mel shifted background
 params.backgroundType = 'BackgroundMaxMel';
 params.cacheFile = ['Cache-' params.backgroundType  '.mat'];
 [cacheDataBackground, olCache, params] = OLReceptorIsolateMakeBackground(params, true);
 OLReceptorIsolateSaveCache(cacheDataBackground, olCache, params);
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%% 3) Around, the melanopsin-optimized background, get the modulation primary again
+% Now, make the modulation
 params.primaryHeadRoom = 0.005;
 params.backgroundType = 'BackgroundMaxMel';
 params.modulationDirection = 'MelanopsinDirectedSuperMaxMel';
@@ -47,6 +48,7 @@ params.whichReceptorsToMinimize = [];
 params.receptorIsolateMode = 'Standard';
 params.cacheFile = ['Cache-' params.modulationDirection '.mat'];
 [cacheDataMaxMel, olCacheMaxMel, paramsMaxMel] = OLReceptorIsolateFindIsolatingPrimarySettings(params, true);
+
 % Replace the backgrounds
 for observerAgeInYrs = [20:60]
     cacheDataMaxMel.data(observerAgeInYrs).backgroundPrimary = cacheDataMaxMel.data(observerAgeInYrs).modulationPrimarySignedNegative;
@@ -60,28 +62,10 @@ paramsMaxMel.modulationDirection = 'MelanopsinDirectedSuperMaxMel';
 paramsMaxMel.cacheFile = ['Cache-' paramsMaxMel.modulationDirection '.mat'];
 OLReceptorIsolateSaveCache(cacheDataMaxMel, olCacheMaxMel, paramsMaxMel);
 
-
-%% Create a mirror off condition
-% Replace the backgrounds
-cacheDataMirrorsOff = cacheDataMaxMel;
-for observerAgeInYrs = [20:60]
-    cacheDataMirrorsOff.data(observerAgeInYrs).differencePrimary(:) = 0;
-    cacheDataMirrorsOff.data(observerAgeInYrs).differenceSpd = [];
-    cacheDataMirrorsOff.data(observerAgeInYrs).modulationPrimarySignedNegative = [];
-    cacheDataMirrorsOff.data(observerAgeInYrs).modulationSpdSignedNegative = [];
-    cacheDataMirrorsOff.data(observerAgeInYrs).modulationPrimarySignedPositive(:) = 0;
-    cacheDataMirrorsOff.data(observerAgeInYrs).modulationSpdSignedPositive = [];
-end
-paramsMaxMel.modulationDirection = 'MirrorsOffMaxMel';
-paramsMaxMel.cacheFile = ['Cache-' paramsMaxMel.modulationDirection '.mat'];
-OLReceptorIsolateSaveCache(cacheDataMirrorsOff, olCacheMaxMel, paramsMaxMel);
-
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%% 1) Find an optimal background for a melanopsin-directed stimulus
+%% MaxLMS
 params.pegBackground = false;
 params.modulationDirection = {'LMSDirected'};
-params.modulationContrast = {[0.655 2/3 0.678]};
+params.modulationContrast = {[2/3 2/3 2/3]};
 params.whichReceptorsToIsolate = {[1 2 3]};
 params.whichReceptorsToIgnore = {[]};
 params.whichReceptorsToMinimize = {[]};
@@ -95,12 +79,11 @@ params.cacheFile = ['Cache-' params.backgroundType  '.mat'];
 [cacheDataBackground, olCache, params] = OLReceptorIsolateMakeBackground(params, true);
 OLReceptorIsolateSaveCache(cacheDataBackground, olCache, params);
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%% 3)
+% Now, make the modulation
 params.primaryHeadRoom = 0.005;
 params.backgroundType = 'BackgroundMaxLMS';
 params.modulationDirection = 'LMSDirectedSuperMaxLMS';
-params.modulationContrast = [0.655 2/3 0.678];
+params.modulationContrast = [2/3 2/3 2/3];
 params.whichReceptorsToIsolate = [1 2 3];
 params.whichReceptorsToIgnore = [];
 params.whichReceptorsToMinimize = [];
@@ -120,51 +103,40 @@ paramsMaxLMS.modulationDirection = 'LMSDirectedSuperMaxLMS';
 paramsMaxLMS.cacheFile = ['Cache-' paramsMaxLMS.modulationDirection '.mat'];
 OLReceptorIsolateSaveCache(cacheDataMaxLMS, olCacheMaxLMS, paramsMaxLMS);
 
+%% Light flux
+%% For the light flux, we'd like a background that is the average chromaticity
+% between the two MaxMel and MaxLMS backgrounds. These are (approx.):
+%   x = 0.54, y = 0.38
 
-%% Create a mirror off condition
-% Replace the backgrounds
-cacheDataMirrorsOff = cacheDataMaxLMS;
+% Get the cal files
+cal = LoadCalFile(OLCalibrationTypes.(params.calibrationType).CalFileName, [], getpref('OneLight', 'OneLightCalData'));
+cacheDir = fullfile(getpref('OneLight', 'cachePath'), 'stimuli');
+
+% Modulation 
+desiredChromaticity = [0.54 0.38];
+modPrimary = OLInvSolveChrom(cal, desiredChromaticity);
+
+% Background
+bgPrimary = modPrimary/5;
+
+% We copy over the information from the LMS cache file
+cacheDataMaxPulseLightFlux = cacheDataMaxLMS;
+paramsMaxPulseLightFlux = paramsMaxLMS;
+
+% Set up the cache structure
+olCacheMaxPulseLightFlux = OLCache(cacheDir, cal);
+
+% Replace the values
 for observerAgeInYrs = [20:60]
-    cacheDataMirrorsOff.data(observerAgeInYrs).differencePrimary(:) = 0;
-    cacheDataMirrorsOff.data(observerAgeInYrs).differenceSpd = [];
-    cacheDataMirrorsOff.data(observerAgeInYrs).modulationPrimarySignedNegative = [];
-    cacheDataMirrorsOff.data(observerAgeInYrs).modulationSpdSignedNegative = [];
-    cacheDataMirrorsOff.data(observerAgeInYrs).modulationPrimarySignedPositive(:) = 0;
-    cacheDataMirrorsOff.data(observerAgeInYrs).modulationSpdSignedPositive = [];
+    cacheDataMaxPulseLightFlux.data(observerAgeInYrs).backgroundPrimary = bgPrimary;
+    cacheDataMaxPulseLightFlux.data(observerAgeInYrs).backgroundSpd = [];
+    cacheDataMaxPulseLightFlux.data(observerAgeInYrs).differencePrimary = modPrimary-bgPrimary;
+    cacheDataMaxPulseLightFlux.data(observerAgeInYrs).differenceSpd = [];
+    cacheDataMaxPulseLightFlux.data(observerAgeInYrs).modulationPrimarySignedPositive = [];
+    cacheDataMaxPulseLightFlux.data(observerAgeInYrs).modulationSpdSignedPositive = [];
+    cacheDataMaxPulseLightFlux.data(observerAgeInYrs).modulationPrimarySignedNegative = [];
+    cacheDataMaxPulseLightFlux.data(observerAgeInYrs).modulationSpdSignedNegative = [];
 end
-paramsMaxLMS.modulationDirection = 'MirrorsOffMaxLMS';
-paramsMaxLMS.cacheFile = ['Cache-' paramsMaxLMS.modulationDirection '.mat'];
-OLReceptorIsolateSaveCache(cacheDataMirrorsOff, olCacheMaxLMS, paramsMaxLMS); 
-
-%% Make the mod
-theCalType = 'BoxARandomizedLongCableBStubby1_ND03CassetteB';
-for o = [28]
-    observerAgeInYrs = o;
-    %OLMakeModulations('Modulation-MelanopsinMRMaxMel-PulseMaxMel_3s_CRF16sSegment.cfg', observerAgeInYrs, theCalType, [], []) % Mel CRF
-    %OLMakeModulations('Modulation-MelanopsinMRMaxMel-AttentionTask16sSegment.cfg', observerAgeInYrs, theCalType, [], []) % Attention task
-    OLMakeModulations('Modulation-MelanopsinMRMaxLMS-PulseMaxLMS_3s_CRF16sSegment.cfg', observerAgeInYrs, theCalType, [], []) % LMS CRF
-    OLMakeModulations('Modulation-MelanopsinMRMaxLMS-AttentionTask16sSegment.cfg', observerAgeInYrs, theCalType, [], []) % Attention task
-end
-
-%% Validate
-% [6] Validate
-theCalType = 'BoxARandomizedLongCableBStubby1_ND03CassetteB';
-for i = 1:5
-    %theDirections = {'MelanopsinDirectedSuperMaxMel'};
-    theDirections = {'LMSDirectedSuperMaxLMS'};
-    cacheDir = '/Users/Shared/Matlab/Experiments/OneLight/OLFlickerSensitivity/code/cache/stimuli';
-    zeroVector = zeros(1, length(theDirections));
-    theOnVector = zeroVector;
-    theOnVector(1) = 1;
-    
-    theOffVector = zeroVector;
-    theOffVector(end) = 1;
-    WaitSecs(2);
-    for d = 1:length(theDirections)
-        [~, ~, validationPath{d}] = OLValidateCacheFile(fullfile(cacheDir, ['Cache-' theDirections{d} '.mat']), 'mspits@sas.upenn.edu', 'PR-670', ...
-            theOnVector(d), theOffVector(d), 'FullOnMeas', true, 'ReducedPowerLevels', false, 'selectedCalType', theCalType, ...
-            'CALCULATE_SPLATTER', false, 'powerLevels', [0 0.0625 0.1250 0.2500 0.5000 1.0000]);
-        close all;
-    end
-end
-
+paramsMaxPulseLightFlux.modulationDirection = 'LightFluxMaxPulse';
+paramsMaxPulseLightFlux.cacheFile = ['Cache-' paramsMaxPulseLightFlux.modulationDirection '.mat'];
+OLReceptorIsolateSaveCache(cacheDataMaxPulseLightFlux, olCacheMaxPulseLightFlux, paramsMaxPulseLightFlux);

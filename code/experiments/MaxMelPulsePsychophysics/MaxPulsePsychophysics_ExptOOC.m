@@ -11,11 +11,11 @@ todayDate = datestr(now, 'mmddyy');
 % Correct the spectrum
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 tic;
-theCalType = 'BoxDRandomizedLongCableAEyePiece2_ND03';
+theCalType = 'BoxBRandomizedLongCableBEyePiece2_ND00';
 spectroRadiometerOBJ = [];
 spectroRadiometerOBJWillShutdownAfterMeasurement = false;
-theDirections = {'MelanopsinDirectedSuperMaxMel' 'LMSDirectedSuperMaxLMS' 'PIPRBlue', 'PIPRRed'};
-theDirectionsCorrect = [true true false false];
+theDirections = {'MelanopsinDirectedSuperMaxMel' 'LMSDirectedSuperMaxLMS' 'LightFluxMaxPulse'};
+theDirectionsCorrect = [true true false]; % Do not correct the third one (LightFluxMaxPulse)
 cacheDir = getpref('OneLight', 'cachePath');
 materialsPath = getpref('OneLight', 'materialsPath');
 
@@ -43,11 +43,13 @@ for d = 1:length(theDirections)
         'powerLevels', [0 1.0000], ...
         'doCorrection', theDirectionsCorrect(d), ...
         'postreceptoralCombinations', [1 1 1 0 ; 1 -1 0 0 ; 0 0 1 0 ; 0 0 0 1], ...
-        'outDir', fullfile(materialsPath, 'PIPRMaxPulse', todayDate));
+        'outDir', fullfile(materialsPath, 'MaxMelPulsePsychophysics', todayDate));
     fprintf(' * Spectrum seeking finished!\n');
     
     % Save the cache
     fprintf(' * Saving cache ...');
+    
+    
     params = cacheData.data(observerAgeInYrs).describe.params;
     params.modulationDirection = theDirections{d};
     params.cacheFile = ['Cache-' params.modulationDirection '_' observerID '_' todayDate '.mat'];
@@ -68,18 +70,9 @@ toc;
 %%
 tic;
 customSuffix = ['_' observerID '_' todayDate];
-OLMakeModulations('Modulation-PIPRMaxPulse-BackgroundLMS_45sSegment.cfg', observerAgeInYrs, theCalType, [], customSuffix);
-OLMakeModulations('Modulation-PIPRMaxPulse-PulseMaxLMS_3s_MaxContrast17sSegment.cfg', observerAgeInYrs, theCalType, [], customSuffix); % Attention task
-
-% Mel
-OLMakeModulations('Modulation-PIPRMaxPulse-BackgroundMel_45sSegment.cfg', observerAgeInYrs, theCalType, [], customSuffix);
-OLMakeModulations('Modulation-PIPRMaxPulse-PulseMaxMel_3s_MaxContrast17sSegment.cfg', observerAgeInYrs, theCalType, [], customSuffix); % Attention task
-
-% PIPR
-OLMakeModulations('Modulation-PIPRMaxPulse-BackgroundPIPR_45sSegment.cfg', observerAgeInYrs, theCalType, [], customSuffix); % Background.
-OLMakeModulations('Modulation-PIPRMaxPulse-PulsePIPRBlue_3s_MaxContrast17sSegment.cfg', observerAgeInYrs, theCalType, [], customSuffix); % Blue PIPR
-OLMakeModulations('Modulation-PIPRMaxPulse-PulsePIPRRed_3s_MaxContrast17sSegment.cfg', observerAgeInYrs, theCalType, [], customSuffix); % Red PIPR
-
+OLMakeModulations('Modulation-MaxMelPulsePsychophysics-PulseMaxLMS_3s_MaxContrast3sSegment.cfg', observerAgeInYrs, theCalType, [], customSuffix);
+OLMakeModulations('Modulation-MaxMelPulsePsychophysics-PulseMaxMel_3s_MaxContrast3sSegment.cfg', observerAgeInYrs, theCalType, [], customSuffix);
+OLMakeModulations('Modulation-MaxMelPulsePsychophysics-PulseMaxLightFlux_3s_MaxContrast3sSegment.cfg', observerAgeInYrs, theCalType, [], customSuffix);
 toc;
 
 % Assign the default choice index the first time we run this script. We
@@ -106,13 +99,11 @@ if ~exist('observerID', 'var') || ~exist('observerAgeInYrs', 'var') || ~exist('t
 end
 
 % Set up some parameters
-theCalType = 'BoxDRandomizedLongCableAEyePiece2_ND03';
+theCalType = 'BoxBRandomizedLongCableBEyePiece2_ND00';
 spectroRadiometerOBJ = [];
 spectroRadiometerOBJWillShutdownAfterMeasurement = false;
 theDirections = {['Cache-MelanopsinDirectedSuperMaxMel_' observerID '_' todayDate '.mat'] ...
-    ['Cache-LMSDirectedSuperMaxLMS_' observerID '_' todayDate '.mat'] ...
-    ['Cache-PIPRRed_' observerID '_' todayDate '.mat'] ...
-    ['Cache-PIPRBlue_' observerID '_' todayDate '.mat']};
+    ['Cache-LMSDirectedSuperMaxLMS_' observerID '_' todayDate '.mat']};;
 NDirections = length(theDirections);
 cacheDir = getpref('OneLight', 'cachePath');
 materialsPath = getpref('OneLight', 'materialsPath');
@@ -169,14 +160,3 @@ toc;
 % Clear the choiceIndex. Note that this is only relevant for the
 % pre-experimental validations.
 clear choiceIndex;
-
-%% PIPR 5 sec
-% commandwindow;
-% observerID = GetWithDefault('>> Enter <strong>user name</strong>', 'HERO_test');
-% observerAgeInYrs = GetWithDefault('>> Enter <strong>observer age</strong>:', 32);
-% todayDate = datestr(now, 'mmddyy');
-% customSuffix = ['_' observerID '_' todayDate];
-% theCalType = 'BoxDRandomizedLongCableAEyePiece2_ND03';
-% OLMakeModulations('Modulation-PIPRMaxPulse-BackgroundPIPR_45sSegment.cfg', observerAgeInYrs, theCalType, [], customSuffix); % Background.
-% OLMakeModulations('Modulation-PIPRMaxPulse-PulsePIPRBlue_5s_MaxContrast17sSegment.cfg', observerAgeInYrs, theCalType, [], customSuffix); % Blue PIPR
-% OLMakeModulations('Modulation-PIPRMaxPulse-PulsePIPRRed_5s_MaxContrast17sSegment.cfg', observerAgeInYrs, theCalType, [], customSuffix); % Red PIPR

@@ -33,12 +33,12 @@ OLVSG = OLVSGcommunicator( ...
 
 % == Wake the Windows machine up ======================================
 OLVSG.sendParamValue({OLVSG.WAIT_STATUS, 'Wake Up'}, ...
-    'timeOutSecs', 2.0, 'maxAttemptsNum', 1, 'consoleMessage', 'sending wake up message');
+    'timeOutSecs', 4.0, 'maxAttemptsNum', 1, 'consoleMessage', 'sending wake up message');
 
 
 % == Inform Windows whether we will be running communication tests
 OLVSG.sendParamValue({OLVSG.UDPCOMM_TESTING_STATUS, runCommTest}, ...
-    'timeOutSecs', 2.0, 'maxAttemptsNum', 1, 'consoleMessage', 'telling windows whether we will run UDPcomm tests');
+    'timeOutSecs', 4.0, 'maxAttemptsNum', 1, 'consoleMessage', 'telling windows whether we will run UDPcomm tests');
 
 % Run the communication tests
 if (runCommTest)
@@ -180,11 +180,11 @@ for trial = params.whichTrialToStartAt:params.nTrials
             
             % ==  Send user ready status ==================================
             OLVSG.sendParamValue({OLVSG.USER_READY_STATUS, 'user ready to move on'}, ...
-                'timeOutSecs', 4.0, 'maxAttemptsNum', 1, 'consoleMessage', 'User input acquired');
+                'timeOutSecs', 6.0, 'maxAttemptsNum', 1, 'consoleMessage', 'User input acquired');
             
             % == Wait to receive the userReady (continue or abort) ========
             continueCheck = OLVSG.receiveParamValue(OLVSG.USER_READY_STATUS,  ...
-                'timeOutSecs', 4.0, 'consoleMessage', 'Continue checking ?');
+                'timeOutSecs', 6.0, 'consoleMessage', 'Continue checking ?');
             
             if strcmp(continueCheck, 'abort');
                 abort = true;
