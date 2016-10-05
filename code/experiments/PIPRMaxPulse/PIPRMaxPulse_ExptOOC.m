@@ -15,6 +15,7 @@ theCalType = 'BoxDRandomizedLongCableAEyePiece2_ND03';
 spectroRadiometerOBJ = [];
 spectroRadiometerOBJWillShutdownAfterMeasurement = false;
 theDirections = {'MelanopsinDirectedSuperMaxMel' 'LMSDirectedSuperMaxLMS' 'PIPRBlue', 'PIPRRed'};
+
 theDirectionsCorrect = [true true false false];
 cacheDir = getpref('OneLight', 'cachePath');
 materialsPath = getpref('OneLight', 'materialsPath');
