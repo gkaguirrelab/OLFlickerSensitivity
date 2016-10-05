@@ -15,7 +15,6 @@ params.observerAgeInYrs = GetWithDefault('> <strong>Enter the observer age?</str
 
 protocol = 'MaxPulsePsychophysics';
 dataPath = getpref('OneLight', 'dataPath');
-dataPath = '~/Desktop';
 savePath = fullfile(dataPath, protocol, params.observerID, datestr(now, 'mmddyy'), 'MatFiles');
 saveFileCSV = [params.observerID '-' protocol '.csv'];
 saveFileMAT = [params.observerID '-' protocol '.mat'];
@@ -26,8 +25,8 @@ end
 
 % Assemble the modulations
 modulationDir = fullfile(getpref('OneLight', 'modulationPath'));
-pathToModFileLMS = ['Modulation-PIPRMaxPulse-PulseMaxLMS_3s_MaxContrast3sSegment-' num2str(params.observerAgeInYrs) '.mat'];
-pathToModFileMel = ['Modulation-PIPRMaxPulse-PulseMaxMel_3s_MaxContrast3sSegment-' num2str(params.observerAgeInYrs) '.mat'];
+pathToModFileLMS = ['Modulation-MaxMelPulsePsychophysics-PulseMaxLMS_3s_MaxContrast3sSegment-' num2str(params.observerAgeInYrs) '_' observerID '_' todayDate '.mat'];
+pathToModFileMel = ['Modulation-MaxMelPulsePsychophysics-PulseMaxMel_3s_MaxContrast3sSegment-' num2str(params.observerAgeInYrs) '_' observerID '_' todayDate '.mat'];
 
 % Load in the files
 modFileLMS = load(fullfile(modulationDir, pathToModFileLMS));
