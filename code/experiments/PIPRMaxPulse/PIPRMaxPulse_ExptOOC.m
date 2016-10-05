@@ -117,7 +117,6 @@ theDirections = {['Cache-MelanopsinDirectedSuperMaxMel_' observerID '_' todayDat
 NDirections = length(theDirections);
 cacheDir = getpref('OneLight', 'cachePath');
 materialsPath = getpref('OneLight', 'materialsPath');
-theSensitivityModes = {'STANDARD' 'STANDARD' 'EXTENDED' 'EXTENDED'};
 NMeas = 5;
 
 % Set up a counter
@@ -153,8 +152,7 @@ for ii = 1:NMeas;
             'powerLevels', [0 1.0000], ...
             'pr670sensitivityMode', 'STANDARD', ...
             'postreceptoralCombinations', [1 1 1 0 ; 1 -1 0 0 ; 0 0 1 0 ; 0 0 0 1], ...
-            'outDir', fullfile(materialsPath, 'PIPRMaxPulse', datestr(now, 'mmddyy')), ...
-            'pr670sensitivityMode', theSensitivityModes{d});
+            'outDir', fullfile(materialsPath, 'PIPRMaxPulse', datestr(now, 'mmddyy')));
         % Increment the counter
         c = c+1;
     end
