@@ -1,7 +1,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Generate the cache
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-theCalType = 'BoxCRandomizedLongCableDStubby1_ND10';
+theCalType = 'BoxBRandomizedLongCableDStubby1_ND00';
 
 %% Standard parameters
 params.experiment = 'MelanopsinMRRodControl';
@@ -25,7 +25,7 @@ params.pegBackground = false;
 params.modulationDirection = {'MelanopsinDirected'};
 params.modulationContrast = [2/3];
 params.whichReceptorsToIsolate = {[4]};
-params.whichReceptorsToIgnore = {[]};
+params.whichReceptorsToIgnore = {[5]};
 params.whichReceptorsToMinimize = {[]};
 params.directionsYoked = [0];
 params.directionsYokedAbs = [0];
@@ -56,7 +56,7 @@ params.cacheFile = ['Cache-' params.modulationDirection '.mat'];
 params.primaryHeadRoom = 0.005;
 params.backgroundType = 'BackgroundMaxMel';
 params.modulationDirection = 'LMinusMDirected';
-params.modulationContrast = [0.06 -0.06];
+params.modulationContrast = [0.09 -0.09];
 params.whichReceptorsToIsolate = [1 2];
 params.whichReceptorsToIgnore = [];
 params.whichReceptorsToMinimize = [];
