@@ -22,7 +22,7 @@ params.primaryHeadRoom = 0.01;
 %% Silent substitution
 %% MaxMel
 params.pegBackground = false;
-params.modulationDirection = {'MelanopsinDirected'};
+params.modulationDirection = {'MelanopsinDirectedRodControl'};
 params.modulationContrast = [2/3];
 params.whichReceptorsToIsolate = {[4]};
 params.whichReceptorsToIgnore = {[5]};
@@ -32,15 +32,15 @@ params.directionsYokedAbs = [0];
 params.receptorIsolateMode = 'Standard';
 
 % Mel shifted background
-params.backgroundType = 'BackgroundMaxMel';
+params.backgroundType = 'BackgroundMaxMelRodControl';
 params.cacheFile = ['Cache-' params.backgroundType  '.mat'];
 [cacheDataBackground, olCache, params] = OLReceptorIsolateMakeBackground(params, true);
 OLReceptorIsolateSaveCache(cacheDataBackground, olCache, params);
 
 % Now, make the modulation
 params.primaryHeadRoom = 0.005;
-params.backgroundType = 'BackgroundMaxMel';
-params.modulationDirection = 'MelanopsinDirectedSuperMaxMel';
+params.backgroundType = 'BackgroundMaxMelRodControl';
+params.modulationDirection = 'MelanopsinDirectedRodControl';
 params.modulationContrast = [2/3];
 params.whichReceptorsToIsolate = [4];
 params.whichReceptorsToIgnore = [5];
@@ -54,8 +54,8 @@ params.cacheFile = ['Cache-' params.modulationDirection '.mat'];
 %% Silent substitution
 % Now, make the modulation
 params.primaryHeadRoom = 0.005;
-params.backgroundType = 'BackgroundMaxMel';
-params.modulationDirection = 'LMinusMDirected';
+params.backgroundType = 'BackgroundMaxMelRodControl';
+params.modulationDirection = 'LMinusMDirectedRodControl';
 params.modulationContrast = [0.09 -0.09];
 params.whichReceptorsToIsolate = [1 2];
 params.whichReceptorsToIgnore = [];
