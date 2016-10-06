@@ -8,7 +8,7 @@ observerAgeInYrs = GetWithDefault('>> Enter <strong>observer age</strong>:', 32)
 todayDate = datestr(now, 'mmddyy');
 
 %% Set up the cal
-theCalType = 'BoxBRandomizedLongCableDStubby1_ND02';
+theCalType = 'OLBoxBRandomizedLongCableDStubby1_ND02';
 cacheDir = fullfile(getpref('OneLight', 'cachePath'), 'stimuli');
 cal = LoadCalFile(theCalType, [], getpref('OneLight', 'OneLightCalData'));
 
