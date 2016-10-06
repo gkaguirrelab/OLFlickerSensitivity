@@ -2,7 +2,7 @@
 % Generate the cache
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-theCalType = 'BoxBRandomizedLongCableDStubby1_ND00';
+theCalType = 'BoxBRandomizedLongCableDStubby1_ND02';
 
 %% Standard parameters
 params.experiment = 'MelanopsinMRRodControl';
