@@ -49,11 +49,10 @@ params.whichReceptorsToMinimize = [];
 params.receptorIsolateMode = 'Standard';
 params.cacheFile = ['Cache-' params.modulationDirection '.mat'];
 [cacheDataMaxMel, olCacheMaxMel, paramsMaxMel] = OLReceptorIsolateFindIsolatingPrimarySettings(params, true);
-%OLReceptorIsolateSaveCache(cacheDataMaxMel, olCacheMaxMel, paramsMaxMel);
+OLReceptorIsolateSaveCache(cacheDataMaxMel, olCacheMaxMel, paramsMaxMel);
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%% Silent substitution
-% Now, make the modulation
+%% L-M
 params.primaryHeadRoom = 0.005;
 params.backgroundType = 'BackgroundMaxMelRodControl';
 params.modulationDirection = 'LMinusMDirectedRodControl';
@@ -65,25 +64,6 @@ params.receptorIsolateMode = 'Standard';
 params.cacheFile = ['Cache-' params.modulationDirection '.mat'];
 [cacheDataLMinusM, olCacheLMinusM, paramsLMinusM] = OLReceptorIsolateFindIsolatingPrimarySettings(params, true);
 
-%paramsMaxMel.modulationDirection = 'LMinusMDirected';
-%paramsMaxMel.cacheFile = ['Cache-' paramsMaxMel.modulationDirection '.mat'];
-%OLReceptorIsolateSaveCache(cacheDataMaxMel, olCacheMaxMel, paramsMaxMel);
-%%
-observerAgeInYrs = 32;
-
-cal = cacheDataMaxMel.cal;
-primaryValues = [cacheDataMaxMel.data(observerAgeInYrs).backgroundPrimary ...
-    cacheDataMaxMel.data(observerAgeInYrs).modulationPrimarySignedPositive ...
-    cacheDataMaxMel.data(observerAgeInYrs).modulationPrimarySignedNegative ...
-    cacheDataLMinusM.data(observerAgeInYrs).modulationPrimarySignedPositive ...
-    cacheDataLMinusM.data(observerAgeInYrs).modulationPrimarySignedNegative];
-NIter = 10;
-lambda = 0.8;
-NDFilter = [];
-cacheDataMaxMel.cal
-meterType = 'PR-670';
-spectroRadiometerOBJ = [];
-spectroRadiometerOBJWillShutdownAfterMeasurement = false;
-
-[correctedPrimaryValues primariesCorrectedAll measuredSpd measuredSpdRaw predictedSpd] = OLCorrectPrimaryValues(cal, primaryValues, NIter, lambda, NDFilter, ...
-    meterType, spectroRadiometerOBJ, spectroRadiometerOBJWillShutdownAfterMeasurement);
+paramsLMinusMparamsLMinusM.modulationDirection = 'LMinusMDirected';
+paramsLMinusM.cacheFile = ['Cache-' paramsMaxMel.modulationDirection '.mat'];
+OLReceptorIsolateSaveCache(cacheDataLMinusM, olCacheLMinusM, paramsLMinusM);
