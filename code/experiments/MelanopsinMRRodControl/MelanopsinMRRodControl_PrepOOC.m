@@ -64,6 +64,6 @@ params.receptorIsolateMode = 'Standard';
 params.cacheFile = ['Cache-' params.modulationDirection '.mat'];
 [cacheDataLMinusM, olCacheLMinusM, paramsLMinusM] = OLReceptorIsolateFindIsolatingPrimarySettings(params, true);
 
-paramsLMinusMparamsLMinusM.modulationDirection = 'LMinusMDirected';
-paramsLMinusM.cacheFile = ['Cache-' paramsMaxMel.modulationDirection '.mat'];
+paramsLMinusM.modulationDirection = 'LMinusMDirectedRodControl';
+paramsLMinusM.cacheFile = ['Cache-' paramsLMinusM.modulationDirection '.mat'];
 OLReceptorIsolateSaveCache(cacheDataLMinusM, olCacheLMinusM, paramsLMinusM);

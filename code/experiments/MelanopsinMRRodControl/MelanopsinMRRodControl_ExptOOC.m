@@ -16,9 +16,9 @@ cal = LoadCalFile(theCalType, [], getpref('OneLight', 'OneLightCalData'));
 % MaxMel
 olCache1 = OLCache(cacheDir, cal);
 params1.modulationDirection = 'MelanopsinDirectedRodControl';
-params1.cacheFile = ['Cache-' params2.modulationDirection '.mat'];
+params1.cacheFile = ['Cache-' params1.modulationDirection '.mat'];
 cacheData1 = olCache.load(params1.cacheFile);
-params1.cacheFile = ['Cache-' params2.modulationDirection '_' observerID '_' todayDate '.mat'];
+params1.cacheFile = ['Cache-' params1.modulationDirection '_' observerID '_' todayDate '.mat'];
 
 % L-M
 olCache2 = OLCache(cacheDir, cal);
@@ -30,7 +30,7 @@ params2.cacheFile = ['Cache-' params2.modulationDirection '_' observerID '_' tod
 % Get the photoreceptors
 theCanonicalPhotoreceptors = cacheData1.data(observerAgeInYrs).describe.photoreceptors;
 T_receptors = cacheData1.data(observerAgeInYrs).describe.T_receptors;
-postreceptoralCombinations = [1 1 1 0 0 ; 1 -1 0 0 0 ; 0 0 1 0 0 ; 0 0 0 10 ; 0 0 0 0 1];
+postreceptoralCombinations = [1 1 1 0 0 ; 1 -1 0 0 0 ; 0 0 1 0 0 ; 0 0 0 10 ; 0 0 0 0 1]; % LMS, L-M, S, Mel, Rod
 
 %% Correct the spectra
 primaryValues = [cacheDataMaxMel.data(observerAgeInYrs).backgroundPrimary ...
@@ -38,7 +38,7 @@ primaryValues = [cacheDataMaxMel.data(observerAgeInYrs).backgroundPrimary ...
     cacheDataMaxMel.data(observerAgeInYrs).modulationPrimarySignedNegative ...
     cacheDataLMinusM.data(observerAgeInYrs).modulationPrimarySignedPositive ...
     cacheDataLMinusM.data(observerAgeInYrs).modulationPrimarySignedNegative];
-NIter = 5;
+NIter = 2;
 lambda = 0.8;
 NDFilter = [];
 cacheDataMaxMel.cal
