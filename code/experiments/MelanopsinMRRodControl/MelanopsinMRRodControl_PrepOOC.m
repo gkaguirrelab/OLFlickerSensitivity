@@ -2,7 +2,7 @@
 % Generate the cache
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-theCalType = 'BoxBRandomizedLongCableDStubby1_ND00';
+theCalType = 'BoxBRandomizedLongCableDStubby1_ND02';
 
 %% Standard parameters
 params.experiment = 'MelanopsinMRRodControl';
@@ -13,7 +13,7 @@ params.CALCULATE_SPLATTER = false;
 params.maxPowerDiff = 10^(-1);
 params.photoreceptorClasses = 'LConeTabulatedAbsorbance,MConeTabulatedAbsorbance,SConeTabulatedAbsorbance,Melanopsin,Rods';
 params.fieldSizeDegrees = 27.5;
-params.pupilDiameterMm = 6;
+params.pupilDiameterMm = 8;
 params.isActive = 1;
 params.useAmbient = 1;
 params.REFERENCE_OBSERVER_AGE = 32;
@@ -63,10 +63,27 @@ params.whichReceptorsToIgnore = [];
 params.whichReceptorsToMinimize = [];
 params.receptorIsolateMode = 'Standard';
 params.cacheFile = ['Cache-' params.modulationDirection '.mat'];
-[cacheDataMaxMel, olCacheMaxMel, paramsMaxMel] = OLReceptorIsolateFindIsolatingPrimarySettings(params, true);
+[cacheDataLMinusM, olCacheLMinusM, paramsLMinusM] = OLReceptorIsolateFindIsolatingPrimarySettings(params, true);
 
 %paramsMaxMel.modulationDirection = 'LMinusMDirected';
 %paramsMaxMel.cacheFile = ['Cache-' paramsMaxMel.modulationDirection '.mat'];
 %OLReceptorIsolateSaveCache(cacheDataMaxMel, olCacheMaxMel, paramsMaxMel);
+%%
+observerAgeInYrs = 32;
 
+cal = cacheDataMaxMel.cal;
+primaryValues = [cacheDataMaxMel.data(observerAgeInYrs).backgroundPrimary ...
+    cacheDataMaxMel.data(observerAgeInYrs).modulationPrimarySignedPositive ...
+    cacheDataMaxMel.data(observerAgeInYrs).modulationPrimarySignedNegative ...
+    cacheDataLMinusM.data(observerAgeInYrs).modulationPrimarySignedPositive ...
+    cacheDataLMinusM.data(observerAgeInYrs).modulationPrimarySignedNegative];
+NIter = 10;
+lambda = 0.8;
+NDFilter = [];
+cacheDataMaxMel.cal
+meterType = 'PR-670';
+spectroRadiometerOBJ = [];
+spectroRadiometerOBJWillShutdownAfterMeasurement = false;
 
+[correctedPrimaryValues primariesCorrectedAll measuredSpd measuredSpdRaw predictedSpd] = OLCorrectPrimaryValues(cal, primaryValues, NIter, lambda, NDFilter, ...
+    meterType, spectroRadiometerOBJ, spectroRadiometerOBJWillShutdownAfterMeasurement);
