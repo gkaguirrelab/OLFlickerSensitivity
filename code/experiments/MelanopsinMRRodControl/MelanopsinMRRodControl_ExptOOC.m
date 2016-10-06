@@ -38,7 +38,7 @@ primaryValues = [cacheDataMaxMel.data(observerAgeInYrs).backgroundPrimary ...
     cacheDataMaxMel.data(observerAgeInYrs).modulationPrimarySignedNegative ...
     cacheDataLMinusM.data(observerAgeInYrs).modulationPrimarySignedPositive ...
     cacheDataLMinusM.data(observerAgeInYrs).modulationPrimarySignedNegative];
-NIter = 2;
+NIter = 3;
 lambda = 0.8;
 NDFilter = [];
 cacheDataMaxMel.cal
@@ -99,24 +99,25 @@ for ii = 1:length(cacheData1.data)
     end
 end
 
-% Replace the values in the cache files
 for ii = 1:length(cacheData2.data)
     if ii == observerAgeInYrs;
         cacheData2.data(ii).backgroundPrimary = correctedPrimaryValues(:, 1);
-        cacheData2.data(ii).modulationPrimarySignedPositive = correctedPrimaryValues(:, 2);
-        cacheData2.data(ii).modulationPrimarySignedNegative = correctedPrimaryValues(:, 3);
+        cacheData2.data(ii).modulationPrimarySignedPositive = correctedPrimaryValues(:, 4);
+        cacheData2.data(ii).modulationPrimarySignedNegative = correctedPrimaryValues(:, 5);
         cacheData2.data(ii).differencePrimary = cacheData2.data(ii).modulationPrimarySignedPositive - cacheData2.data(ii).backgroundPrimary;
         cacheData2.data(ii).correction.backgroundPrimaryCorrectedAll = primariesCorrectedAll{1};
         cacheData2.data(ii).correction.deltaBackgroundPrimaryInferredAll = deltaPrimariesCorrectedAll{1};
         cacheData2.data(ii).correction.bgSpdAll = measuredSpd{1};
-        cacheData2.data(ii).correction.modulationPrimaryPositiveCorrectedAll = primariesCorrectedAll{2};
-        cacheData2.data(ii).correction.deltaModulationPrimaryPositveInferredAll = deltaPrimariesCorrectedAll{2};
-        cacheData2.data(ii).correction.modPositiveSpdAll = measuredSpd{2};
-        cacheData2.data(ii).correction.modulationPrimaryNegativeCorrectedAll = primariesCorrectedAll{3};
-        cacheData2.data(ii).correction.deltaModulationPrimaryNegativeInferredAll = deltaPrimariesCorrectedAll{3};
-        cacheData2.data(ii).correction.modNegativeSpdAll = measuredSpd{3};
-        cacheData2.data(ii).correction.contrasts = contrasts;
-        cacheData2.data(ii).correction.postreceptoralContrasts = postreceptoralContrasts;
+        cacheData2.data(ii).correction.modulationPrimaryPositiveCorrectedAll = primariesCorrectedAll{4};
+        cacheData2.data(ii).correction.deltaModulationPrimaryPositveInferredAll = deltaPrimariesCorrectedAll{4};
+        cacheData2.data(ii).correction.modPositiveSpdAll = measuredSpd{4};
+        cacheData2.data(ii).correction.modulationPrimaryNegativeCorrectedAll = primariesCorrectedAll{5};
+        cacheData2.data(ii).correction.deltaModulationPrimaryNegativeInferredAll = deltaPrimariesCorrectedAll{5};
+        cacheData2.data(ii).correction.modNegativeSpdAll = measuredSpd{5};
+        cacheData2.data(ii).correction.contrastsPositive = contrastsPositive2;
+        cacheData2.data(ii).correction.postreceptoralContrastsPositive = postreceptoralContrastsPositive2;
+        cacheData2.data(ii).correction.contrastsNegative = contrastsNegative2;
+        cacheData2.data(ii).correction.postreceptoralContrastsNegative = postreceptoralContrastsNegative2;
     else
         cacheData2.data(ii).describe = [];
         cacheData2.data(ii).backgroundPrimary = [];
