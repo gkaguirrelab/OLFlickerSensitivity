@@ -30,7 +30,7 @@ params2.cacheFile = ['Cache-' params2.modulationDirection '_' observerID '_' tod
 % Get the photoreceptors
 theCanonicalPhotoreceptors = cacheData1.data(observerAgeInYrs).describe.photoreceptors;
 T_receptors = cacheData1.data(observerAgeInYrs).describe.T_receptors;
-postreceptoralCombinations = [1 1 1 0 0 ; 1 -1 0 0 0 ; 0 0 1 0 0 ; 0 0 0 10 ; 0 0 0 0 1]; % LMS, L-M, S, Mel, Rod
+postreceptoralCombinations = [1 1 1 0 0 ; 1 -1 0 0 0 ; 0 0 1 0 0 ; 0 0 0 1 0 ; 0 0 0 0 1]; % LMS, L-M, S, Mel, Rod
 
 %% Correct the spectra
 primaryValues = [cacheDataMaxMel.data(observerAgeInYrs).backgroundPrimary ...
