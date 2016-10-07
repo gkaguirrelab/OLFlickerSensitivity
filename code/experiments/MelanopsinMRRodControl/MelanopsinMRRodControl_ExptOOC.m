@@ -17,71 +17,6 @@ S = [380 2 201];
 theFilter = load(fullfile(getpref('OneLight', 'OneLightCalData'), 'xNDFilters', 'srf_filter_ND40CassetteA_100516'));
 NDFilters = {ones(1, S(3)) theFilter.srf_filter_ND40CassetteA};
 
-<<<<<<< HEAD
-% L-M
-olCache2 = OLCache(cacheDir, cal);
-params2.modulationDirection = 'LMinusMDirectedRodControl';
-params2.cacheFile = ['Cache-' params2.modulationDirection '.mat'];
-cacheData2 = olCache.load(params2.cacheFile);
-params2.cacheFile = ['Cache-' params2.modulationDirection '_' observerID '_' todayDate '.mat'];
-
-% Get the photoreceptors
-theCanonicalPhotoreceptors = cacheData1.data(observerAgeInYrs).describe.photoreceptors;
-T_receptors = cacheData1.data(observerAgeInYrs).describe.T_receptors;
-postreceptoralCombinations = [1 1 1 0 0 ; 1 -1 0 0 0 ; 0 0 1 0 0 ; 0 0 0 1 0 ; 0 0 0 0 1]; % LMS, L-M, S, Mel, Rod
-
-%% Correct the spectra
-primaryValues = [cacheDataMaxMel.data(observerAgeInYrs).backgroundPrimary ...
-    cacheDataMaxMel.data(observerAgeInYrs).modulationPrimarySignedPositive ...
-    cacheDataMaxMel.data(observerAgeInYrs).modulationPrimarySignedNegative ...
-    cacheDataLMinusM.data(observerAgeInYrs).modulationPrimarySignedPositive ...
-    cacheDataLMinusM.data(observerAgeInYrs).modulationPrimarySignedNegative];
-NIter = 3;
-lambda = 0.8;
-NDFilter = [];
-cacheDataMaxMel.cal
-meterType = 'PR-670';
-spectroRadiometerOBJ = [];
-spectroRadiometerOBJWillShutdownAfterMeasurement = true;
-
-% Run the correction
-[correctedPrimaryValues primariesCorrectedAll deltaPrimariesCorrectedAll measuredSpd measuredSpdRaw predictedSpd] = OLCorrectPrimaryValues(cal, primaryValues, NIter, lambda, NDFilter, ...
-    meterType, spectroRadiometerOBJ, spectroRadiometerOBJWillShutdownAfterMeasurement);
-
-% Calculate the contrasts
-for iter = 1:NIter
-    % Save out information about the correction
-    [contrastsPositive1(:, iter) postreceptoralContrastsPositive1(:, iter)] = ComputeAndReportContrastsFromSpds(['Iteration ' num2str(iter, '%02.0f')] ,theCanonicalPhotoreceptors,T_receptors,...
-        measuredSpd{1}(:, iter), measuredSpd{2}(:, iter), postreceptoralCombinations, true);
-    [contrastsNegative1(:, iter) postreceptoralContrastsNegative1(:, iter)] = ComputeAndReportContrastsFromSpds(['Iteration ' num2str(iter, '%02.0f')] ,theCanonicalPhotoreceptors,T_receptors,...
-        measuredSpd{1}(:, iter), measuredSpd{3}(:, iter), postreceptoralCombinations, true);
-    [contrastsPositive2(:, iter) postreceptoralContrastsPositive2(:, iter)] = ComputeAndReportContrastsFromSpds(['Iteration ' num2str(iter, '%02.0f')] ,theCanonicalPhotoreceptors,T_receptors,...
-        measuredSpd{1}(:, iter), measuredSpd{4}(:, iter), postreceptoralCombinations, true);
-    [contrastsNegative2(:, iter) postreceptoralContrastsNegative2(:, iter)] = ComputeAndReportContrastsFromSpds(['Iteration ' num2str(iter, '%02.0f')] ,theCanonicalPhotoreceptors,T_receptors,...
-        measuredSpd{1}(:, iter), measuredSpd{5}(:, iter), postreceptoralCombinations, true);
-end
-
-% Replace the values in the cache files
-for ii = 1:length(cacheData1.data)
-    if ii == observerAgeInYrs;
-        cacheData1.data(ii).backgroundPrimary = correctedPrimaryValues(:, 1);
-        cacheData1.data(ii).modulationPrimarySignedPositive = correctedPrimaryValues(:, 2);
-        cacheData1.data(ii).modulationPrimarySignedNegative = correctedPrimaryValues(:, 3);
-        cacheData1.data(ii).differencePrimary = cacheData1.data(ii).modulationPrimarySignedPositive - cacheData1.data(ii).backgroundPrimary;
-        cacheData1.data(ii).correction.backgroundPrimaryCorrectedAll = primariesCorrectedAll{1};
-        cacheData1.data(ii).correction.deltaBackgroundPrimaryInferredAll = deltaPrimariesCorrectedAll{1};
-        cacheData1.data(ii).correction.bgSpdAll = measuredSpd{1};
-        cacheData1.data(ii).correction.modulationPrimaryPositiveCorrectedAll = primariesCorrectedAll{2};
-        cacheData1.data(ii).correction.deltaModulationPrimaryPositveInferredAll = deltaPrimariesCorrectedAll{2};
-        cacheData1.data(ii).correction.modPositiveSpdAll = measuredSpd{2};
-        cacheData1.data(ii).correction.modulationPrimaryNegativeCorrectedAll = primariesCorrectedAll{3};
-        cacheData1.data(ii).correction.deltaModulationPrimaryNegativeInferredAll = deltaPrimariesCorrectedAll{3};
-        cacheData1.data(ii).correction.modNegativeSpdAll = measuredSpd{3};
-        cacheData1.data(ii).correction.contrastsPositive = contrastsPositive1;
-        cacheData1.data(ii).correction.postreceptoralContrastsPositive = postreceptoralContrastsPositive1;
-        cacheData1.data(ii).correction.contrastsNegative = contrastsNegative1;
-        cacheData1.data(ii).correction.postreceptoralContrastsNegative = postreceptoralContrastsNegative1;
-=======
 for cc = 1:length(theCals);
     %% Set up the cal
     cacheDir = fullfile(getpref('OneLight', 'cachePath'), 'stimuli');
@@ -93,7 +28,6 @@ for cc = 1:length(theCals);
     if strcmp(theCals{cc}, 'ND40')
         params1.modulationDirection = 'MelanopsinDirectedRodControlND40';
         params2.modulationDirection = 'LMinusMDirectedRodControlND40';
->>>>>>> 3c313befeb7548cb527ca1df50fce8ad20df92c8
     else
         params1.modulationDirection = 'MelanopsinDirectedRodControl';
         params2.modulationDirection = 'LMinusMDirectedRodControl';
