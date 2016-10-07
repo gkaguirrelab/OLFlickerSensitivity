@@ -8,9 +8,10 @@ observerAgeInYrs = GetWithDefault('>> Enter <strong>observer age</strong>:', 32)
 todayDate = datestr(now, 'mmddyy');
 
 %% Set up the cal
-theCalType = 'OLBoxBRandomizedLongCableDStubby1_ND02';
+theCalTypeBright = 'BoxBRandomizedLongCableDStubby1_ND02';
+theCalTypeDim = 'BoxBRandomizedLongCableDStubby1_ND02_ND40CassetteA';
 cacheDir = fullfile(getpref('OneLight', 'cachePath'), 'stimuli');
-cal = LoadCalFile(theCalType, [], getpref('OneLight', 'OneLightCalData'));
+cal = LoadCalFile(['OL' theCalTypeBright], [], getpref('OneLight', 'OneLightCalData'));
 
 %% Load the cache files
 % MaxMel
@@ -137,3 +138,20 @@ end
 %% Save out the corrected cache files
 OLReceptorIsolateSaveCache(cacheData1, olCache1, params1);
 OLReceptorIsolateSaveCache(cacheData2, olCache2, params2);
+
+% OLBoxBRandomizedLongCableDStubby1_ND02_ND40CassetteA for dim
+
+%%
+observerID = 'HERO_test';
+todayDate = '100616';
+customSuffix = ['_' observerID '_' todayDate];
+observerAgeInYrs = 32;
+% Normal light level
+OLMakeModulations('Modulation-MelanopsinMRRodControl_BackgroundRodControl-12sStatic.cfg', observerAgeInYrs, theCalTypeBright, [], customSuffix);
+OLMakeModulations('Modulation-MelanopsinMRRodControl_LMinusMDirectedRodControl-12sWindowed4HzModulation.cfg', observerAgeInYrs, theCalTypeBright, [], customSuffix);
+OLMakeModulations('Modulation-MelanopsinMRRodControl_MelanopsinDirectedRodControl-12sWindowed4HzModulation.cfg', observerAgeInYrs, theCalTypeBright, [], customSuffix);
+
+% ND4.0
+OLMakeModulations('Modulation-MelanopsinMRRodControlND40_BackgroundRodControlND40-12sStatic.cfg', observerAgeInYrs, theCalTypeBright, [], customSuffix);
+OLMakeModulations('Modulation-MelanopsinMRRodControlND40_LMinusMDirectedRodControlND40-12sWindowed4HzModulation.cfg', observerAgeInYrs, theCalTypeBright, [], customSuffix);
+OLMakeModulations('Modulation-MelanopsinMRRodControlND40_MelanopsinDirectedRodControlND40-12sWindowed4HzModulation.cfg', observerAgeInYrs, theCalTypeBright, [], customSuffix);
