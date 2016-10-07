@@ -54,13 +54,13 @@ spectroRadiometerOBJWillShutdownAfterMeasurement = true;
 for iter = 1:NIter
     % Save out information about the correction
     [contrastsPositive1(:, iter) postreceptoralContrastsPositive1(:, iter)] = ComputeAndReportContrastsFromSpds(['Iteration ' num2str(iter, '%02.0f')] ,theCanonicalPhotoreceptors,T_receptors,...
-        measuredSpd{1}(:, end), measuredSpd{2}(:, end), postreceptoralCombinations, true);
+        measuredSpd{1}(:, iter), measuredSpd{2}(:, iter), postreceptoralCombinations, true);
     [contrastsNegative1(:, iter) postreceptoralContrastsNegative1(:, iter)] = ComputeAndReportContrastsFromSpds(['Iteration ' num2str(iter, '%02.0f')] ,theCanonicalPhotoreceptors,T_receptors,...
-        measuredSpd{1}(:, end), measuredSpd{3}(:, end), postreceptoralCombinations, true);
+        measuredSpd{1}(:, iter), measuredSpd{3}(:, iter), postreceptoralCombinations, true);
     [contrastsPositive2(:, iter) postreceptoralContrastsPositive2(:, iter)] = ComputeAndReportContrastsFromSpds(['Iteration ' num2str(iter, '%02.0f')] ,theCanonicalPhotoreceptors,T_receptors,...
-        measuredSpd{1}(:, end), measuredSpd{4}(:, end), postreceptoralCombinations, true);
+        measuredSpd{1}(:, iter), measuredSpd{4}(:, iter), postreceptoralCombinations, true);
     [contrastsNegative2(:, iter) postreceptoralContrastsNegative2(:, iter)] = ComputeAndReportContrastsFromSpds(['Iteration ' num2str(iter, '%02.0f')] ,theCanonicalPhotoreceptors,T_receptors,...
-        measuredSpd{1}(:, end), measuredSpd{5}(:, end), postreceptoralCombinations, true);
+        measuredSpd{1}(:, iter), measuredSpd{5}(:, iter), postreceptoralCombinations, true);
 end
 
 % Replace the values in the cache files
