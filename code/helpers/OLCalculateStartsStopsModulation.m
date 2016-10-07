@@ -92,7 +92,7 @@ switch waveform.modulationMode
             posIdx = [find(sign(w(2, :)) == 0) find(sign(w(2, :)) == 1)];
             negIdx = find(sign(w(2, :)) == -1);
             tmp(:, posIdx) = [backgroundPrimary diffPrimaryPos]*w(:, posIdx);
-            tmp(:, negIdx) = [backgroundPrimary diffPrimaryNeg]*w(:, negIdx);
+            tmp(:, negIdx) = [backgroundPrimary -diffPrimaryNeg]*w(:, negIdx);
             waveform.primaries = tmp;
         end
         
