@@ -15,9 +15,9 @@ theCals = {theCalTypeBright theCalTypeDim};
 % Load the filter for the dim cal
 S = [380 2 201];
 theFilter = load(fullfile(getpref('OneLight', 'OneLightCalData'), 'xNDFilters', 'srf_filter_ND40CassetteA_100516'));
-NDFilters = {ones(1, S(3)) theFilter.srf_filter_ND40CassetteA};
+NDFilters = {ones(S(3), 1) theFilter.srf_filter_ND40CassetteA};
 
-for cc = 1:length(theCals);
+for cc = 2%1:length(theCals);
     %% Set up the cal
     cacheDir = fullfile(getpref('OneLight', 'cachePath'), 'stimuli');
     cal = LoadCalFile(['OL' theCals{cc}], [], getpref('OneLight', 'OneLightCalData'));
@@ -25,7 +25,7 @@ for cc = 1:length(theCals);
     %% Load the cache files
     % MaxMel
     olCache1 = OLCache(cacheDir, cal);
-    if strcmp(theCals{cc}, 'ND40')
+    if ~isempty(strfind(theCals{cc}, 'ND40'))
         params1.modulationDirection = 'MelanopsinDirectedRodControlND40';
         params2.modulationDirection = 'LMinusMDirectedRodControlND40';
     else
@@ -34,13 +34,13 @@ for cc = 1:length(theCals);
     end
     
     params1.cacheFile = ['Cache-' params1.modulationDirection '.mat'];
-    cacheData1 = olCache.load(params1.cacheFile);
+    cacheData1 = olCache1.load(params1.cacheFile);
     params1.cacheFile = ['Cache-' params1.modulationDirection '_' observerID '_' todayDate '.mat'];
     
     % L-M
     olCache2 = OLCache(cacheDir, cal);
     params2.cacheFile = ['Cache-' params2.modulationDirection '.mat'];
-    cacheData2 = olCache.load(params2.cacheFile);
+    cacheData2 = olCache2.load(params2.cacheFile);
     params2.cacheFile = ['Cache-' params2.modulationDirection '_' observerID '_' todayDate '.mat'];
     
     % Get the photoreceptors
@@ -49,11 +49,11 @@ for cc = 1:length(theCals);
     postreceptoralCombinations = [1 1 1 0 0 ; 1 -1 0 0 0 ; 0 0 1 0 0 ; 0 0 0 1 0 ; 0 0 0 0 1]; % LMS, L-M, S, Mel, Rod
     
     %% Correct the spectra
-    primaryValues = [cacheDataMaxMel.data(observerAgeInYrs).backgroundPrimary ...
-        cacheDataMaxMel.data(observerAgeInYrs).modulationPrimarySignedPositive ...
-        cacheDataMaxMel.data(observerAgeInYrs).modulationPrimarySignedNegative ...
-        cacheDataLMinusM.data(observerAgeInYrs).modulationPrimarySignedPositive ...
-        cacheDataLMinusM.data(observerAgeInYrs).modulationPrimarySignedNegative];
+    primaryValues = [cacheData1.data(observerAgeInYrs).backgroundPrimary ...
+        cacheData1.data(observerAgeInYrs).modulationPrimarySignedPositive ...
+        cacheData1.data(observerAgeInYrs).modulationPrimarySignedNegative ...
+        cacheData2.data(observerAgeInYrs).modulationPrimarySignedPositive ...
+        cacheData2.data(observerAgeInYrs).modulationPrimarySignedNegative];
     NIter = 10;
     lambda = 0.8;
     meterType = 'PR-670';
@@ -75,7 +75,7 @@ for cc = 1:length(theCals);
             measuredSpd{1}(:, end) .* NDFilters{cc}, measuredSpd{4}(:, end) .* NDFilters{cc}, postreceptoralCombinations, true);
         [contrastsNegative2(:, iter) postreceptoralContrastsNegative2(:, iter)] = ComputeAndReportContrastsFromSpds(['Iteration ' num2str(iter, '%02.0f')] ,theCanonicalPhotoreceptors,T_receptors,...
             measuredSpd{1}(:, end) .* NDFilters{cc}, measuredSpd{5}(:, end) .* NDFilters{cc}, postreceptoralCombinations, true);
-        GetLuminanceAndTrolandsFromSpd(S, measuredSpd{1}(:, end), params.pupilDiameterMm, true);
+        GetLuminanceAndTrolandsFromSpd(S, measuredSpd{1}(:, end), cacheData1.data(observerAgeInYrs).describe.params.pupilDiameterMm, true);
     end
     
     % Replace the values in the cache files
@@ -155,10 +155,7 @@ for cc = 1:length(theCals);
 end
 
 %%
-observerID = 'HERO_test';
-todayDate = '100616';
 customSuffix = ['_' observerID '_' todayDate];
-observerAgeInYrs = 32;
 % Normal light level
 OLMakeModulations('Modulation-MelanopsinMRRodControl_BackgroundRodControl-12sStatic.cfg', observerAgeInYrs, theCalTypeBright, [], customSuffix);
 OLMakeModulations('Modulation-MelanopsinMRRodControl_LMinusMDirectedRodControl-12sWindowed4HzModulation.cfg', observerAgeInYrs, theCalTypeBright, [], customSuffix);

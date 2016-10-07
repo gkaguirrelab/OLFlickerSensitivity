@@ -90,7 +90,7 @@ params.primaryHeadRoom = 0.01;
 %% Silent substitution
 %% MaxMel
 params.pegBackground = false;
-params.modulationDirection = {'MelanopsinDirectedRodControl'};
+params.modulationDirection = {'MelanopsinDirectedRodControlND40'};
 params.modulationContrast = [2/3];
 params.whichReceptorsToIsolate = {[4]};
 params.whichReceptorsToIgnore = {[5]};
@@ -116,6 +116,7 @@ params.whichReceptorsToMinimize = [];
 params.receptorIsolateMode = 'Standard';
 params.cacheFile = ['Cache-' params.modulationDirection '.mat'];
 [cacheDataMaxMel, olCacheMaxMel, paramsMaxMel] = OLReceptorIsolateFindIsolatingPrimarySettings(params, true);
+paramsMaxMel.cacheFile = ['Cache-' params.modulationDirection '.mat'];
 OLReceptorIsolateSaveCache(cacheDataMaxMel, olCacheMaxMel, paramsMaxMel);
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
