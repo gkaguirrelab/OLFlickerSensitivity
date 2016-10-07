@@ -1,4 +1,4 @@
-function waveform = OLCalculateStartsStopsModulation(waveform, cal, backgroundPrimary, modulationPrimary)
+function waveform = OLCalculateStartsStopsModulation(waveform, cal, backgroundPrimary, diffPrimaryPos, diffPrimaryNeg)
 %% Pull out what we want
 
 % Figure out the power levels
@@ -34,14 +34,14 @@ switch waveform.modulationMode
         % Allocate memory
         waveform.starts = zeros(nSettings, cal.describe.numColMirrors);
         waveform.stops = zeros(nSettings, cal.describe.numColMirrors);
-        waveform.settings = zeros(nSettings, length(modulationPrimary));
-        waveform.primaries = zeros(nSettings, length(modulationPrimary));
+        waveform.settings = zeros(nSettings, length(backgroundPrimary));
+        waveform.primaries = zeros(nSettings, length(backgroundPrimary));
         % Figure out the weight of the background and modulation primary
         w = [ones(1, nSettings) ; powerLevels];
         if strcmp(waveform.modulationMode, 'pulse')
-            waveform.primaries = [backgroundPrimary modulationPrimary]*w;
+            waveform.primaries = [backgroundPrimary diffPrimaryPos]*w;
         elseif strcmp(waveform.modulationMode, 'pulsenoise')
-            waveform.primaries = [backgroundPrimary modulationPrimary]*w + waveform.noise.noisePrimary;
+            waveform.primaries = [backgroundPrimary diffPrimaryPos]*w + waveform.noise.noisePrimary;
         end
         
         % Find the unique primary settings up to a tolerance value
@@ -78,15 +78,23 @@ switch waveform.modulationMode
         % Allocate memory
         waveform.starts = zeros(nSettings, cal.describe.numColMirrors);
         waveform.stops = zeros(nSettings, cal.describe.numColMirrors);
-        waveform.settings = zeros(nSettings, length(modulationPrimary));
-        waveform.primaries = zeros(nSettings, length(modulationPrimary));
+        waveform.settings = zeros(nSettings, length(backgroundPrimary));
+        waveform.primaries = zeros(nSettings, length(backgroundPrimary));
         
         if waveform.theFrequencyHz == 0
             w = [ones(1, nSettings) ; zeros(1, nSettings)];
         else
             w = [ones(1, nSettings) ; powerLevels];
         end
-        waveform.primaries = [backgroundPrimary modulationPrimary]*w;
+        if isempty(diffPrimaryNeg)
+            waveform.primaries = [backgroundPrimary diffPrimaryPos]*w;
+        else
+            posIdx = [find(sign(w(2, :)) == 0) find(sign(w(2, :)) == 1)];
+            negIdx = find(sign(w(2, :)) == -1);
+            tmp(:, posIdx) = [backgroundPrimary diffPrimaryPos]*w(:, posIdx);
+            tmp(:, negIdx) = [backgroundPrimary -diffPrimaryNeg]*w(:, negIdx);
+            waveform.primaries = tmp;
+        end
         
         % Find the unique primary settings up to a tolerance value
         [uniqPrimariesBuffer, ~, IC] = unique(waveform.primaries', 'rows');
