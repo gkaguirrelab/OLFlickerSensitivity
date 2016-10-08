@@ -20,7 +20,7 @@ NDFilters = {ones(S(3), 1) theFilter.srf_filter_ND40CassetteA};
 % Get the non-dim cal
 cal0 = LoadCalFile(['OL' theCals{1}], [], getpref('OneLight', 'OneLightCalData'));
 
-for cc = 2%:length(theCals);
+for cc = 1:length(theCals);
     %% Set up the cal
     cacheDir = fullfile(getpref('OneLight', 'cachePath'), 'stimuli');
     cal = LoadCalFile(['OL' theCals{cc}], [], getpref('OneLight', 'OneLightCalData'));
@@ -68,17 +68,17 @@ for cc = 2%:length(theCals);
         meterType, spectroRadiometerOBJ, spectroRadiometerOBJWillShutdownAfterMeasurement);
     
     % Calculate the contrasts
-    for iter = NIter
+    for iter = 1:NIter
         % Save out information about the correction
         [contrastsPositive1(:, iter) postreceptoralContrastsPositive1(:, iter)] = ComputeAndReportContrastsFromSpds(['Iteration ' num2str(iter, '%02.0f')] ,theCanonicalPhotoreceptors,T_receptors,...
-            measuredSpd{1}(:, iter) .* NDFilters{cc}, measuredSpd{2}(:, iter) .* NDFilters{cc}, postreceptoralCombinations, true);
+            measuredSpd{1}(:, iter), measuredSpd{2}(:, iter), postreceptoralCombinations, true);
         [contrastsNegative1(:, iter) postreceptoralContrastsNegative1(:, iter)] = ComputeAndReportContrastsFromSpds(['Iteration ' num2str(iter, '%02.0f')] ,theCanonicalPhotoreceptors,T_receptors,...
-            measuredSpd{1}(:, iter) .* NDFilters{cc}, measuredSpd{3}(:, iter) .* NDFilters{cc}, postreceptoralCombinations, true);
+            measuredSpd{1}(:, iter), measuredSpd{3}(:, iter), postreceptoralCombinations, true);
         [contrastsPositive2(:, iter) postreceptoralContrastsPositive2(:, iter)] = ComputeAndReportContrastsFromSpds(['Iteration ' num2str(iter, '%02.0f')] ,theCanonicalPhotoreceptors,T_receptors,...
             measuredSpd{1}(:, iter), measuredSpd{4}(:, iter), postreceptoralCombinations, true);
         [contrastsNegative2(:, iter) postreceptoralContrastsNegative2(:, iter)] = ComputeAndReportContrastsFromSpds(['Iteration ' num2str(iter, '%02.0f')] ,theCanonicalPhotoreceptors,T_receptors,...
             measuredSpd{1}(:, iter), measuredSpd{5}(:, iter), postreceptoralCombinations, true);
-        GetLuminanceAndTrolandsFromSpd(S, measuredSpd{1}(:, end) .* NDFilters{cc}, cacheData1.data(observerAgeInYrs).describe.params.pupilDiameterMm, true);
+        GetLuminanceAndTrolandsFromSpd(S, measuredSpd{1}(:, end), cacheData1.data(observerAgeInYrs).describe.params.pupilDiameterMm, true);
     end
     
     % Replace the values in the cache files
@@ -101,6 +101,7 @@ for cc = 2%:length(theCals);
             cacheData1.data(ii).correction.postreceptoralContrastsPositive = postreceptoralContrastsPositive1;
             cacheData1.data(ii).correction.contrastsNegative = contrastsNegative1;
             cacheData1.data(ii).correction.postreceptoralContrastsNegative = postreceptoralContrastsNegative1;
+            cacheData1.data(ii).correction.NDFilter = NDFilters{cc};
         else
             cacheData1.data(ii).describe = [];
             cacheData1.data(ii).backgroundPrimary = [];
@@ -136,6 +137,7 @@ for cc = 2%:length(theCals);
             cacheData2.data(ii).correction.postreceptoralContrastsPositive = postreceptoralContrastsPositive2;
             cacheData2.data(ii).correction.contrastsNegative = contrastsNegative2;
             cacheData2.data(ii).correction.postreceptoralContrastsNegative = postreceptoralContrastsNegative2;
+            cacheData2.data(ii).correction.NDFilter = NDFilters{cc};
         else
             cacheData2.data(ii).describe = [];
             cacheData2.data(ii).backgroundPrimary = [];
