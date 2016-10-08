@@ -159,7 +159,6 @@ for cc = 1:length(theCals);
     OLReceptorIsolateSaveCache(cacheData2, olCache2, params2);
 end
 
-keyboard
 %%
 customSuffix = ['_' observerID '_' todayDate];
 % Normal light level
