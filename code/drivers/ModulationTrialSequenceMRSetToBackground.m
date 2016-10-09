@@ -15,7 +15,7 @@ for i = 1:length(params.cacheFileName)
     
     %modulationData{i} = LoadCalFile(params.cacheFileName{i}, [], [params.cacheDir '/modulations/']);
     [~, fileName, fileSuffix] = fileparts(params.cacheFileName{i});
-    params.cacheFileName{i} = [fileName '-' num2str(params.observerAgeInYears) fileSuffix];
+    params.cacheFileName{i} = [fileName '-' num2str(params.observerAgeInYears) '_' params.obsID '_' datestr(now, 'mmddyy') fileSuffix];
     try
         modulationData{i} = load(fullfile(modulationPath, params.cacheFileName{i}));
     catch
