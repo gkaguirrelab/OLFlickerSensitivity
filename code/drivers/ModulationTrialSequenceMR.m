@@ -137,10 +137,6 @@ params.thePhaseOffsetSec = block(1).describe.params.phaseRandSec;
 params.theContrastMax = block(1).describe.params.maxContrast;
 params.theContrastsPct = block(1).describe.theContrastRelMax;
 
-% Toss the OLCache and OneLight objects because they are really only
-% ephemeral.
-params = rmfield(params, {'olCache'});
-
 mglListener('quit');
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
