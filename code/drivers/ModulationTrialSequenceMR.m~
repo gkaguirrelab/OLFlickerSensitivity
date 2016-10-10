@@ -174,7 +174,7 @@ mglListener('quit');
         file_names = allwords(params.modulationFiles,',');
         for i = 1:length(file_names)
             % Create the cache file name.
-            params.cacheFileName{i} = file_names{i};
+            [~, params.cacheFileName{i}] = fileparts(file_names{i});
         end
         
     end
