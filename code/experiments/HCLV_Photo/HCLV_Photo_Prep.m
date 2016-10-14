@@ -64,7 +64,7 @@ params.primaryHeadRoom = 0.02;
 
 switch optIndex
     case 1
-        OLCalibrateWithStateTrackingOOC;
+        OLCalibrateOOC;
     case 2
         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -89,7 +89,7 @@ switch optIndex
         OLReceptorIsolateSaveCache(cacheData, olCache, params);
         
         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-        % 2° & 10° targeted
+        % 2Â° & 10Â° targeted
         % LMS
         params.backgroundType = 'BackgroundHalfOn';
         params.modulationDirection = 'LightFluxXEccentricity';
@@ -102,7 +102,7 @@ switch optIndex
         [cacheData, olCache, params] = OLReceptorIsolateFindIsolatingPrimarySettings(params, true);
         OLReceptorIsolateSaveCache(cacheData, olCache, params);
         
-        % 2° & 10° targeted
+        % 2Â° & 10Â° targeted
         % L-M
         params.backgroundType = 'BackgroundHalfOn';
         params.modulationDirection = 'LMinusMDirectedXEccentricity';
@@ -115,7 +115,7 @@ switch optIndex
         [cacheData, olCache, params] = OLReceptorIsolateFindIsolatingPrimarySettings(params, true);
         OLReceptorIsolateSaveCache(cacheData, olCache, params);
         
-        % 2° & 10° targeted
+        % 2Â° & 10Â° targeted
         % S
         params.backgroundType = 'BackgroundHalfOn';
         params.modulationDirection = 'SDirectedXEccentricity';
