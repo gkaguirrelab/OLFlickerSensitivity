@@ -9,13 +9,13 @@ todayDate = datestr(now, 'mmddyy');
 
 %% Loop over the dim and bright cals
 theCalTypeBright = 'BoxBRandomizedLongCableDStubby1_ND02';
-theCalTypeDim = 'BoxBRandomizedLongCableDStubby1_ND02_ND40CassetteA';
+theCalTypeDim = 'BoxBRandomizedLongCableDStubby1_ND02_ND40CassetteB';
 theCals = {theCalTypeBright theCalTypeDim};
 
 % Load the filter for the dim cal
 S = [380 2 201];
-theFilter = load(fullfile(getpref('OneLight', 'OneLightCalData'), 'xNDFilters', 'srf_filter_ND40CassetteA_100516'));
-NDFilters = {ones(S(3), 1) theFilter.srf_filter_ND40CassetteA};
+theFilter = load(fullfile(getpref('OneLight', 'OneLightCalData'), 'xNDFilters', 'srf_filter_ND40CassetteB_100516'));
+NDFilters = {ones(S(3), 1) theFilter.srf_filter_ND40CassetteB};
 
 % Get the non-dim cal
 cal0 = LoadCalFile(['OL' theCals{1}], [], getpref('OneLight', 'OneLightCalData'));

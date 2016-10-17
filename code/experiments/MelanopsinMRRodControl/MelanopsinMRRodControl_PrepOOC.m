@@ -69,7 +69,7 @@ paramsLMinusM.cacheFile = ['Cache-' paramsLMinusM.modulationDirection '.mat'];
 OLReceptorIsolateSaveCache(cacheDataLMinusM, olCacheLMinusM, paramsLMinusM);
 
 clearvars;
-theCalType = 'BoxBRandomizedLongCableDStubby1_ND02_ND40CassetteA';
+theCalType = 'BoxBRandomizedLongCableDStubby1_ND02_ND40CassetteB';
 
 %% Standard parameters
 params.experiment = 'MelanopsinMRRodControlND40';
