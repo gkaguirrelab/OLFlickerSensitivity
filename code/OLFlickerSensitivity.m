@@ -21,8 +21,6 @@ exp.dataDir = sprintf('%sdata', exp.baseDir(1:i));
 
 %% Standard read of configuration information
 [exp.configFileDir,exp.configFileName,exp.protocolDataDir,exp.protocolList,exp.protocolIndex] = GetExperimentConfigInfo(exp.baseDir,exp.mFileName,exp.dataDir);
-exp
-pause
 
 saveDropbox = GetWithDefault('>>> Save into Dropbox folder?', 1);
 if saveDropbox
@@ -59,7 +57,6 @@ end
 
 %% Now we can execute the driver associated with this protocol.
 driverCommand = sprintf('params = %s(exp);', exp.protocolList(exp.protocolIndex).driver)
-pause
 eval(driverCommand);
 
 %% Save the experimental data 'params' along with the experimental setup
