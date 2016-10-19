@@ -162,16 +162,16 @@ end
 %%
 customSuffix = ['_' observerID '_' todayDate];
 % Normal light level
-OLMakeModulations('Modulation-MelanopsinMRRodControl_BackgroundRodControl-12sStatic.cfg', observerAgeInYrs, theCalTypeBright, [], customSuffix);
-OLMakeModulations('Modulation-MelanopsinMRRodControl_LMinusMDirectedRodControl-12sWindowed4HzModulation.cfg', observerAgeInYrs, theCalTypeBright, [], customSuffix);
-OLMakeModulations('Modulation-MelanopsinMRRodControl_MelanopsinDirectedRodControl-12sWindowed4HzModulation.cfg', observerAgeInYrs, theCalTypeBright, [], customSuffix);
+OLMakeModulations('Modulation-MelanopsinMRRodControl_BackgroundRodControl-12sStatic.cfg', observerAgeInYrs, theCalTypeBright, theCalTypeBright, [], customSuffix);
+OLMakeModulations('Modulation-MelanopsinMRRodControl_LMinusMDirectedRodControl-12sWindowed4HzModulation.cfg', observerAgeInYrs, theCalTypeBright, theCalTypeBright, [], customSuffix);
+OLMakeModulations('Modulation-MelanopsinMRRodControl_MelanopsinDirectedRodControl-12sWindowed4HzModulation.cfg', observerAgeInYrs, theCalTypeBright, theCalTypeBright, [], customSuffix);
 
 % ND4.0
-OLMakeModulations('Modulation-MelanopsinMRRodControlND40_BackgroundRodControlND40-12sStatic.cfg', observerAgeInYrs, theCalTypeBright, [], customSuffix);
-OLMakeModulations('Modulation-MelanopsinMRRodControlND40_LMinusMDirectedRodControlND40-12sWindowed4HzModulation.cfg', theCalTypeBright, theCalTypeDim, [], customSuffix);
-OLMakeModulations('Modulation-MelanopsinMRRodControlND40_MelanopsinDirectedRodControlND40-12sWindowed4HzModulation.cfg', theCalTypeBright, theCalTypeDim, [], customSuffix);
+OLMakeModulations('Modulation-MelanopsinMRRodControlND40_BackgroundRodControlND40-12sStatic.cfg', observerAgeInYrs, theCalTypeDim, theCalTypeBright, [], customSuffix);
+OLMakeModulations('Modulation-MelanopsinMRRodControlND40_LMinusMDirectedRodControlND40-12sWindowed4HzModulation.cfg', observerAgeInYrs, theCalTypeDim, theCalTypeBright, [], customSuffix);
+OLMakeModulations('Modulation-MelanopsinMRRodControlND40_MelanopsinDirectedRodControlND40-12sWindowed4HzModulation.cfg', observerAgeInYrs, theCalTypeDim, theCalTypeBright, [], customSuffix);
 
-
+%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Validate the spectrum before and after the experiment
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -194,9 +194,9 @@ end
 theCalType = theCalTypeBright;
 spectroRadiometerOBJ = [];
 spectroRadiometerOBJWillShutdownAfterMeasurement = false;
-theDirections = {['Cache-MelanopsinDirectedRodControl' observerID '_' todayDate '.mat'] ...
-    ['Cache-LMinusMDirectedRodControl' observerID '_' todayDate '.mat'] ...
-    ['Cache-MelanopsinDirectedRodControlND40' observerID '_' todayDate '.mat'] ...
+theDirections = {['Cache-MelanopsinDirectedRodControl_' observerID '_' todayDate '.mat'] ...
+    ['Cache-LMinusMDirectedRodControl_' observerID '_' todayDate '.mat'] ...
+    ['Cache-MelanopsinDirectedRodControlND40_' observerID '_' todayDate '.mat'] ...
     ['Cache-LMinusMDirectedRodControlND40_' observerID '_' todayDate '.mat']};
 NDirections = length(theDirections);
 cacheDir = getpref('OneLight', 'cachePath');
@@ -221,6 +221,16 @@ for ii = 1:NMeas;
             calStateFlag = false;
         end
         
+        if d == 1
+            calType = theCalTypeBright;
+        elseif d == 2
+            calType = theCalTypeBright;
+        elseif d == 3
+            calType = theCalTypeDim;
+        elseif d == 4
+            calType = theCalTypeDim;
+        end
+        
         % Take the measurement
         [~, ~, ~, spectroRadiometerOBJ] = OLValidateCacheFileOOC(...
             fullfile(cacheDir, 'stimuli', theDirections{d}), ...
@@ -231,7 +241,7 @@ for ii = 1:NMeas;
             'DarkMeas', false, ...
             'REFERENCE_OBSERVER_AGE', observerAgeInYrs, ...
             'ReducedPowerLevels', false, ...
-            'selectedCalType', cal0, ...
+            'selectedCalType', calType, ...
             'CALCULATE_SPLATTER', false, ...
             'powerLevels', [0 1.0000], ...
             'pr670sensitivityMode', 'STANDARD', ...
