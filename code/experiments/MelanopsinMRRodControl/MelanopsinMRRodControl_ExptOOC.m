@@ -167,6 +167,82 @@ OLMakeModulations('Modulation-MelanopsinMRRodControl_LMinusMDirectedRodControl-1
 OLMakeModulations('Modulation-MelanopsinMRRodControl_MelanopsinDirectedRodControl-12sWindowed4HzModulation.cfg', observerAgeInYrs, theCalTypeBright, [], customSuffix);
 
 % ND4.0
-OLMakeModulations('Modulation-MelanopsinMRRodControlND40_BackgroundRodControlND40-12sStatic.cfg', observerAgeInYrs, theCalTypeDim, [], customSuffix);
-OLMakeModulations('Modulation-MelanopsinMRRodControlND40_LMinusMDirectedRodControlND40-12sWindowed4HzModulation.cfg', observerAgeInYrs, theCalTypeDim, [], customSuffix);
-OLMakeModulations('Modulation-MelanopsinMRRodControlND40_MelanopsinDirectedRodControlND40-12sWindowed4HzModulation.cfg', observerAgeInYrs, theCalTypeDim, [], customSuffix);
+OLMakeModulations('Modulation-MelanopsinMRRodControlND40_BackgroundRodControlND40-12sStatic.cfg', observerAgeInYrs, theCalTypeBright, [], customSuffix);
+OLMakeModulations('Modulation-MelanopsinMRRodControlND40_LMinusMDirectedRodControlND40-12sWindowed4HzModulation.cfg', theCalTypeBright, theCalTypeDim, [], customSuffix);
+OLMakeModulations('Modulation-MelanopsinMRRodControlND40_MelanopsinDirectedRodControlND40-12sWindowed4HzModulation.cfg', theCalTypeBright, theCalTypeDim, [], customSuffix);
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Validate the spectrum before and after the experiment
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+tic;
+commandwindow;
+
+% Prompt the user to state if we're before or after the experiment
+if ~exist('choiceIndex', 'var')
+    choiceIndex = ChoiceMenuFromList({'Before the experiment', 'After the experiment'}, '> Validation before or after the experiment?');
+end
+
+% Ask for variables if they don't exist
+if ~exist('observerID', 'var') || ~exist('observerAgeInYrs', 'var') || ~exist('todayDate', 'var')
+    observerID = GetWithDefault('>> Enter <strong>user name</strong>', 'HERO_test');
+    observerAgeInYrs = GetWithDefault('>> Enter <strong>observer age</strong>:', 32);
+    todayDate = datestr(now, 'mmddyy');
+end
+
+% Set up some parameters
+theCalType = theCalTypeBright;
+spectroRadiometerOBJ = [];
+spectroRadiometerOBJWillShutdownAfterMeasurement = false;
+theDirections = {['Cache-MelanopsinDirectedRodControl' observerID '_' todayDate '.mat'] ...
+    ['Cache-LMinusMDirectedRodControl' observerID '_' todayDate '.mat'] ...
+    ['Cache-MelanopsinDirectedRodControlND40' observerID '_' todayDate '.mat'] ...
+    ['Cache-LMinusMDirectedRodControlND40_' observerID '_' todayDate '.mat']};
+NDirections = length(theDirections);
+cacheDir = getpref('OneLight', 'cachePath');
+materialsPath = getpref('OneLight', 'materialsPath');
+NMeas = 5;
+
+% Set up a counter
+c = 1;
+NTotalMeas = NMeas*NDirections;
+
+for ii = 1:NMeas;
+    for d = 1:NDirections
+        % Inform the user where we are in the validation
+        fprintf('*** Validation %g / %g in total ***\n', c, NTotalMeas);
+        
+        % We also take state measurements, which we define here
+        if (choiceIndex == 1) && (c == 1)
+            calStateFlag = true;
+        elseif (choiceIndex == 2) && (c == NTotalMeas)
+            calStateFlag = true;
+        else
+            calStateFlag = false;
+        end
+        
+        % Take the measurement
+        [~, ~, ~, spectroRadiometerOBJ] = OLValidateCacheFileOOC(...
+            fullfile(cacheDir, 'stimuli', theDirections{d}), ...
+            'igdalova@mail.med.upenn.edu', ...
+            'PR-670', spectroRadiometerOBJ, spectroRadiometerOBJWillShutdownAfterMeasurement, ...
+            'FullOnMeas', false, ...
+            'CalStateMeas', calStateFlag, ...
+            'DarkMeas', false, ...
+            'REFERENCE_OBSERVER_AGE', observerAgeInYrs, ...
+            'ReducedPowerLevels', false, ...
+            'selectedCalType', cal0, ...
+            'CALCULATE_SPLATTER', false, ...
+            'powerLevels', [0 1.0000], ...
+            'pr670sensitivityMode', 'STANDARD', ...
+            'postreceptoralCombinations', [1 1 1 0 ; 1 -1 0 0 ; 0 0 1 0 ; 0 0 0 1], ...
+            'outDir', fullfile(materialsPath, 'MelanopsinMR_RodControl', datestr(now, 'mmddyy')));
+        % Increment the counter
+        c = c+1;
+    end
+end
+
+if (~isempty(spectroRadiometerOBJ))
+    spectroRadiometerOBJ.shutDown();
+    spectroRadiometerOBJ = [];
+end
