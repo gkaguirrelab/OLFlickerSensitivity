@@ -7,6 +7,14 @@ observerID = GetWithDefault('>> Enter <strong>user name</strong>', 'HERO_test');
 observerAgeInYrs = GetWithDefault('>> Enter <strong>observer age</strong>:', 32);
 todayDate = datestr(now, 'mmddyy');
 
+% Query user whether to take temperature measurements
+takeTemperatureMeasurements = GetWithDefault('Take Temperature Measurements ?', false);
+if (takeTemperatureMeasurements ~= true) && (takeTemperatureMeasurements ~= 1)
+   takeTemperatureMeasurements = false;
+else
+   takeTemperatureMeasurements = true;
+end
+
 %% Loop over the dim and bright cals
 theCalTypeBright = 'BoxBRandomizedLongCableDStubby1_ND02';
 theCalTypeDim = 'BoxBRandomizedLongCableDStubby1_ND02_ND40CassetteB';
@@ -64,8 +72,14 @@ for cc = 1:length(theCals);
     spectroRadiometerOBJWillShutdownAfterMeasurement = true;
     
     % Run the correction
-    [correctedPrimaryValues primariesCorrectedAll deltaPrimariesCorrectedAll measuredSpd measuredSpdRaw predictedSpd] = OLCorrectPrimaryValues(cal, cal0, primaryValues, NIter, lambda, NDFilters{cc}, ...
-        meterType, spectroRadiometerOBJ, spectroRadiometerOBJWillShutdownAfterMeasurement);
+    if (takeTemperatureMeasurements)
+        [correctedPrimaryValues primariesCorrectedAll deltaPrimariesCorrectedAll measuredSpd measuredSpdRaw predictedSpd temperatureData] = OLCorrectPrimaryValues(cal, cal0, primaryValues, NIter, lambda, NDFilters{cc}, ...
+            meterType, spectroRadiometerOBJ, spectroRadiometerOBJWillShutdownAfterMeasurement, 'takeTemperatureMeasurements', true);
+    else
+        [correctedPrimaryValues primariesCorrectedAll deltaPrimariesCorrectedAll measuredSpd measuredSpdRaw predictedSpd] = OLCorrectPrimaryValues(cal, cal0, primaryValues, NIter, lambda, NDFilters{cc}, ...
+            meterType, spectroRadiometerOBJ, spectroRadiometerOBJWillShutdownAfterMeasurement);
+    end
+
     
     % Calculate the contrasts
     for iter = 1:NIter
@@ -154,6 +168,12 @@ for cc = 1:length(theCals);
         end
     end
     
+    %% Attach the temperature data collected during OLCorrectPrimaryValues
+    if (takeTemperatureMeasurements)
+        cacheData1.temperatureData = temperatureData;
+        cacheData2.temperatureData = temperatureData;
+    end
+
     %% Save out the corrected cache files
     OLReceptorIsolateSaveCache(cacheData1, olCache1, params1);
     OLReceptorIsolateSaveCache(cacheData2, olCache2, params2);
@@ -246,7 +266,8 @@ for ii = 1:NMeas;
             'powerLevels', [0 1.0000], ...
             'pr670sensitivityMode', 'STANDARD', ...
             'postreceptoralCombinations', [1 1 1 0 ; 1 -1 0 0 ; 0 0 1 0 ; 0 0 0 1], ...
-            'outDir', fullfile(materialsPath, 'MelanopsinMR_RodControl', datestr(now, 'mmddyy')));
+            'outDir', fullfile(materialsPath, 'MelanopsinMR_RodControl', datestr(now, 'mmddyy')), ...
+            'takeTemperatureMeasurements', takeTemperatureMeasurements);
         % Increment the counter
         c = c+1;
     end
