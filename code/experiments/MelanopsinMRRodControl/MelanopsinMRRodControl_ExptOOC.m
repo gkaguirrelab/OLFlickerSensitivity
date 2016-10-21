@@ -73,9 +73,11 @@ for cc = 1:length(theCals);
     
     % Run the correction
     if (takeTemperatureMeasurements)
+        % With temperature measurements
         [correctedPrimaryValues primariesCorrectedAll deltaPrimariesCorrectedAll measuredSpd measuredSpdRaw predictedSpd temperatureData] = OLCorrectPrimaryValues(cal, cal0, primaryValues, NIter, lambda, NDFilters{cc}, ...
             meterType, spectroRadiometerOBJ, spectroRadiometerOBJWillShutdownAfterMeasurement, 'takeTemperatureMeasurements', true);
     else
+        % Without temperature measurements
         [correctedPrimaryValues primariesCorrectedAll deltaPrimariesCorrectedAll measuredSpd measuredSpdRaw predictedSpd] = OLCorrectPrimaryValues(cal, cal0, primaryValues, NIter, lambda, NDFilters{cc}, ...
             meterType, spectroRadiometerOBJ, spectroRadiometerOBJWillShutdownAfterMeasurement);
     end
