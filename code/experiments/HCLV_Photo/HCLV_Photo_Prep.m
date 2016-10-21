@@ -135,6 +135,14 @@ switch optIndex
         observerAgeInYrs = GetWithDefault('>> Enter <strong>observer age</strong>:', 32);
         todayDate = datestr(now, 'mmddyy');
         
+        % Query user whether to take temperature measurements
+        takeTemperatureMeasurements = GetWithDefault('Take Temperature Measurements ?', false);
+        if (takeTemperatureMeasurements ~= true) && (takeTemperatureMeasurements ~= 1)
+           takeTemperatureMeasurements = false;
+        else
+           takeTemperatureMeasurements = true;
+        end
+
         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
         % Correct the spectrum
         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -171,7 +179,8 @@ switch optIndex
                 'powerLevels', [0 1.0000], ...
                 'doCorrection', theDirectionsCorrect(d), ...
                 'postreceptoralCombinations', [1 1 1 0 0 0 ; 0 0 0 1 1 1 ; 1 -1 0 0 0 0 ; 0 0 0 1 -1 0 ; 0 0 1 0 0 0 ; 0 0 0 0 0 1], ...
-                'outDir', fullfile(materialsPath, 'PIPRMaxPulse', todayDate));
+                'outDir', fullfile(materialsPath, 'PIPRMaxPulse', todayDate), ...
+                'takeTemperatureMeasurements', takeTemperatureMeasurements);
             fprintf(' * Spectrum seeking finished!\n');
             
             % Save the cache
@@ -202,6 +211,14 @@ switch optIndex
         observerAgeInYrs = GetWithDefault('>> Enter <strong>observer age</strong>:', 32);
         todayDate = datestr(now, 'mmddyy');
         
+        % Query user whether to take temperature measurements
+        takeTemperatureMeasurements = GetWithDefault('Take Temperature Measurements ?', false);
+        if (takeTemperatureMeasurements ~= true) && (takeTemperatureMeasurements ~= 1)
+           takeTemperatureMeasurements = false;
+        else
+           takeTemperatureMeasurements = true;
+        end
+        
         spectroRadiometerOBJ = [];
         spectroRadiometerOBJWillShutdownAfterMeasurement = false;
         for i = 1:5
@@ -227,7 +244,8 @@ switch optIndex
                     'CALCULATE_SPLATTER', false, ...
                     'powerLevels', [0 1.0000], ...
                     'postreceptoralCombinations', [1 1 1 0 0 0 ; 0 0 0 1 1 1 ; 1 -1 0 0 0 0 ; 0 0 0 1 -1 0 ; 0 0 1 0 0 0 ; 0 0 0 0 0 1], ...
-                    'outDir', fullfile(materialsPath, 'HCLV_Photo', datestr(now, 'mmddyy')));
+                    'outDir', fullfile(materialsPath, 'HCLV_Photo', datestr(now, 'mmddyy')), ...
+                    'takeTemperatureMeasurements', takeTemperatureMeasurements);
                 close all;
             end
         end
