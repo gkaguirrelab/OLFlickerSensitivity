@@ -8,7 +8,7 @@
 
 % 03/01/2016   NPC  Wrote it (by modifying ModulationTrialSequencePupillometryNulled)
 % 03/04/2016   NPC  Added UDP communication tests
-%
+% 10/26/2016   NPC  Added ability to record temperature
 
 function params = ModulationTrialSequencePupillometryNulledOnLine(exp)
 
@@ -16,6 +16,24 @@ function params = ModulationTrialSequencePupillometryNulledOnLine(exp)
 fprintf('\n\n<strong>%s</strong> Hit enter once the windowsClient is up and running....\n', mfilename);
 pause;
 
+
+% Query user whether to take temperature measurements
+takeTemperatureMeasurements = GetWithDefault('Take Temperature Measurements ?', false);
+if (takeTemperatureMeasurements ~= true) && (takeTemperatureMeasurements ~= 1)
+    takeTemperatureMeasurements = false;
+else
+    takeTemperatureMeasurements = true;
+end
+
+% Attempt to open the LabJack temperature sensing device
+if (takeTemperatureMeasurements)
+    % Gracefully attempt to open the LabJack
+    [takeTemperatureMeasurements, quitNow] = OLCalibrator.OpenLabJackTemperatureProbe(takeTemperatureMeasurements);
+    if (quitNow)
+        return;
+    end
+end
+        
 [runCommTest, commTestRepeats] = OLVSGhelper.getCommTestParams();
 
 % Setup parameters and configure block of trials
@@ -306,6 +324,11 @@ for trial = params.whichTrialToStartAt:params.nTrials
             dataStruct(trial).stepTimeSec = block(trial).stepTimeSec;
             dataStruct(trial).preStepTimeSec = block(trial).preStepTimeSec;
         end
+    end
+    
+    % Measure the temperature
+    if (takeTemperatureMeasurements)
+        [status, dataStruct(trial).temperature] = LJTemperatureProbe('measure');
     end
     
     % Clear the variables to get ready for the trial.
