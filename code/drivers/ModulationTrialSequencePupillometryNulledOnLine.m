@@ -329,6 +329,7 @@ for trial = params.whichTrialToStartAt:params.nTrials
     % Measure the temperature
     if (takeTemperatureMeasurements)
         [status, dataStruct(trial).temperature] = LJTemperatureProbe('measure');
+        fprintf('OneLight temperatures: %2.1f %2.1f\n', dataStruct(trial).temperature(1), dataStruct(trial).temperature(2));
     end
     
     % Clear the variables to get ready for the trial.
