@@ -20,7 +20,7 @@ NDFilters = {ones(S(3), 1) theFilter.srf_filter_ND40CassetteB};
 % Get the non-dim cal
 cal0 = LoadCalFile(['OL' theCals{1}], [], getpref('OneLight', 'OneLightCalData'));
 
-for cc = 1:length(theCals);
+for cc = 1%:length(theCals);
     %% Set up the cal
     cacheDir = fullfile(getpref('OneLight', 'cachePath'), 'stimuli');
     cal = LoadCalFile(['OL' theCals{cc}], [], getpref('OneLight', 'OneLightCalData'));
@@ -167,9 +167,9 @@ OLMakeModulations('Modulation-MelanopsinMRRodControl_LMinusMDirectedRodControl-1
 OLMakeModulations('Modulation-MelanopsinMRRodControl_MelanopsinDirectedRodControl-12sWindowed4HzModulation.cfg', observerAgeInYrs, theCalTypeBright, theCalTypeBright, [], customSuffix);
 
 % ND4.0
-OLMakeModulations('Modulation-MelanopsinMRRodControlND40_BackgroundRodControlND40-12sStatic.cfg', observerAgeInYrs, theCalTypeDim, theCalTypeBright, [], customSuffix);
-OLMakeModulations('Modulation-MelanopsinMRRodControlND40_LMinusMDirectedRodControlND40-12sWindowed4HzModulation.cfg', observerAgeInYrs, theCalTypeDim, theCalTypeBright, [], customSuffix);
-OLMakeModulations('Modulation-MelanopsinMRRodControlND40_MelanopsinDirectedRodControlND40-12sWindowed4HzModulation.cfg', observerAgeInYrs, theCalTypeDim, theCalTypeBright, [], customSuffix);
+%OLMakeModulations('Modulation-MelanopsinMRRodControlND40_BackgroundRodControlND40-12sStatic.cfg', observerAgeInYrs, theCalTypeDim, theCalTypeBright, [], customSuffix);
+%OLMakeModulations('Modulation-MelanopsinMRRodControlND40_LMinusMDirectedRodControlND40-12sWindowed4HzModulation.cfg', observerAgeInYrs, theCalTypeDim, theCalTypeBright, [], customSuffix);
+%OLMakeModulations('Modulation-MelanopsinMRRodControlND40_MelanopsinDirectedRodControlND40-12sWindowed4HzModulation.cfg', observerAgeInYrs, theCalTypeDim, theCalTypeBright, [], customSuffix);
 
 %%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -195,9 +195,9 @@ theCalType = theCalTypeBright;
 spectroRadiometerOBJ = [];
 spectroRadiometerOBJWillShutdownAfterMeasurement = false;
 theDirections = {['Cache-MelanopsinDirectedRodControl_' observerID '_' todayDate '.mat'] ...
-    ['Cache-LMinusMDirectedRodControl_' observerID '_' todayDate '.mat'] ...
-    ['Cache-MelanopsinDirectedRodControlND40_' observerID '_' todayDate '.mat'] ...
-    ['Cache-LMinusMDirectedRodControlND40_' observerID '_' todayDate '.mat']};
+    ['Cache-LMinusMDirectedRodControl_' observerID '_' todayDate '.mat']};%
+    %['Cache-MelanopsinDirectedRodControlND40_' observerID '_' todayDate '.mat'] ...
+    %['Cache-LMinusMDirectedRodControlND40_' observerID '_' todayDate '.mat']};
 NDirections = length(theDirections);
 cacheDir = getpref('OneLight', 'cachePath');
 materialsPath = getpref('OneLight', 'materialsPath');
