@@ -13,6 +13,7 @@ observerAgeInYrs = GetWithDefault('>> Enter <strong>observer age</strong>:', 32)
 todayDate = datestr(now, 'mmddyy');
 
 % Adaptation time
+% JR edit here
 params.adaptTimeSecs = 2; % 30 seconds
 params.frameDurationSecs = 1/64;
 params.observerAgeInYrs = observerAgeInYrs;
@@ -21,24 +22,32 @@ params.NRepeatsPerStimulus = 5;
 params.NStimuli = 2;
 
 % Assemble the modulations
+% JR edit here
 modulationDir = fullfile(getpref('OneLight', 'modulationPath'));
 pathToModFileLMS = ['Modulation-MaxMelPulsePsychophysics-PulseMaxLMS_3s_MaxContrast3sSegment-' num2str(params.observerAgeInYrs) '_' observerID '_' todayDate '.mat'];
 pathToModFileMel = ['Modulation-MaxMelPulsePsychophysics-PulseMaxMel_3s_MaxContrast3sSegment-' num2str(params.observerAgeInYrs) '_' observerID '_' todayDate '.mat'];
+% pathToModFileLightFlux = ['Modulation-MaxMelPulsePsychophysics-PulseMaxLightFlux_3s_MaxContrast3sSegment-' num2str(params.observerAgeInYrs) '_' observerID '_' todayDate '.mat'];
 
 % Load in the files
+% JR Edit here
 modFileLMS = load(fullfile(modulationDir, pathToModFileLMS));
 modFileMel = load(fullfile(modulationDir, pathToModFileMel));
+%modFileLightFlux = load(fullfile(modulationDir, pathToModFileLightFlux));
 
 startsLMS = modFileLMS.modulationObj.modulation.starts;
 stopsLMS = modFileLMS.modulationObj.modulation.stops;
 startsMel = modFileMel.modulationObj.modulation.starts;
 stopsMel = modFileMel.modulationObj.modulation.stops;
+%startsLightFlux = modFileLightFlux.modulationObj.modulation.starts;
+%stopsLightFlux = modFileLightFlux.modulationObj.modulation.stops;
 
-stimLabels = {'MaxLMS', 'MaxMel'};
-stimStarts = {startsLMS startsMel};
-stimStops = {stopsLMS stopsMel};
-stimStartsBG = {modFileLMS.modulationObj.modulation.background.starts modFileMel.modulationObj.modulation.background.starts};
-stimStopsBG = {modFileLMS.modulationObj.modulation.background.stops modFileMel.modulationObj.modulation.background.stops};
+%Need to add a new label. 
+% JR Edit here
+stimLabels = {'MaxLMS', 'MaxMel', 'LightFlux'};
+stimStarts = {startsLMS startsMel startsLightFlux};
+stimStops = {stopsLMS stopsMel stopsLightFlux};
+stimStartsBG = {modFileLMS.modulationObj.modulation.background.starts modFileMel.modulationObj.modulation.background.starts modFileLightFlux.modulationObj.modulation.background.starts};
+stimStopsBG = {modFileLMS.modulationObj.modulation.background.stops modFileMel.modulationObj.modulation.background.stops modFileLightFlux.modulationObj.modulation.background.stops};
 
 % Wait for button press
 Speak('Press key to start demo', [], SpeakRateDefault);
@@ -52,7 +61,7 @@ for is = 1:params.NStimuli
     % Set to background
     ol.setMirrors(stimStartsBG{is}', stimStopsBG{is}');
     
-    % Adapt to background for 5 minutes
+    % Adapt to background for 1 minute
     Speak(sprintf('Adapt to background for %g seconds. Press key to start adaptation', params.adaptTimeSecs), [], SpeakRateDefault);
     WaitForKeyPress;
     fprintf('\tAdaption started.');

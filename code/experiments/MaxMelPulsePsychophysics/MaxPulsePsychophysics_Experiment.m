@@ -5,9 +5,12 @@ function MaxPulsePsychophysics_Program
 % Simple program to run a rating task on MaxMel/MaxLMS pulses
 %
 % 7/7/16    ms      Wrote it.
+% 11/17/2016 jr Added additional perceptual dimensions and will add Light
+% Flux to the stimulus labels.
 SpeakRateDefault = getpref('OneLight', 'SpeakRateDefault');
 
 % Adaptation time
+% JR edit here
 params.adaptTimeSecs = 2; % 5 minutes
 params.frameDurationSecs = 1/64;
 params.observerID = GetWithDefault('> <strong>Enter the observer name</strong>', 'HERO_xxx1');
@@ -24,30 +27,43 @@ if ~exist(savePath)
 end
 
 % Assemble the modulations
+% JR add Light Flux
 modulationDir = fullfile(getpref('OneLight', 'modulationPath'));
 pathToModFileLMS = ['Modulation-MaxMelPulsePsychophysics-PulseMaxLMS_3s_MaxContrast3sSegment-' num2str(params.observerAgeInYrs) '_' observerID '_' todayDate '.mat'];
 pathToModFileMel = ['Modulation-MaxMelPulsePsychophysics-PulseMaxMel_3s_MaxContrast3sSegment-' num2str(params.observerAgeInYrs) '_' observerID '_' todayDate '.mat'];
+% pathToModFileLightFlux = ['Modulation-MaxMelPulsePsychophysics-PulseMaxLightFlux_3s_MaxContrast3sSegment-' num2str(params.observerAgeInYrs) '_' observerID '_' todayDate '.mat'];
+
 
 % Load in the files
+% JR add Light Flux
 modFileLMS = load(fullfile(modulationDir, pathToModFileLMS));
 modFileMel = load(fullfile(modulationDir, pathToModFileMel));
+%modFileLightFlux = load(fullfile(modulationDir, pathToModFileLightFlux));
 
 startsLMS = modFileLMS.modulationObj.modulation.starts;
 stopsLMS = modFileLMS.modulationObj.modulation.stops;
 startsMel = modFileMel.modulationObj.modulation.starts;
 stopsMel = modFileMel.modulationObj.modulation.stops;
+%startsLightFlux = modFileLightFlux.modulationObj.modulation.starts;
+%stopsLightFlux = modFileLightFlux.modulationObj.modulation.stops;
 
-stimLabels = {'MaxLMS', 'MaxMel'};
-stimStarts = {startsLMS startsMel};
-stimStops = {stopsLMS stopsMel};
-stimStartsBG = {modFileLMS.modulationObj.modulation.background.starts modFileMel.modulationObj.modulation.background.starts};
-stimStopsBG = {modFileLMS.modulationObj.modulation.background.stops modFileMel.modulationObj.modulation.background.stops};
+%Add Light Flux
+stimLabels = {'MaxLMS', 'MaxMel' 'Light Flux'};
+% stimStarts = {startsLMS startsMel};
+% stimStops = {stopsLMS stopsMel};
+% stimStartsBG = {modFileLMS.modulationObj.modulation.background.starts modFileMel.modulationObj.modulation.background.starts};
+% stimStopsBG = {modFileLMS.modulationObj.modulation.background.stops modFileMel.modulationObj.modulation.background.stops};
+stimStarts = {startsLMS startsMel startsLightFlux};
+stimStops = {stopsLMS stopsMel stopsLightFlux};
+stimStartsBG = {modFileLMS.modulationObj.modulation.background.starts modFileMel.modulationObj.modulation.background.starts modFileLightFlux.modulationObj.modulation.background.starts};
+stimStopsBG = {modFileLMS.modulationObj.modulation.background.stops modFileMel.modulationObj.modulation.background.stops modFileLightFlux.modulationObj.modulation.background.stops};
 
 % Perceptual dimensions
-perceptualDimensions = {'cool or warm', 'blurred or sharp', 'calming or alerting', 'dull or glowing'};
+perceptualDimensions = {'cool or warm', 'not glowing or glowing', 'same or different color', 'sharp or blurred', 'brief or persistent', 'pleasant or unpleasant', 'dim or bright', 'branching or smooth' };
 
 % Experimental stage
-params.NStimuli = 2;
+% Up NStimuli to 3
+params.NStimuli = 3;
 params.NRepeats = 2;
 params.NPerceptualDimensions = length(perceptualDimensions);
 
