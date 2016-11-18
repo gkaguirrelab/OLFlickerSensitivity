@@ -14,7 +14,10 @@ SpeakRateDefault = getpref('OneLight', 'SpeakRateDefault');
 params.adaptTimeSecs = 2; % 5 minutes
 params.frameDurationSecs = 1/64;
 params.observerID = GetWithDefault('> <strong>Enter the observer name</strong>', 'HERO_xxx1');
+observerID = params.observerID;
+todayDate = datestr(now, 'mmddyy');
 params.observerAgeInYrs = GetWithDefault('> <strong>Enter the observer age?</strong>', 20);
+observerAgeInYrs = params.observerAgeInYrs;
 
 protocol = 'MaxPulsePsychophysics';
 dataPath = getpref('OneLight', 'dataPath');
@@ -31,28 +34,24 @@ end
 modulationDir = fullfile(getpref('OneLight', 'modulationPath'));
 pathToModFileLMS = ['Modulation-MaxMelPulsePsychophysics-PulseMaxLMS_3s_MaxContrast3sSegment-' num2str(params.observerAgeInYrs) '_' observerID '_' todayDate '.mat'];
 pathToModFileMel = ['Modulation-MaxMelPulsePsychophysics-PulseMaxMel_3s_MaxContrast3sSegment-' num2str(params.observerAgeInYrs) '_' observerID '_' todayDate '.mat'];
-% pathToModFileLightFlux = ['Modulation-MaxMelPulsePsychophysics-PulseMaxLightFlux_3s_MaxContrast3sSegment-' num2str(params.observerAgeInYrs) '_' observerID '_' todayDate '.mat'];
+pathToModFileLightFlux = ['Modulation-MaxMelPulsePsychophysics-PulseMaxLightFlux_3s_MaxContrast3sSegment-' num2str(params.observerAgeInYrs) '_' observerID '_' todayDate '.mat'];
 
 
 % Load in the files
 % JR add Light Flux
 modFileLMS = load(fullfile(modulationDir, pathToModFileLMS));
 modFileMel = load(fullfile(modulationDir, pathToModFileMel));
-%modFileLightFlux = load(fullfile(modulationDir, pathToModFileLightFlux));
+modFileLightFlux = load(fullfile(modulationDir, pathToModFileLightFlux));
 
 startsLMS = modFileLMS.modulationObj.modulation.starts;
 stopsLMS = modFileLMS.modulationObj.modulation.stops;
 startsMel = modFileMel.modulationObj.modulation.starts;
 stopsMel = modFileMel.modulationObj.modulation.stops;
-%startsLightFlux = modFileLightFlux.modulationObj.modulation.starts;
-%stopsLightFlux = modFileLightFlux.modulationObj.modulation.stops;
+startsLightFlux = modFileLightFlux.modulationObj.modulation.starts;
+stopsLightFlux = modFileLightFlux.modulationObj.modulation.stops;
 
 %Add Light Flux
 stimLabels = {'MaxLMS', 'MaxMel' 'Light Flux'};
-% stimStarts = {startsLMS startsMel};
-% stimStops = {stopsLMS stopsMel};
-% stimStartsBG = {modFileLMS.modulationObj.modulation.background.starts modFileMel.modulationObj.modulation.background.starts};
-% stimStopsBG = {modFileLMS.modulationObj.modulation.background.stops modFileMel.modulationObj.modulation.background.stops};
 stimStarts = {startsLMS startsMel startsLightFlux};
 stimStops = {stopsLMS stopsMel stopsLightFlux};
 stimStartsBG = {modFileLMS.modulationObj.modulation.background.starts modFileMel.modulationObj.modulation.background.starts modFileLightFlux.modulationObj.modulation.background.starts};
@@ -62,7 +61,6 @@ stimStopsBG = {modFileLMS.modulationObj.modulation.background.stops modFileMel.m
 perceptualDimensions = {'cool or warm', 'not glowing or glowing', 'same or different color', 'sharp or blurred', 'brief or persistent', 'pleasant or unpleasant', 'dim or bright', 'branching or smooth' };
 
 % Experimental stage
-% Up NStimuli to 3
 params.NStimuli = 3;
 params.NRepeats = 2;
 params.NPerceptualDimensions = length(perceptualDimensions);
