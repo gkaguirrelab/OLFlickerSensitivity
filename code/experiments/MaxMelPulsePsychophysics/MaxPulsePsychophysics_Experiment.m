@@ -25,7 +25,7 @@ saveFileCSV = [params.observerID '-' protocol '.csv'];
 saveFileMAT = [params.observerID '-' protocol '.mat'];
 
 if ~exist(savePath)
-   mkdir(savePath); 
+    mkdir(savePath);
 end
 
 % Assemble the modulations
@@ -47,18 +47,18 @@ stopsMel = modFileMel.modulationObj.modulation.stops;
 startsLightFlux = modFileLightFlux.modulationObj.modulation.starts;
 stopsLightFlux = modFileLightFlux.modulationObj.modulation.stops;
 
-%Add Light Flux
 stimLabels = {'MaxLMS', 'MaxMel' 'Light Flux'};
+stimOrder = [3 1 2 3 1 2]; % Note that the stimulus order is defined here.
 stimStarts = {startsLMS startsMel startsLightFlux};
 stimStops = {stopsLMS stopsMel stopsLightFlux};
 stimStartsBG = {modFileLMS.modulationObj.modulation.background.starts modFileMel.modulationObj.modulation.background.starts modFileLightFlux.modulationObj.modulation.background.starts};
 stimStopsBG = {modFileLMS.modulationObj.modulation.background.stops modFileMel.modulationObj.modulation.background.stops modFileLightFlux.modulationObj.modulation.background.stops};
 
 % Perceptual dimensions
-perceptualDimensions = {'cool or warm', 'dull or glowing', 'colorless or colored', 'focused or blurred', 'slow or rapid', 'pleasant or unpleasant', 'dim or bright', 'smooth or jagged' };
 
+perceptualDimensions = {'cool or warm', 'dull or glowing', 'colorless or colored', 'focused or blurred', 'slow or rapid', 'pleasant or unpleasant', 'dim or bright', 'smooth or jagged' };
 % Experimental stage
-params.NStimuli = 3;
+params.NStimuli = length(stimOrder);
 params.NRepeats = 2;
 params.NPerceptualDimensions = length(perceptualDimensions);
 
@@ -89,37 +89,44 @@ for is = 1:params.NStimuli
     fprintf('\n\tAdaption completed.\n\t');
     toc;
     
-    for js = 1:params.NRepeats
-        for ps = 1:params.NPerceptualDimensions
-            fprintf('\n* <strong>Trial %g</strong>\n', trialNum);
-            fprintf('\t- Stimulus: <strong>%s</strong>\n', stimLabels{is});
-            fprintf('\t- Dimension: <strong>%s</strong>\n', perceptualDimensions{ps});
-            fprintf('\t- Repeat: <strong>%g</strong>\n', js);
-            Speak(['For this stimulus, judge ' perceptualDimensions{ps} '. Press key to start.'], [], 200);
-            WaitForKeyPress;
-            
+    for ps = 1:params.NPerceptualDimensions
+        fprintf('\n* <strong>Trial %g</strong>\n', trialNum);
+        fprintf('\t- Stimulus: <strong>%s</strong>\n', stimLabels{is});
+        fprintf('\t- Dimension: <strong>%s</strong>\n', perceptualDimensions{ps});
+        fprintf('\t- Repeat: <strong>%g</strong>\n', js);
+        Speak(['For this stimulus, judge ' perceptualDimensions{ps} '. Press key to start.'], [], 200);
+        WaitForKeyPress;
+        
+        keepGoing = true;
+        counter = 1;
+        while keepGoing
             fprintf('* Showing stimulus...')
             modulationFlickerStartsStops(ol, stimStarts{is}, stimStops{is}, params.frameDurationSecs, 1);
             fprintf('Done.\n')
-            
-            % Show the stimulus
-            Speak('Answer?', [], SpeakRateDefault);
-            
-            perceptualRating(trialNum) = GetInput('> Subject rating');
-            fprintf('* <strong>Response</strong>: %g\n\n', perceptualRating(trialNum))
-            
-            % Save the data
-            fprintf(f, '%g,%s,%s,%g,%.3f\n', trialNum, stimLabels{is}, perceptualDimensions{ps}, js, perceptualRating(trialNum));
-            
-            % Save the for this trial
-            data(trialNum).trialNum = trialNum;
-            data(trialNum).stimLabel = stimLabels{is};
-            data(trialNum).stimRepeat = js;
-            data(trialNum).perceptualDimension = perceptualDimensions{ps};
-            data(trialNum).response = perceptualRating(trialNum);
-            
-            trialNum = trialNum + 1;
+            counter =  counter+1;
+            if counter == 2
+                keepGoing = GetWithDefault('Show stimulus again? [0 = no, 1 = yes]', 0);
+            else
+                keepGoing = false;
+            end
         end
+        
+        % Show the stimulus
+        Speak('Answer?', [], SpeakRateDefault);
+        
+        perceptualRating(trialNum) = GetInput('> Subject rating');
+        fprintf('* <strong>Response</strong>: %g\n\n', perceptualRating(trialNum))
+        
+        % Save the data
+        fprintf(f, '%g,%s,%s,%g,%.3f\n', trialNum, stimLabels{is}, perceptualDimensions{ps}, js, perceptualRating(trialNum));
+        
+        % Save the for this trial
+        data(trialNum).trialNum = trialNum;
+        data(trialNum).stimLabel = stimLabels{is};
+        data(trialNum).perceptualDimension = perceptualDimensions{ps};
+        data(trialNum).response = perceptualRating(trialNum);
+        
+        trialNum = trialNum + 1;
     end
 end
 
