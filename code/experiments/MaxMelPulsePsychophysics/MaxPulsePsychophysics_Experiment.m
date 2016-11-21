@@ -58,7 +58,7 @@ stimStartsBG = {modFileLMS.modulationObj.modulation.background.starts modFileMel
 stimStopsBG = {modFileLMS.modulationObj.modulation.background.stops modFileMel.modulationObj.modulation.background.stops modFileLightFlux.modulationObj.modulation.background.stops};
 
 % Perceptual dimensions
-perceptualDimensions = {'cool or warm', 'not glowing or glowing', 'same or different color', 'sharp or blurred', 'brief or persistent', 'pleasant or unpleasant', 'dim or bright', 'branching or smooth' };
+perceptualDimensions = {'cool or warm', 'dull or glowing', 'colorless or colored', 'focused or blurred', 'slow or rapid', 'pleasant or unpleasant', 'dim or bright', 'smooth or jagged' };
 
 % Experimental stage
 params.NStimuli = 3;
