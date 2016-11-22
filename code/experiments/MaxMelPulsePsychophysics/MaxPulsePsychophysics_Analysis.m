@@ -5,8 +5,7 @@
 % 11/22/16  spitschan  Wrote it.
 
 % Load the file
-load('/Users/spitschan/Downloads/HERO_test3-MaxPulsePsychophysics.mat'); % NOTE: ADJUST PATH
-
+load('/Users/melanopsin/Dropbox (Aguirre-Brainard Lab)/MELA_data/MaxPulsePsychophysics/Hero_test3/112216/MatFiles/HERO_test3-MaxPulsePsychophysics.mat'); 
 % Get all the stimulus types
 allLabels = {data.stimLabel};
 [uniqueLabels, ~, allLabelsIdx] = unique(allLabels);
@@ -31,3 +30,4 @@ end
 h = bar(aggregatedDataMean');
 set(gca, 'XTickLabel', uniqueDimensions);
 legend(h, uniqueLabels);
+
