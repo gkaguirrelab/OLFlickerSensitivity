@@ -10,7 +10,7 @@ function MaxPulsePsychophysics_Program
 SpeakRateDefault = getpref('OneLight', 'SpeakRateDefault');
 
 % Adaptation time
-params.adaptTimeSecs = 2; % 5 minutes
+params.adaptTimeSecs = 300; % 5 minutes
 params.frameDurationSecs = 1/64;
 params.observerID = GetWithDefault('> <strong>Enter the observer name</strong>', 'HERO_xxx1');
 observerID = params.observerID;

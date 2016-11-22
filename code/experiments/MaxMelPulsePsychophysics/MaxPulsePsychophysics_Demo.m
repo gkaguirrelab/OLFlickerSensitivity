@@ -14,7 +14,7 @@ todayDate = datestr(now, 'mmddyy');
 
 % Adaptation time
 % JR edit here
-params.adaptTimeSecs = 2; % 30 seconds
+params.adaptTimeSecs = 60; % 1 minute
 params.frameDurationSecs = 1/64;
 params.observerAgeInYrs = observerAgeInYrs;
 params.ISISecs = 5;
