@@ -30,4 +30,4 @@ end
 % Make a bar plot of the mean ratings
 h = bar(aggregatedDataMean');
 set(gca, 'XTickLabel', uniqueDimensions);
-legend(h, uniqueLabels)
+legend(h, uniqueLabels);
