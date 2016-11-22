@@ -47,15 +47,14 @@ stopsMel = modFileMel.modulationObj.modulation.stops;
 startsLightFlux = modFileLightFlux.modulationObj.modulation.starts;
 stopsLightFlux = modFileLightFlux.modulationObj.modulation.stops;
 
-stimLabels = {'MaxLMS', 'MaxMel' 'Light Flux'};
-stimOrder = [3 1 2 3 1 2]; % Note that the stimulus order is defined here.
-stimStarts = {startsLMS startsMel startsLightFlux};
-stimStops = {stopsLMS stopsMel stopsLightFlux};
-stimStartsBG = {modFileLMS.modulationObj.modulation.background.starts modFileMel.modulationObj.modulation.background.starts modFileLightFlux.modulationObj.modulation.background.starts};
-stimStopsBG = {modFileLMS.modulationObj.modulation.background.stops modFileMel.modulationObj.modulation.background.stops modFileLightFlux.modulationObj.modulation.background.stops};
+stimLabels = {'Light Flux' 'MaxMel' 'MaxLMS' 'Light Flux' 'MaxMel' 'MaxLMS' }; % Note that the stimulus order is defined here.
+stimOrder = [1 2 3 1 2 3];
+stimStarts = {startsLMS startsMel startsLightFlux startsLMS startsMel startsLightFlux};
+stimStops = {stopsLMS stopsMel stopsLightFlux stopsLMS stopsMel stopsLightFlux};
+stimStartsBG = {modFileLMS.modulationObj.modulation.background.starts modFileMel.modulationObj.modulation.background.starts modFileLightFlux.modulationObj.modulation.background.starts modFileLMS.modulationObj.modulation.background.starts modFileMel.modulationObj.modulation.background.starts modFileLightFlux.modulationObj.modulation.background.starts};
+stimStopsBG = {modFileLMS.modulationObj.modulation.background.stops modFileMel.modulationObj.modulation.background.stops modFileLightFlux.modulationObj.modulation.background.stops modFileLMS.modulationObj.modulation.background.stops modFileMel.modulationObj.modulation.background.stops modFileLightFlux.modulationObj.modulation.background.stops};
 
 % Perceptual dimensions
-
 perceptualDimensions = {'cool or warm', 'dull or glowing', 'colorless or colored', 'focused or blurred', 'slow or rapid', 'pleasant or unpleasant', 'dim or bright', 'smooth or jagged' };
 % Experimental stage
 params.NStimuli = length(stimOrder);
@@ -93,7 +92,8 @@ for is = 1:params.NStimuli
         fprintf('\n* <strong>Trial %g</strong>\n', trialNum);
         fprintf('\t- Stimulus: <strong>%s</strong>\n', stimLabels{is});
         fprintf('\t- Dimension: <strong>%s</strong>\n', perceptualDimensions{ps});
-        fprintf('\t- Repeat: <strong>%g</strong>\n', js);
+        %fprintf('\t- Repeat: <strong>%g</strong>\n', js);
+        fprintf('\t- Repeat: <strong>%g</strong>\n');
         Speak(['For this stimulus, judge ' perceptualDimensions{ps} '. Press key to start.'], [], 200);
         WaitForKeyPress;
         
@@ -118,7 +118,8 @@ for is = 1:params.NStimuli
         fprintf('* <strong>Response</strong>: %g\n\n', perceptualRating(trialNum))
         
         % Save the data
-        fprintf(f, '%g,%s,%s,%g,%.3f\n', trialNum, stimLabels{is}, perceptualDimensions{ps}, js, perceptualRating(trialNum));
+        %fprintf(f, '%g,%s,%s,%g,%.3f\n', trialNum, stimLabels{is}, perceptualDimensions{ps}, js, perceptualRating(trialNum));
+        fprintf(f, '%g,%s,%s,%g,%.3f\n', trialNum, stimLabels{is}, perceptualDimensions{ps}, perceptualRating(trialNum));
         
         % Save the for this trial
         data(trialNum).trialNum = trialNum;
