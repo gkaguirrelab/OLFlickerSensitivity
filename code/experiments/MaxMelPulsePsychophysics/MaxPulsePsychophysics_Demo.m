@@ -43,7 +43,7 @@ stopsLightFlux = modFileLightFlux.modulationObj.modulation.stops;
 
 %Need to add a new label. 
 % JR Edit here
-stimLabels = {'MaxLMS', 'MaxMel', 'LightFlux'};
+stimLabels = {'LightFlux', 'MaxLMS', 'MaxMel'};
 stimStarts = {startsLMS startsMel startsLightFlux};
 stimStops = {stopsLMS stopsMel stopsLightFlux};
 stimStartsBG = {modFileLMS.modulationObj.modulation.background.starts modFileMel.modulationObj.modulation.background.starts modFileLightFlux.modulationObj.modulation.background.starts};
