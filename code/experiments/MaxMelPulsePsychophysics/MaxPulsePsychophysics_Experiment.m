@@ -47,7 +47,7 @@ stopsMel = modFileMel.modulationObj.modulation.stops;
 startsLightFlux = modFileLightFlux.modulationObj.modulation.starts;
 stopsLightFlux = modFileLightFlux.modulationObj.modulation.stops;
 
-stimLabels = {'Light Flux' 'MaxLMS' 'MaxMel' 'Light Flux' 'MaxLMS' 'MaxMel' }; % Note that the stimulus order is defined here.
+stimLabels = {'Light Flux' 'MaxMel' 'MaxLMS' 'Light Flux' 'MaxMel' 'MaxLMS' }; % Note that the stimulus order is defined here.
 stimOrder = [1 2 3 1 2 3];
 stimStarts = {startsLMS startsMel startsLightFlux startsLMS startsMel startsLightFlux};
 stimStops = {stopsLMS stopsMel stopsLightFlux stopsLMS stopsMel stopsLightFlux};
