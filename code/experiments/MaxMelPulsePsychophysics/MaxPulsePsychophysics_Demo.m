@@ -38,11 +38,11 @@ stopsMel = modFileMel.modulationObj.modulation.stops;
 startsLightFlux = modFileLightFlux.modulationObj.modulation.starts;
 stopsLightFlux = modFileLightFlux.modulationObj.modulation.stops;
 
-stimLabels = {'MaxLMS', 'MaxMel', 'LightFlux'};
-stimStarts = {startsLMS startsMel startsLightFlux};
-stimStops = {stopsLMS stopsMel stopsLightFlux};
-stimStartsBG = {modFileLMS.modulationObj.modulation.background.starts modFileMel.modulationObj.modulation.background.starts modFileLightFlux.modulationObj.modulation.background.starts};
-stimStopsBG = {modFileLMS.modulationObj.modulation.background.stops modFileMel.modulationObj.modulation.background.stops modFileLightFlux.modulationObj.modulation.background.stops};
+stimLabels = {'LightFlux', 'MaxLMS', 'MaxMel'};
+stimStarts = {startsLightFlux startsLMS startsMel};
+stimStops = {stopsLightFlux stopsLMS stopsMel};
+stimStartsBG = {modFileLightFlux.modulationObj.modulation.background.starts modFileLMS.modulationObj.modulation.background.starts modFileMel.modulationObj.modulation.background.starts};
+stimStopsBG = {modFileLightFlux.modulationObj.modulation.background.stops modFileLMS.modulationObj.modulation.background.stops modFileMel.modulationObj.modulation.background.stops};
 
 % Wait for button press
 Speak('Press key to start demo', [], SpeakRateDefault);

@@ -47,18 +47,17 @@ stopsMel = modFileMel.modulationObj.modulation.stops;
 startsLightFlux = modFileLightFlux.modulationObj.modulation.starts;
 stopsLightFlux = modFileLightFlux.modulationObj.modulation.stops;
 
-stimLabels = {'Light Flux' 'MaxMel' 'MaxLMS' 'Light Flux' 'MaxMel' 'MaxLMS' }; % Note that the stimulus order is defined here.
-stimOrder = [1 2 3 1 2 3];
-stimStarts = {startsLMS startsMel startsLightFlux startsLMS startsMel startsLightFlux};
-stimStops = {stopsLMS stopsMel stopsLightFlux stopsLMS stopsMel stopsLightFlux};
-stimStartsBG = {modFileLMS.modulationObj.modulation.background.starts modFileMel.modulationObj.modulation.background.starts modFileLightFlux.modulationObj.modulation.background.starts modFileLMS.modulationObj.modulation.background.starts modFileMel.modulationObj.modulation.background.starts modFileLightFlux.modulationObj.modulation.background.starts};
-stimStopsBG = {modFileLMS.modulationObj.modulation.background.stops modFileMel.modulationObj.modulation.background.stops modFileLightFlux.modulationObj.modulation.background.stops modFileLMS.modulationObj.modulation.background.stops modFileMel.modulationObj.modulation.background.stops modFileLightFlux.modulationObj.modulation.background.stops};
+stimLabels = {'Light Flux' 'MaxLMS' 'MaxMel' 'Light Flux' 'MaxLMS' 'MaxMel' }; 
+stimOrder = [1 2 3 1 2 3]; % Adjust stimulus presentation order here
+stimStarts = {startsLightFlux startsLMS startsMel startsLightFlux startsLMS startsMel};
+stimStops = {stopsLightFlux stopsLMS stopsMel stopsLightFlux stopsLMS stopsMel};
+stimStartsBG = {modFileLightFlux.modulationObj.modulation.background.starts modFileLMS.modulationObj.modulation.background.starts modFileMel.modulationObj.modulation.background.starts modFileLightFlux.modulationObj.modulation.background.starts modFileLMS.modulationObj.modulation.background.starts modFileMel.modulationObj.modulation.background.starts};
+stimStopsBG = {modFileLightFlux.modulationObj.modulation.background.stops modFileLMS.modulationObj.modulation.background.stops modFileMel.modulationObj.modulation.background.stops modFileLightFlux.modulationObj.modulation.background.stops modFileLMS.modulationObj.modulation.background.stops modFileMel.modulationObj.modulation.background.stops};
 
 % Perceptual dimensions
 perceptualDimensions = {'cool or warm', 'dull or glowing', 'colorless or colored', 'focused or blurred', 'slow or rapid', 'pleasant or unpleasant', 'dim or bright', 'smooth or jagged' };
 % Experimental stage
 params.NStimuli = length(stimOrder);
-params.NRepeats = 2;
 params.NPerceptualDimensions = length(perceptualDimensions);
 
 % Wait for button press
@@ -73,7 +72,8 @@ ol = OneLight;
 f = fopen(fullfile(savePath, saveFileCSV), 'w');
 
 trialNum = 1;
-for is = 1:params.NStimuli
+for ii = 1:params.NStimuli
+    is = stimOrder(ii);
     % Set to background
     ol.setMirrors(stimStartsBG{is}', stimStopsBG{is}');
     
