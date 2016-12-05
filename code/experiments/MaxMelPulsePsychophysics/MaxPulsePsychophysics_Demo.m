@@ -13,7 +13,6 @@ observerAgeInYrs = GetWithDefault('>> Enter <strong>observer age</strong>:', 32)
 todayDate = datestr(now, 'mmddyy');
 
 % Adaptation time
-% JR edit here
 params.adaptTimeSecs = 60; % 1 minute
 params.frameDurationSecs = 1/64;
 params.observerAgeInYrs = observerAgeInYrs;
@@ -22,14 +21,12 @@ params.NRepeatsPerStimulus = 3;
 params.NStimuli = 3;
 
 % Assemble the modulations
-% JR edit here
 modulationDir = fullfile(getpref('OneLight', 'modulationPath'));
 pathToModFileLMS = ['Modulation-MaxMelPulsePsychophysics-PulseMaxLMS_3s_MaxContrast3sSegment-' num2str(params.observerAgeInYrs) '_' observerID '_' todayDate '.mat'];
 pathToModFileMel = ['Modulation-MaxMelPulsePsychophysics-PulseMaxMel_3s_MaxContrast3sSegment-' num2str(params.observerAgeInYrs) '_' observerID '_' todayDate '.mat'];
 pathToModFileLightFlux = ['Modulation-MaxMelPulsePsychophysics-PulseMaxLightFlux_3s_MaxContrast3sSegment-' num2str(params.observerAgeInYrs) '_' observerID '_' todayDate '.mat'];
 
 % Load in the files
-% JR Edit here
 modFileLMS = load(fullfile(modulationDir, pathToModFileLMS));
 modFileMel = load(fullfile(modulationDir, pathToModFileMel));
 modFileLightFlux = load(fullfile(modulationDir, pathToModFileLightFlux));
@@ -41,9 +38,7 @@ stopsMel = modFileMel.modulationObj.modulation.stops;
 startsLightFlux = modFileLightFlux.modulationObj.modulation.starts;
 stopsLightFlux = modFileLightFlux.modulationObj.modulation.stops;
 
-%Need to add a new label. 
-% JR Edit here
-stimLabels = {'LightFlux', 'MaxLMS', 'MaxMel'};
+stimLabels = {'MaxLMS', 'MaxMel', 'LightFlux'};
 stimStarts = {startsLMS startsMel startsLightFlux};
 stimStops = {stopsLMS stopsMel stopsLightFlux};
 stimStartsBG = {modFileLMS.modulationObj.modulation.background.starts modFileMel.modulationObj.modulation.background.starts modFileLightFlux.modulationObj.modulation.background.starts};
