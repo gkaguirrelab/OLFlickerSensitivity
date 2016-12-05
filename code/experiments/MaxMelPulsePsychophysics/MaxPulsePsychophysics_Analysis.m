@@ -6,13 +6,13 @@
 % Proposed edits: Add in variable for subject id and date of experiment. 
 
 % Subject information:
-%observerID = HERO_test3
-%expDate = 112216
+observerID = GetWithDefault('>> Enter <strong> subject ID </strong>', 'MELA_xxxx');
+expDate = GetWithDefault('>> Enter <strong>experiment date</strong>', '010116');
 
 % Load the file
-% dataPath = getpref('OneLight', 'dataPath');
-%load(fullfile(datapath, observerID, expDate, 'MatFiles', 
-load('/Users/melanopsin/Dropbox (Aguirre-Brainard Lab)/MELA_data/MaxPulsePsychophysics/Hero_test3/112216/MatFiles/HERO_test3-MaxPulsePsychophysics.mat'); 
+dataPath = getpref('OneLight', 'dataPath');
+protocol = 'MaxPulsePsychophysics';
+load(fullfile(dataPath, protocol, observerID, expDate, 'MatFiles',[observerID '-' protocol '.mat'])); 
 % Get all the stimulus types
 allLabels = {data.stimLabel};
 [uniqueLabels, ~, allLabelsIdx] = unique(allLabels);
