@@ -8,7 +8,7 @@ function MaxPulsePsychophysics_Demo
 SpeakRateDefault = getpref('OneLight', 'SpeakRateDefault');
 
 commandwindow;
-observerID = GetWithDefault('>> Enter <strong>user name</strong>', 'HERO_test');
+observerID = GetWithDefault('>> Enter <strong>user name</strong>', 'MELA_xxxx');
 observerAgeInYrs = GetWithDefault('>> Enter <strong>observer age</strong>:', 32);
 todayDate = datestr(now, 'mmddyy');
 

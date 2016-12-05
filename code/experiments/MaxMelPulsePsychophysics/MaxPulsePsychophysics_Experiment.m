@@ -12,7 +12,7 @@ SpeakRateDefault = getpref('OneLight', 'SpeakRateDefault');
 % Adaptation time
 params.adaptTimeSecs = 300; % 5 minutes
 params.frameDurationSecs = 1/64;
-params.observerID = GetWithDefault('> <strong>Enter the observer name</strong>', 'HERO_xxx1');
+params.observerID = GetWithDefault('> <strong>Enter the observer name</strong>', 'MELA_xxxx');
 observerID = params.observerID;
 todayDate = datestr(now, 'mmddyy');
 params.observerAgeInYrs = GetWithDefault('> <strong>Enter the observer age?</strong>', 20);
