@@ -64,12 +64,12 @@ for is = 1:params.NStimuli
     % Adapt to background for 1 minute
     Speak(sprintf('Adapt to background for %g seconds. Press key to start adaptation', params.adaptTimeSecs), [], SpeakRateDefault);
     WaitForKeyPress;
-    fprintf('\tAdaption started.');
+    fprintf('\tAdaptation started.');
     Speak('Adaptation started', [], SpeakRateDefault);
     tic;
     mglWaitSecs(params.adaptTimeSecs);
     Speak('Adaptation complete', [], SpeakRateDefault);
-    fprintf('\n\tAdaption completed.\n\t');
+    fprintf('\n\tAdaptation completed.\n\t');
     toc;
     
     for js = 1:params.NRepeatsPerStimulus

@@ -80,12 +80,12 @@ for is = 1:params.NStimuli
     % Adapt to background for 5 minutes
     Speak(sprintf('Adapt to background for %g minutes. Press key to start adaptation', params.adaptTimeSecs/60), [], SpeakRateDefault);
     WaitForKeyPress;
-    fprintf('\tAdaption started.');
+    fprintf('\tAdaptation started.');
     Speak('Adaptation started', [], SpeakRateDefault);
     tic;
     mglWaitSecs(params.adaptTimeSecs);
     Speak('Adaptation complete', [], SpeakRateDefault);
-    fprintf('\n\tAdaption completed.\n\t');
+    fprintf('\n\tAdaptation completed.\n\t');
     toc;
     
     for ps = 1:params.NPerceptualDimensions
