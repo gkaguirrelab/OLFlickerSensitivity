@@ -37,4 +37,5 @@ end
 h = bar(aggregatedDataMean');
 set(gca, 'XTickLabel', uniqueDimensions);
 legend(h, uniqueLabels);
+ylim([0 7]);
 
