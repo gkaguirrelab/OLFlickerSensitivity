@@ -70,9 +70,9 @@ toc;
 %%
 tic;
 customSuffix = ['_' observerID '_' todayDate];
-OLMakeModulations('Modulation-MaxMelPulsePsychophysics-PulseMaxLMS_3s_MaxContrast3sSegment.cfg', observerAgeInYrs, theCalType, [], customSuffix);
-OLMakeModulations('Modulation-MaxMelPulsePsychophysics-PulseMaxMel_3s_MaxContrast3sSegment.cfg', observerAgeInYrs, theCalType, [], customSuffix);
-OLMakeModulations('Modulation-MaxMelPulsePsychophysics-PulseMaxLightFlux_3s_MaxContrast3sSegment.cfg', observerAgeInYrs, theCalType, [], customSuffix);
+OLMakeModulations('Modulation-MaxMelPulsePsychophysics-PulseMaxLMS_3s_MaxContrast3sSegment.cfg', observerAgeInYrs, theCalType, theCalType, customSuffix);
+OLMakeModulations('Modulation-MaxMelPulsePsychophysics-PulseMaxMel_3s_MaxContrast3sSegment.cfg', observerAgeInYrs, theCalType, theCalType, customSuffix);
+OLMakeModulations('Modulation-MaxMelPulsePsychophysics-PulseMaxLightFlux_3s_MaxContrast3sSegment.cfg', observerAgeInYrs, theCalType, theCalType, customSuffix);
 toc;
 
 % Assign the default choice index the first time we run this script. We
@@ -82,7 +82,6 @@ choiceIndex = 1;
 %%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Validate the spectrum before and after the experiment
-% Run this section ONLY at the end of the experiment
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 tic;
 commandwindow;
