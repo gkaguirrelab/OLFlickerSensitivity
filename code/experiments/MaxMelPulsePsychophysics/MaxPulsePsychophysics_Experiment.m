@@ -55,7 +55,7 @@ stimStartsBG = {modFileLightFlux.modulationObj.modulation.background.starts modF
 stimStopsBG = {modFileLightFlux.modulationObj.modulation.background.stops modFileLMS.modulationObj.modulation.background.stops modFileMel.modulationObj.modulation.background.stops modFileLightFlux.modulationObj.modulation.background.stops modFileLMS.modulationObj.modulation.background.stops modFileMel.modulationObj.modulation.background.stops};
 
 % Perceptual dimensions
-perceptualDimensions = {'cool or warm', 'dull or glowing', 'colorless or colored', 'focused or blurred', 'slow or rapid', 'pleasant or unpleasant', 'dim or bright', 'smooth or jagged' };
+perceptualDimensions = {'cool or warm', 'dull or glowing', 'colorless or colored', 'focused or blurred', 'slow or rapid', 'pleasant or unpleasant', 'dim or bright', 'smooth or jagged', 'uniform or blotchy'};
 % Experimental stage
 params.NStimuli = length(stimOrder);
 params.NPerceptualDimensions = length(perceptualDimensions);
@@ -94,7 +94,7 @@ for ii = 1:params.NStimuli
         fprintf('\t- Dimension: <strong>%s</strong>\n', perceptualDimensions{ps});
         %fprintf('\t- Repeat: <strong>%g</strong>\n', js);
         fprintf('\t- Repeat: <strong>%g</strong>\n');
-        Speak(['For this stimulus, judge ' perceptualDimensions{ps} '. Press key to start.'], [], 200);
+        Speak(['Wait for instructions.'], [], 200);
         WaitForKeyPress;
         
         keepGoing = true;
@@ -112,7 +112,7 @@ for ii = 1:params.NStimuli
         end
         
         % Show the stimulus
-        Speak('Answer?', [], SpeakRateDefault);
+        % Speak('Answer?', [], SpeakRateDefault);
         
         perceptualRating(trialNum) = GetInput('> Subject rating');
         fprintf('* <strong>Response</strong>: %g\n\n', perceptualRating(trialNum))
