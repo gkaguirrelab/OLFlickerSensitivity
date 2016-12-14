@@ -1,7 +1,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Generate the cache
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-theCalType = 'BoxBRandomizedLongCableBStubby1_ND02';
+theCalType = 'BoxARandomizedLongCableBStubby1_ND02';
 
 %% Standard parameters
 params.experiment = 'MaxMelPulsePsychophysics';
