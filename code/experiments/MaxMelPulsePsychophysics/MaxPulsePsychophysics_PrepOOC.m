@@ -16,13 +16,17 @@ params.pupilDiameterMm = 8; % Assuming dilated pupil
 params.isActive = 1;
 params.useAmbient = 1;
 params.REFERENCE_OBSERVER_AGE = 32;
-params.primaryHeadRoom = 0.01;
+%Original value 0.01
+params.primaryHeadRoom = 0.12;
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% Silent substitution
 %% MaxMel
 params.pegBackground = false;
 params.modulationDirection = {'MelanopsinDirected'};
+% Note modulation contrast is typically 2/3 for 400% contrast or 66.66%
+% sinusoidal contrast, modulation contrast has been set to 20% for testing
+% purposes
 params.modulationContrast = [2/3];
 params.whichReceptorsToIsolate = {[4]};
 params.whichReceptorsToIgnore = {[]};
@@ -38,7 +42,8 @@ params.cacheFile = ['Cache-' params.backgroundType  '.mat'];
 OLReceptorIsolateSaveCache(cacheDataBackground, olCache, params);
 
 % Now, make the modulation
-params.primaryHeadRoom = 0.005;
+%Original value: 0.005
+params.primaryHeadRoom = 0.12;
 params.backgroundType = 'BackgroundMaxMel';
 params.modulationDirection = 'MelanopsinDirectedSuperMaxMel';
 params.modulationContrast = [2/3];
@@ -59,7 +64,7 @@ for observerAgeInYrs = [20:60]
     cacheDataMaxMel.data(observerAgeInYrs).modulationSpdSignedNegative = [];
 end
 paramsMaxMel.modulationDirection = 'MelanopsinDirectedSuperMaxMel';
-paramsMaxMel.cacheFile = ['Cache-' paramsMaxMel.modulationDirection '.mat'];
+paramsMaxMel.cacheFile = ['Cache-' paramsMaxMel.modulationDirection, '_12.mat'];
 OLReceptorIsolateSaveCache(cacheDataMaxMel, olCacheMaxMel, paramsMaxMel);
 
 %% MaxLMS
@@ -80,7 +85,8 @@ params.cacheFile = ['Cache-' params.backgroundType  '.mat'];
 OLReceptorIsolateSaveCache(cacheDataBackground, olCache, params);
 
 % Now, make the modulation
-params.primaryHeadRoom = 0.005;
+% Original value 0.005
+params.primaryHeadRoom = 0.12;
 params.backgroundType = 'BackgroundMaxLMS';
 params.modulationDirection = 'LMSDirectedSuperMaxLMS';
 params.modulationContrast = [2/3 2/3 2/3];
@@ -100,7 +106,7 @@ for observerAgeInYrs = [20:60]
     cacheDataMaxLMS.data(observerAgeInYrs).modulationSpdSignedNegative = [];
 end
 paramsMaxLMS.modulationDirection = 'LMSDirectedSuperMaxLMS';
-paramsMaxLMS.cacheFile = ['Cache-' paramsMaxLMS.modulationDirection '.mat'];
+paramsMaxLMS.cacheFile = ['Cache-' paramsMaxLMS.modulationDirection, '_12.mat'];
 OLReceptorIsolateSaveCache(cacheDataMaxLMS, olCacheMaxLMS, paramsMaxLMS);
 
 %% Light flux
