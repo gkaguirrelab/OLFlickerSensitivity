@@ -17,7 +17,7 @@ params.isActive = 1;
 params.useAmbient = 1;
 params.REFERENCE_OBSERVER_AGE = 32;
 %Original value 0.01
-params.primaryHeadRoom = 0.12;
+params.primaryHeadRoom = 0.01;
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% Silent substitution
@@ -43,7 +43,7 @@ OLReceptorIsolateSaveCache(cacheDataBackground, olCache, params);
 
 % Now, make the modulation
 %Original value: 0.005
-params.primaryHeadRoom = 0.12;
+params.primaryHeadRoom = 0.01;
 params.backgroundType = 'BackgroundMaxMel';
 params.modulationDirection = 'MelanopsinDirectedSuperMaxMel';
 params.modulationContrast = [2/3];
@@ -64,7 +64,7 @@ for observerAgeInYrs = [20:60]
     cacheDataMaxMel.data(observerAgeInYrs).modulationSpdSignedNegative = [];
 end
 paramsMaxMel.modulationDirection = 'MelanopsinDirectedSuperMaxMel';
-paramsMaxMel.cacheFile = ['Cache-' paramsMaxMel.modulationDirection, '_12.mat'];
+paramsMaxMel.cacheFile = ['Cache-' paramsMaxMel.modulationDirection '.mat'];
 OLReceptorIsolateSaveCache(cacheDataMaxMel, olCacheMaxMel, paramsMaxMel);
 
 %% MaxLMS
@@ -86,7 +86,7 @@ OLReceptorIsolateSaveCache(cacheDataBackground, olCache, params);
 
 % Now, make the modulation
 % Original value 0.005
-params.primaryHeadRoom = 0.12;
+params.primaryHeadRoom = 0.01;
 params.backgroundType = 'BackgroundMaxLMS';
 params.modulationDirection = 'LMSDirectedSuperMaxLMS';
 params.modulationContrast = [2/3 2/3 2/3];
@@ -106,7 +106,7 @@ for observerAgeInYrs = [20:60]
     cacheDataMaxLMS.data(observerAgeInYrs).modulationSpdSignedNegative = [];
 end
 paramsMaxLMS.modulationDirection = 'LMSDirectedSuperMaxLMS';
-paramsMaxLMS.cacheFile = ['Cache-' paramsMaxLMS.modulationDirection, '_12.mat'];
+paramsMaxLMS.cacheFile = ['Cache-' paramsMaxLMS.modulationDirection '.mat'];
 OLReceptorIsolateSaveCache(cacheDataMaxLMS, olCacheMaxLMS, paramsMaxLMS);
 
 %% Light flux

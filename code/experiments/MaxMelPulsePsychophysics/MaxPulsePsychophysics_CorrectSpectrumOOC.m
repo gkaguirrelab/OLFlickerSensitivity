@@ -11,7 +11,7 @@ todayDate = datestr(now, 'mmddyy');
 % Correct the spectrum
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 tic;
-theCalType = 'BoxBRandomizedLongCableBStubby1_ND02';
+theCalType = 'BoxARandomizedLongCableBStubby1_ND02';
 spectroRadiometerOBJ = [];
 spectroRadiometerOBJWillShutdownAfterMeasurement = false;
 theDirections = {'MelanopsinDirectedSuperMaxMel' 'LMSDirectedSuperMaxLMS' 'LightFluxMaxPulse'};
@@ -99,7 +99,7 @@ if ~exist('observerID', 'var') || ~exist('observerAgeInYrs', 'var') || ~exist('t
 end
 
 % Set up some parameters
-theCalType = 'BoxBRandomizedLongCableBStubby1_ND02';
+theCalType = 'BoxARandomizedLongCableBStubby1_ND02';
 spectroRadiometerOBJ = [];
 spectroRadiometerOBJWillShutdownAfterMeasurement = false;
 theDirections = {['Cache-MelanopsinDirectedSuperMaxMel_' observerID '_' todayDate '.mat'] ...
