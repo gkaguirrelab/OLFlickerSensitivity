@@ -60,6 +60,11 @@ for ii = 1:nheadRoomVals
     [cacheDataMaxMel, olCacheMaxMel, paramsMaxMel] = OLReceptorIsolateFindIsolatingPrimarySettings(params, true);
     allContrasts(:, ii) = cacheDataMaxMel.data(32).describe.contrastSignedPositive;
 end
+subplot(1, 2, 1); plot(headRoomVals, allContrasts(4, :), '-sk'); xlabel('Headroom'); ylabel('Max. contrast'); ylim([0 0.9]); xlim([0 0.21]); pbaspect([1 1 1]);
+title('Sinusoidal contrast');
+subplot(1, 2, 2); plot(headRoomVals, (2*allContrasts(4, :))./(1-allContrasts(4, :)), '-sk'); xlabel('Headroom'); ylabel('Max. contrast'); ylim([0 6]); xlim([0 0.21]); pbaspect([1 1 1]);
+title('Unipolar contrast');
+
 %% MaxLMS
 params.pegBackground = false;
 params.modulationDirection = {'LMSDirected'};
