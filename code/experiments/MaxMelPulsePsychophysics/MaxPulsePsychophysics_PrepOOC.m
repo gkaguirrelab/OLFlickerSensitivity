@@ -17,7 +17,7 @@ params.isActive = 1;
 params.useAmbient = 1;
 params.REFERENCE_OBSERVER_AGE = 32;
 %Original value 0.01
-params.primaryHeadRoom = 0.02;
+params.primaryHeadRoom = 0.01;
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% Silent substitution
@@ -27,7 +27,7 @@ params.modulationDirection = {'MelanopsinDirected'};
 % Note modulation contrast is typically 2/3 for 400% contrast or 66.66%
 % sinusoidal contrast, modulation contrast has been set to 20% for testing
 % purposes
-params.modulationContrast = [0.652];
+params.modulationContrast = [3.75/5.75];
 params.whichReceptorsToIsolate = {[4]};
 params.whichReceptorsToIgnore = {[]};
 params.whichReceptorsToMinimize = {[]};
@@ -43,10 +43,10 @@ OLReceptorIsolateSaveCache(cacheDataBackground, olCache, params);
 
 % Now, make the modulation
 %Original value: 0.005
-params.primaryHeadRoom = 0.02;
+params.primaryHeadRoom = 0.01;
 params.backgroundType = 'BackgroundMaxMel';
 params.modulationDirection = 'MelanopsinDirectedSuperMaxMel';
-params.modulationContrast = [0.652];
+params.modulationContrast = [3.75/5.75];
 params.whichReceptorsToIsolate = [4];
 params.whichReceptorsToIgnore = [];
 params.whichReceptorsToMinimize = [];
@@ -70,7 +70,7 @@ OLReceptorIsolateSaveCache(cacheDataMaxMel, olCacheMaxMel, paramsMaxMel);
 %% MaxLMS
 params.pegBackground = false;
 params.modulationDirection = {'LMSDirected'};
-params.modulationContrast = {[0.652 0.652 0.652]};
+params.modulationContrast = {[3.75/5.75 3.75/5.75 3.75/5.75]};
 params.whichReceptorsToIsolate = {[1 2 3]};
 params.whichReceptorsToIgnore = {[]};
 params.whichReceptorsToMinimize = {[]};
@@ -86,10 +86,10 @@ OLReceptorIsolateSaveCache(cacheDataBackground, olCache, params);
 
 % Now, make the modulation
 % Original value 0.005
-params.primaryHeadRoom = 0.02;
+params.primaryHeadRoom = 0.01;
 params.backgroundType = 'BackgroundMaxLMS';
 params.modulationDirection = 'LMSDirectedSuperMaxLMS';
-params.modulationContrast = [0.652 0.652 0.652];
+params.modulationContrast = [3.75/5.75 3.75/5.75 3.75/5.75];
 params.whichReceptorsToIsolate = [1 2 3];
 params.whichReceptorsToIgnore = [];
 params.whichReceptorsToMinimize = [];
