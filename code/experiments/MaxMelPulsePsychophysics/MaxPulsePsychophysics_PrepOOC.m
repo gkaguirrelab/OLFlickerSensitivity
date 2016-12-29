@@ -12,21 +12,22 @@ params.CALCULATE_SPLATTER = false;
 params.maxPowerDiff = 10^(-1);
 params.photoreceptorClasses = 'LConeTabulatedAbsorbance,MConeTabulatedAbsorbance,SConeTabulatedAbsorbance,Melanopsin';
 params.fieldSizeDegrees = 27.5;
-params.pupilDiameterMm = 8;     % Assuming dilated pupil
+params.pupilDiameterMm = 8; % Assuming dilated pupil
 params.isActive = 1;
 params.useAmbient = 1;
 params.REFERENCE_OBSERVER_AGE = 32;
-params.primaryHeadRoom = 0.02;  % Original value 0.01
+%Original value 0.01
+params.primaryHeadRoom = 0.01;
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% Silent substitution
-% MaxMel
-%
-% Note modulation contrast is typically 2/3 for 400% contrast or 66.66%
-% sinusoidal contrast.  Can adjust depending on gamut or for testing
+%% MaxMel
 params.pegBackground = false;
 params.modulationDirection = {'MelanopsinDirected'};
-params.modulationContrast = [0.652];
+% Note modulation contrast is typically 2/3 for 400% contrast or 66.66%
+% sinusoidal contrast, modulation contrast has been set to 20% for testing
+% purposes
+params.modulationContrast = [3.75/5.75];
 params.whichReceptorsToIsolate = {[4]};
 params.whichReceptorsToIgnore = {[]};
 params.whichReceptorsToMinimize = {[]};
@@ -34,17 +35,18 @@ params.directionsYoked = [0];
 params.directionsYokedAbs = [0];
 params.receptorIsolateMode = 'Standard';
 
-% Make the Mel shifted background
+% Mel shifted background
 params.backgroundType = 'BackgroundMaxMel';
 params.cacheFile = ['Cache-' params.backgroundType  '.mat'];
 [cacheDataBackground, olCache, params] = OLReceptorIsolateMakeBackground(params, true);
 OLReceptorIsolateSaveCache(cacheDataBackground, olCache, params);
 
 % Now, make the modulation
-params.primaryHeadRoom = 0.02;          % Original value: 0.005
+%Original value: 0.005
+params.primaryHeadRoom = 0.01;
 params.backgroundType = 'BackgroundMaxMel';
 params.modulationDirection = 'MelanopsinDirectedSuperMaxMel';
-params.modulationContrast = [0.652];
+params.modulationContrast = [3.75/5.75];
 params.whichReceptorsToIsolate = [4];
 params.whichReceptorsToIgnore = [];
 params.whichReceptorsToMinimize = [];
@@ -61,8 +63,6 @@ for observerAgeInYrs = [20:60]
     cacheDataMaxMel.data(observerAgeInYrs).modulationPrimarySignedNegative = [];
     cacheDataMaxMel.data(observerAgeInYrs).modulationSpdSignedNegative = [];
 end
-
-% Save out the cache
 paramsMaxMel.modulationDirection = 'MelanopsinDirectedSuperMaxMel';
 paramsMaxMel.cacheFile = ['Cache-' paramsMaxMel.modulationDirection '.mat'];
 OLReceptorIsolateSaveCache(cacheDataMaxMel, olCacheMaxMel, paramsMaxMel);
@@ -70,7 +70,7 @@ OLReceptorIsolateSaveCache(cacheDataMaxMel, olCacheMaxMel, paramsMaxMel);
 %% MaxLMS
 params.pegBackground = false;
 params.modulationDirection = {'LMSDirected'};
-params.modulationContrast = {[0.652 0.652 0.652]};
+params.modulationContrast = {[3.75/5.75 3.75/5.75 3.75/5.75]};
 params.whichReceptorsToIsolate = {[1 2 3]};
 params.whichReceptorsToIgnore = {[]};
 params.whichReceptorsToMinimize = {[]};
@@ -78,24 +78,24 @@ params.directionsYoked = [1];
 params.directionsYokedAbs = [0];
 params.receptorIsolateMode = 'Standard';
 
-% Make the LMS shifted background
+% LMS shifted background
 params.backgroundType = 'BackgroundMaxLMS';
 params.cacheFile = ['Cache-' params.backgroundType  '.mat'];
 [cacheDataBackground, olCache, params] = OLReceptorIsolateMakeBackground(params, true);
 OLReceptorIsolateSaveCache(cacheDataBackground, olCache, params);
 
 % Now, make the modulation
-params.primaryHeadRoom = 0.02;          % Original value 0.005
+% Original value 0.005
+params.primaryHeadRoom = 0.01;
 params.backgroundType = 'BackgroundMaxLMS';
 params.modulationDirection = 'LMSDirectedSuperMaxLMS';
-params.modulationContrast = [0.652 0.652 0.652];
+params.modulationContrast = [3.75/5.75 3.75/5.75 3.75/5.75];
 params.whichReceptorsToIsolate = [1 2 3];
 params.whichReceptorsToIgnore = [];
 params.whichReceptorsToMinimize = [];
 params.receptorIsolateMode = 'Standard';
 params.cacheFile = ['Cache-' params.modulationDirection '.mat'];
 [cacheDataMaxLMS, olCacheMaxLMS, paramsMaxLMS] = OLReceptorIsolateFindIsolatingPrimarySettings(params, true);
-
 % Replace the backgrounds
 for observerAgeInYrs = [20:60]
     cacheDataMaxLMS.data(observerAgeInYrs).backgroundPrimary = cacheDataMaxLMS.data(observerAgeInYrs).modulationPrimarySignedNegative;
@@ -105,17 +105,13 @@ for observerAgeInYrs = [20:60]
     cacheDataMaxLMS.data(observerAgeInYrs).modulationPrimarySignedNegative = [];
     cacheDataMaxLMS.data(observerAgeInYrs).modulationSpdSignedNegative = [];
 end
-
-% Save out the modulation into cache
 paramsMaxLMS.modulationDirection = 'LMSDirectedSuperMaxLMS';
 paramsMaxLMS.cacheFile = ['Cache-' paramsMaxLMS.modulationDirection '.mat'];
 OLReceptorIsolateSaveCache(cacheDataMaxLMS, olCacheMaxLMS, paramsMaxLMS);
 
 %% Light flux
-%
-% For the light flux, we'd like a background that is the average
-% chromaticity between the two MaxMel and MaxLMS backgrounds. The
-% appropriate chromaticities are (approx.):
+%% For the light flux, we'd like a background that is the average chromaticity
+% between the two MaxMel and MaxLMS backgrounds. These are (approx.):
 %   x = 0.54, y = 0.38
 
 % Get the cal files
@@ -147,8 +143,6 @@ for observerAgeInYrs = [20:60]
     cacheDataMaxPulseLightFlux.data(observerAgeInYrs).modulationPrimarySignedNegative = [];
     cacheDataMaxPulseLightFlux.data(observerAgeInYrs).modulationSpdSignedNegative = [];
 end
-
-% Save
 paramsMaxPulseLightFlux.modulationDirection = 'LightFluxMaxPulse';
 paramsMaxPulseLightFlux.cacheFile = ['Cache-' paramsMaxPulseLightFlux.modulationDirection '.mat'];
 OLReceptorIsolateSaveCache(cacheDataMaxPulseLightFlux, olCacheMaxPulseLightFlux, paramsMaxPulseLightFlux);
