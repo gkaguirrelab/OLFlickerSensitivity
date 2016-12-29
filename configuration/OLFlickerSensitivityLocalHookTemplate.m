@@ -17,7 +17,7 @@ function OLFlickerSensitivityLocalHook
 % to match what is true on your computer.
 
 %% Say hello
-fprintf('Running OLFlickerSensitivityConfig local hook\n');
+fprintf('Running OLFlickerSensitivitylocal hook\n');
 
 %% Set preferences
 
@@ -65,7 +65,7 @@ OneLightDriverPath = tbLocateToolbox('OneLightDriver');
 JavaAddToPath(fullfile(OneLightDriverPath,'xOceanOpticsJava/OmniDriver.jar'),'OmniDriver.jar');
 
 % Point at the code
-olFlickerProjectDir = tbLocateProject('OLFlickerSensivivity');
+olFlickerProjectDir = tbLocateProject('OLFlickerSensitivity');
 setpref('OneLight', 'OLFlickerSensitivityBaseDir', fullfile(olFlickerProjectDir,'code'));
 
 % Add OLFlickerSensitivity to the path
