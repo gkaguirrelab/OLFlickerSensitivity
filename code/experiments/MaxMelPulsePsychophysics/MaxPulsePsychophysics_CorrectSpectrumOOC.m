@@ -1,6 +1,12 @@
+% QUESTIONS:
+%  a) Should theDirectionsCorrect be [true true false]?
+%  b) How are pre and post validations distinguished, so that seeking
+%  doesn't happen post experiment?
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Prepare for the experiment
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 % Ask for the observer age
 commandwindow;
 observerID = GetWithDefault('>> Enter <strong>user name</strong>', 'HERO_test');
@@ -8,7 +14,7 @@ observerAgeInYrs = GetWithDefault('>> Enter <strong>observer age</strong>:', 32)
 todayDate = datestr(now, 'mmddyy');
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Correct the spectrum
+% Correct the modulation spectra
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 tic;
 theCalType = 'BoxARandomizedLongCableBStubby1_ND02';
@@ -48,8 +54,6 @@ for d = 1:length(theDirections)
     
     % Save the cache
     fprintf(' * Saving cache ...');
-    
-    
     params = cacheData.data(observerAgeInYrs).describe.params;
     params.modulationDirection = theDirections{d};
     params.cacheFile = ['Cache-' params.modulationDirection '_' observerID '_' todayDate '.mat'];
@@ -57,17 +61,16 @@ for d = 1:length(theDirections)
     fprintf('done!\n');
 end
 
+% Close radiometer if it is open
 if (~isempty(spectroRadiometerOBJ))
     spectroRadiometerOBJ.shutDown();
     spectroRadiometerOBJ = [];
 end
 toc;
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Generate the modulations
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Make the mod
-% LMS
-%%
 tic;
 customSuffix = ['_' observerID '_' todayDate];
 OLMakeModulations('Modulation-MaxMelPulsePsychophysics-PulseMaxLMS_3s_MaxContrast3sSegment.cfg', observerAgeInYrs, theCalType, theCalType, customSuffix);
@@ -79,14 +82,12 @@ toc;
 % clear this after the pre-experimental validation.
 choiceIndex = 1;
 
-%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Validate the spectrum before and after the experiment
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-tic;
-commandwindow;
 
 % Prompt the user to state if we're before or after the experiment
+commandwindow;
 if ~exist('choiceIndex', 'var')
     choiceIndex = ChoiceMenuFromList({'Before the experiment', 'After the experiment'}, '> Validation before or after the experiment?');
 end
@@ -97,6 +98,7 @@ if ~exist('observerID', 'var') || ~exist('observerAgeInYrs', 'var') || ~exist('t
     observerAgeInYrs = GetWithDefault('>> Enter <strong>observer age</strong>:', 32);
     todayDate = datestr(now, 'mmddyy');
 end
+tic;
 
 % Set up some parameters
 theCalType = 'BoxARandomizedLongCableBStubby1_ND02';
@@ -113,12 +115,13 @@ NMeas = 5;
 c = 1;
 NTotalMeas = NMeas*NDirections;
 
+% Make the validation measurements
 for ii = 1:NMeas;
     for d = 1:NDirections
         % Inform the user where we are in the validation
         fprintf('*** Validation %g / %g in total ***\n', c, NTotalMeas);
         
-        % We also take state measurements, which we define here
+        % We also take state measurements sometimes, which we define here
         if (choiceIndex == 1) && (c == 1)
             calStateFlag = true;
         elseif (choiceIndex == 2) && (c == NTotalMeas)
@@ -143,15 +146,19 @@ for ii = 1:NMeas;
             'pr670sensitivityMode', 'STANDARD', ...
             'postreceptoralCombinations', [1 1 1 0 ; 1 -1 0 0 ; 0 0 1 0 ; 0 0 0 1], ...
             'outDir', fullfile(materialsPath, 'MaxMelPulsePsychophysics', datestr(now, 'mmddyy')));
+        
         % Increment the counter
         c = c+1;
     end
 end
 
+% Close radiometer if it is open
 if (~isempty(spectroRadiometerOBJ))
     spectroRadiometerOBJ.shutDown();
     spectroRadiometerOBJ = [];
 end
+
+% Say that we're done with validations
 fprintf('\n************************************************');
 fprintf('\n*** <strong>Validation all complete</strong> ***');
 fprintf('\n************************************************\n');
