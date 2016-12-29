@@ -1,5 +1,5 @@
-function OLFlickerSensitivityLocalHookTemplate
-% OLFlickerSensitivityConfig
+function OLFlickerSensitivityLocalHook
+% OLFlickerSensitivityLocalHook
 %
 % Configure things for working on OneLight projects.
 %
@@ -27,12 +27,19 @@ userID = strtrim(userID);
 switch userID
     case {'melanopsin' 'pupillab'}
         dropboxBaseDir = ['/Users/' userID '/Dropbox (Aguirre-Brainard Lab)/'];
+        olFlickerBaseDir = ['/Users/' userID '/Documents/MATLAB/Experiments/OneLight/OLFlickerSensitivity/code/'];
         dataPath = ['/Users/' userID '/Dropbox (Aguirre-Brainard Lab)/MELA_data/'];
+    case {'dhb'}
+        dropboxBaseDir = ['/Users1'  '/Dropbox (Aguirre-Brainard Lab)/'];
+        olFlickerBaseDir = ['/Users/' userID '/Documents/MATLAB/projects/Experiments/OneLight/OLFlickerSensitivity/code/'];
+        dataPath = ['/Users1/' '/Dropbox (Aguirre-Brainard Lab)/MELA_data/'];        
     case 'connectome'
         dropboxBaseDir = ['/Users/' userID '/Dropbox (Aguirre-Brainard Lab)'];
+        olFlickerBaseDir = ['/Users/' userID '/Documents/MATLAB/Experiments/OneLight/OLFlickerSensitivity/code/'];
         dataPath = ['/Users/' userID '/Dropbox (Aguirre-Brainard Lab)/TOME_data/'];
     otherwise
         dropboxBaseDir = ['/Users/' userID '/Dropbox (Aguirre-Brainard Lab)'];
+        olFlickerBaseDir = ['/Users/' userID '/Documents/MATLAB/Experiments/OneLight/OLFlickerSensitivity/code/'];
         dataPath = ['/Users/' userID '/Dropbox (Aguirre-Brainard Lab)/MELA_data/'];
 end
 
@@ -60,8 +67,7 @@ setpref('OneLight', 'SpeakRateDefault', 230);
 % Add OmniDriver.jar to java path
 JavaAddToPath(['/Users/' userID '/Documents/MATLAB/Toolboxes/OneLightDriver/xOceanOpticsJava/OmniDriver.jar'],'OmniDriver.jar');
 
-% Set the default speak rate
-olFlickerBaseDir = ['/Users/' userID '/Documents/MATLAB/Experiments/OneLight/OLFlickerSensitivity/code/'];
+% Point at the code
 setpref('OneLight', 'OLFlickerSensitivityBaseDir', olFlickerBaseDir);
 
 % Add OLFlickerSensitivity to the path

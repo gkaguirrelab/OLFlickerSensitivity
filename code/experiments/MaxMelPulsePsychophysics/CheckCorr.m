@@ -1,3 +1,9 @@
+% CheckCorr
+%
+% This script analyzes the output of the modulation seeking procedure, to
+% help us figure out why it isn't working quite right.
+
+% 
 Path = getpref('OneLight', 'materialsPath');
 load(fullfile(Path, 'MaxMelPulsePsychophysics', '121916',  'Cache-MelanopsinDirectedSuperMaxMel_HERO_JAR_test350_121916.mat'));
 
