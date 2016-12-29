@@ -27,19 +27,15 @@ userID = strtrim(userID);
 switch userID
     case {'melanopsin' 'pupillab'}
         dropboxBaseDir = ['/Users/' userID '/Dropbox (Aguirre-Brainard Lab)/'];
-        olFlickerBaseDir = ['/Users/' userID '/Documents/MATLAB/Experiments/OneLight/OLFlickerSensitivity/code/'];
         dataPath = ['/Users/' userID '/Dropbox (Aguirre-Brainard Lab)/MELA_data/'];
     case {'dhb'}
         dropboxBaseDir = ['/Users1'  '/Dropbox (Aguirre-Brainard Lab)/'];
-        olFlickerBaseDir = ['/Users/' userID '/Documents/MATLAB/projects/Experiments/OneLight/OLFlickerSensitivity/code/'];
         dataPath = ['/Users1/' '/Dropbox (Aguirre-Brainard Lab)/MELA_data/'];        
     case 'connectome'
         dropboxBaseDir = ['/Users/' userID '/Dropbox (Aguirre-Brainard Lab)'];
-        olFlickerBaseDir = ['/Users/' userID '/Documents/MATLAB/Experiments/OneLight/OLFlickerSensitivity/code/'];
         dataPath = ['/Users/' userID '/Dropbox (Aguirre-Brainard Lab)/TOME_data/'];
     otherwise
         dropboxBaseDir = ['/Users/' userID '/Dropbox (Aguirre-Brainard Lab)'];
-        olFlickerBaseDir = ['/Users/' userID '/Documents/MATLAB/Experiments/OneLight/OLFlickerSensitivity/code/'];
         dataPath = ['/Users/' userID '/Dropbox (Aguirre-Brainard Lab)/MELA_data/'];
 end
 
@@ -65,10 +61,12 @@ setpref('OneLight', 'OneLightCalData', fullfile(dropboxBaseDir, 'MELA_materials'
 setpref('OneLight', 'SpeakRateDefault', 230);
 
 % Add OmniDriver.jar to java path
-JavaAddToPath(['/Users/' userID '/Documents/MATLAB/Toolboxes/OneLightDriver/xOceanOpticsJava/OmniDriver.jar'],'OmniDriver.jar');
+OneLightDriverPath = tbLocateToolbox('OneLightDriver');
+JavaAddToPath(fullfile(OneLightDriverPath,'xOceanOpticsJava/OmniDriver.jar'),'OmniDriver.jar');
 
 % Point at the code
-setpref('OneLight', 'OLFlickerSensitivityBaseDir', olFlickerBaseDir);
+olFlickerProjectDir = tbLocateProject('OLFlickerSensivivity');
+setpref('OneLight', 'OLFlickerSensitivityBaseDir', fullfile(olFlickerProjectDir,'code'));
 
 % Add OLFlickerSensitivity to the path
-addpath(genpath(olFlickerBaseDir));
+addpath(genpath(olFlickerProjectDir));
