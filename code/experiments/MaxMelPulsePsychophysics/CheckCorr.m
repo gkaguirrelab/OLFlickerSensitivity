@@ -10,10 +10,10 @@ clear; close all;
 cachePath = getpref('OneLight', 'materialsPath');
 % load(fullfile(cachePath, 'MaxMelPulsePsychophysics', '121916',  'Cache-MelanopsinDirectedSuperMaxMel_HERO_JAR_test350_121916.mat'));
 % theBox = 'BoxARandomizedLongCableBStubby1_ND02';
-load(fullfile(cachePath, 'MaxMelPulsePsychophysics', '122316',  'Cache-MelanopsinDirectedSuperMaxMel_HERO_IterTest_122316.mat'));
-theBox = 'BoxBRandomizedLongCableBStubby1_ND02';
-% load(fullfile(cachePath, 'PIPRMaxPulse', '122216',  'Cache-MelanopsinDirectedSuperMaxMel_HERO_Test122216_122216.mat'));
-% theBox = 'BoxDRandomizedLongCableAEyePiece2_ND03';
+% load(fullfile(cachePath, 'MaxMelPulsePsychophysics', '122316',  'Cache-MelanopsinDirectedSuperMaxMel_HERO_IterTest_122316.mat'));
+% theBox = 'BoxBRandomizedLongCableBStubby1_ND02';
+load(fullfile(cachePath, 'PIPRMaxPulse', '122216',  'Cache-MelanopsinDirectedSuperMaxMel_HERO_Test122216_122216.mat'));
+theBox = 'BoxDRandomizedLongCableAEyePiece2_ND03';
 
 % Convert data to standardized naming for here
 eval(['theData = ' theBox ';  clear ' theBox ';']);
