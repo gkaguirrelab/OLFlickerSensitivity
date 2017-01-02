@@ -1,8 +1,3 @@
-% QUESTIONS:
-%  a) Should theDirectionsCorrect be [true true false]?
-%  b) How are pre and post validations distinguished, so that seeking
-%  doesn't happen post experiment?
-
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Prepare for the experiment
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

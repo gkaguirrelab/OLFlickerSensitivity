@@ -1,8 +1,3 @@
-% QUESTIONS
-%
-% What is the divide by magic number 5 in the light flux background
-% computation?
-
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Generate the cache
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -136,6 +131,9 @@ desiredChromaticity = [0.54 0.38];
 modPrimary = OLInvSolveChrom(cal, desiredChromaticity);
 
 % Background
+%
+% This 5 here is hard coding the fact that we want a 400% light flux
+% modulation.
 bgPrimary = modPrimary/5;
 
 % We copy over the information from the LMS cache file
