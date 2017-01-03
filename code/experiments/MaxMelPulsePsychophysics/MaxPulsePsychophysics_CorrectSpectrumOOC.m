@@ -12,7 +12,7 @@ todayDate = datestr(now, 'mmddyy');
 % Correct the modulation spectra
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 tic;
-theCalType = 'BoxARandomizedLongCableBStubby1_ND02';
+theCalType = 'BoxBRandomizedLongCableBStubby1_ND02';
 spectroRadiometerOBJ = [];
 spectroRadiometerOBJWillShutdownAfterMeasurement = false;
 theDirections = {'MelanopsinDirectedSuperMaxMel' 'LMSDirectedSuperMaxLMS' 'LightFluxMaxPulse'};
@@ -40,7 +40,7 @@ for d = 1:length(theDirections)
         'selectedCalType', theCalType, ...
         'CALCULATE_SPLATTER', false, ...
         'lambda', 0.8, ...
-        'NIter', 10, ...
+        'NIter', 30, ...
         'powerLevels', [0 1.0000], ...
         'doCorrection', theDirectionsCorrect(d), ...
         'postreceptoralCombinations', [1 1 1 0 ; 1 -1 0 0 ; 0 0 1 0 ; 0 0 0 1], ...
@@ -96,7 +96,7 @@ end
 tic;
 
 % Set up some parameters
-theCalType = 'BoxARandomizedLongCableBStubby1_ND02';
+theCalType = 'BoxBRandomizedLongCableBStubby1_ND02';
 spectroRadiometerOBJ = [];
 spectroRadiometerOBJWillShutdownAfterMeasurement = false;
 theDirections = {['Cache-MelanopsinDirectedSuperMaxMel_' observerID '_' todayDate '.mat'] ...
@@ -104,7 +104,8 @@ theDirections = {['Cache-MelanopsinDirectedSuperMaxMel_' observerID '_' todayDat
 NDirections = length(theDirections);
 cacheDir = getpref('OneLight', 'cachePath');
 materialsPath = getpref('OneLight', 'materialsPath');
-NMeas = 5;
+%Original value: 5
+NMeas = 15;
 
 % Set up a counter
 c = 1;
