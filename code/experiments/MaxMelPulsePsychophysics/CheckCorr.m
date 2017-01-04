@@ -1,4 +1,3 @@
-<<<<<<< Updated upstream
 %% CheckCorr
 %
 % This script analyzes the output of the modulation seeking procedure, to
@@ -15,17 +14,6 @@ load(fullfile(cachePath, 'MaxMelPulsePsychophysics', '122316',  'Cache-Melanopsi
 theBox = 'BoxBRandomizedLongCableBStubby1_ND02';
 % load(fullfile(cachePath, 'PIPRMaxPulse', '122216',  'Cache-MelanopsinDirectedSuperMaxMel_HERO_Test122216_122216.mat'));
 % theBox = 'BoxDRandomizedLongCableAEyePiece2_ND03';
-=======
-Path = getpref('OneLight', 'materialsPath');
-load(fullfile(Path, 'MaxMelPulsePsychophysics', '122316',  'Cache-LMSDirectedSuperMaxLMS_HERO_IterTest_122316.mat'));
-
-% Discover the observer age
-theObserverAge = find(~(cellfun(@isempty, {BoxBRandomizedLongCableBStubby1_ND02{1}.data.correction})));
-
-% How many iterations were run?
-NIterations = size(BoxBRandomizedLongCableBStubby1_ND02{1}.data(theObserverAge).correction.bgSpdAll, 2);
-NPrimaries = size(BoxBRandomizedLongCableBStubby1_ND02{1}.data(theObserverAge).correction.modulationPrimaryCorrectedAll, 1);
->>>>>>> Stashed changes
 
 % Convert data to standardized naming for here
 eval(['theData = ' theBox ';  clear ' theBox ';']);
@@ -40,23 +28,17 @@ nPrimaries = size(theData{1}.data(theObserverAge).correction.modulationPrimaryCo
 %% What's the wavelength sampling?
 wls = SToWls([380 2 201]);
 
-<<<<<<< Updated upstream
 %% Skipped primaries
 %
 % Not sure we need this
 nShortPrimariesSkip = theData{1}.cal.describe.nShortPrimariesSkip;
 nLongPrimariesSkip = theData{1}.cal.describe.nLongPrimariesSkip;
-=======
-% Determine some axis limits
-ylimMax = 1.1*max(max([BoxBRandomizedLongCableBStubby1_ND02{1}.data(theObserverAge).correction.modSpdAll BoxBRandomizedLongCableBStubby1_ND02{1}.data(theObserverAge).correction.bgSpdAll]));
->>>>>>> Stashed changes
 
 %% Determine some axis limits
 %
 % Spectral power
 ylimMax = 1.1*max(max([theData{1}.data(theObserverAge).correction.modSpdAll theData{1}.data(theObserverAge).correction.bgSpdAll]));
 
-<<<<<<< Updated upstream
 hFig = figure; set(hFig,'Position',[220 600 1150 725]);
 movieObj = VideoWriter('Mel_350.mp4','MPEG-4');
 movieObj.FrameRate = 2;
@@ -66,34 +48,19 @@ theColors = ['r' 'g' 'b' 'k' 'c'];
 for ii = 1:nIterations
     subplot(4, 3, 1); hold on;
     plot(wls, theData{1}.data(theObserverAge).correction.bgSpdAll(:,ii),theColors(mod(ii-1,length(theColors)-1)+1));
-=======
-movieObj = VideoWriter('30_iterations_LMS.mp4','MPEG-4');
-movieObj.FrameRate = 2;
-movieObj.Quality = 100;
-open(movieObj);
-for ii = 1:NIterations
-    subplot(2, 3, 1);
-    plot(wls, BoxBRandomizedLongCableBStubby1_ND02{1}.data(theObserverAge).correction.bgSpdAll(:, ii));
->>>>>>> Stashed changes
     xlabel('Wavelength [nm]'); xlim([380 780]);
     ylabel('Radiance'); ylim([-ylimMax*0.01 ylimMax]);
     pbaspect([1 1 1]); set(gca, 'TickDir', 'out'); box off;
     text(700, 0.9*ylimMax, num2str(ii));
     title('Background');
     
-<<<<<<< Updated upstream
     subplot(4, 3, 2); hold on;
     plot(wls, theData{1}.data(theObserverAge).correction.modSpdAll(:,ii),theColors(mod(ii-1,length(theColors)-1)+1));
-=======
-    subplot(2, 3, 2);
-    plot(wls, BoxBRandomizedLongCableBStubby1_ND02{1}.data(theObserverAge).correction.modSpdAll(:, ii));
->>>>>>> Stashed changes
     xlabel('Wavelength [nm]'); xlim([380 780]);
     ylabel('Radiance'); ylim([-ylimMax*0.01 ylimMax]);
     pbaspect([1 1 1]); set(gca, 'TickDir', 'out'); box off;
     title('Modulation');
     
-<<<<<<< Updated upstream
     subplot(4, 3, 3);
     hold off;
     plot(1:ii, 100*theData{1}.data(theObserverAge).correction.contrasts(1, 1:ii), '-sr', 'MarkerFaceColor', 'r'); hold on
@@ -114,17 +81,6 @@ for ii = 1:NIterations
        
     subplot(4, 3, 5); hold on;
     plot(1:nPrimaries, theData{1}.data(theObserverAge).correction.modulationPrimaryCorrectedAll(:,ii),theColors(mod(ii-1,length(theColors)-1)+1));
-=======
-    subplot(2, 3, 4);
-    plot(1:NPrimaries, BoxBRandomizedLongCableBStubby1_ND02{1}.data(theObserverAge).correction.modulationPrimaryCorrectedAll(:, ii));
-    xlabel('Primary #'); xlim([0 60]);
-    ylabel('Setting'); ylim([-0.1 1.1]);
-    pbaspect([1 1 1]); set(gca, 'TickDir', 'out'); box off;
-    
-    
-    subplot(2, 3, 5);
-    plot(1:NPrimaries, BoxBRandomizedLongCableBStubby1_ND02{1}.data(theObserverAge).correction.modulationPrimaryCorrectedAll(:, ii));
->>>>>>> Stashed changes
     xlabel('Primary #'); xlim([0 60]);
     ylabel('Setting'); ylim([-0.1 1.1]);
     pbaspect([1 1 1]); set(gca, 'TickDir', 'out'); box off;
@@ -143,22 +99,11 @@ for ii = 1:NIterations
     ylabel('Setting'); ylim([0.98 1.02]);
     pbaspect([1 1 1]); set(gca, 'TickDir', 'out'); box off;
     
-<<<<<<< Updated upstream
     subplot(4, 3, 10); hold on;
     plot(1:nPrimaries, theData{1}.data(theObserverAge).correction.backgroundPrimaryCorrectedAll(:,ii),theColors(mod(ii-1,length(theColors)-1)+1));
     plot([0 60],[0 0],'k:','LineWidth',1);
     xlabel('Primary #'); xlim([0 60]);
     ylabel('Setting'); ylim([-0.02 0.02]);
-=======
-    
-    subplot(2, 3, 3);
-    hold off;
-    plot(1:ii, 100*BoxBRandomizedLongCableBStubby1_ND02{1}.data(theObserverAge).correction.contrasts(1, 1:ii), '-sr', 'MarkerFaceColor', 'r'); hold on
-    plot(1:ii, 100*BoxBRandomizedLongCableBStubby1_ND02{1}.data(theObserverAge).correction.contrasts(2, 1:ii), '-sg', 'MarkerFaceColor', 'g');
-    plot(1:ii, 100*BoxBRandomizedLongCableBStubby1_ND02{1}.data(theObserverAge).correction.contrasts(3, 1:ii), '-sb', 'MarkerFaceColor', 'b');
-    xlabel('Iteration #'); xlim([0 NIterations+1]);
-    ylabel('Contrast'); %ylim(]);
->>>>>>> Stashed changes
     pbaspect([1 1 1]); set(gca, 'TickDir', 'out'); box off;
        
     subplot(4, 3, 11); hold on;
