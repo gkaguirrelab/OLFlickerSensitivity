@@ -1,22 +1,29 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Prepare for the experiment
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
 % Ask for the observer age
 commandwindow;
 observerID = GetWithDefault('>> Enter <strong>user name</strong>', 'HERO_test');
 observerAgeInYrs = GetWithDefault('>> Enter <strong>observer age</strong>:', 32);
 todayDate = datestr(now, 'mmddyy');
 
+% Query user whether to take temperature measurements
+takeTemperatureMeasurements = GetWithDefault('Take Temperature Measurements ?', false);
+if (takeTemperatureMeasurements ~= true) && (takeTemperatureMeasurements ~= 1)
+   takeTemperatureMeasurements = false;
+else
+   takeTemperatureMeasurements = true;
+end
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Correct the modulation spectra
+% Correct the spectrum
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 tic;
-theCalType = 'BoxBRandomizedLongCableBStubby1_ND02';
+theCalType = 'BoxBRandomizedLongCableBEyePiece2_ND02';
 spectroRadiometerOBJ = [];
 spectroRadiometerOBJWillShutdownAfterMeasurement = false;
 theDirections = {'MelanopsinDirectedSuperMaxMel' 'LMSDirectedSuperMaxLMS' 'LightFluxMaxPulse'};
-theDirectionsCorrect = [true true true]; % Do not correct the third one (LightFluxMaxPulse)
+theDirectionsCorrect = [true true false]; % Do not correct the third one (LightFluxMaxPulse)
 cacheDir = getpref('OneLight', 'cachePath');
 materialsPath = getpref('OneLight', 'materialsPath');
 
@@ -30,12 +37,12 @@ for d = 1:length(theDirections)
     fprintf(' * Starting spectrum-seeking loop...\n');
     [cacheData olCache spectroRadiometerOBJ] = OLCorrectCacheFileOOC(...
         fullfile(cacheDir, 'stimuli', ['Cache-' theDirections{d} '.mat']), ...
-        'jryan@mail.med.upenn.edu', ...
+        'igdalova@mail.med.upenn.edu', ...
         'PR-670', spectroRadiometerOBJ, spectroRadiometerOBJWillShutdownAfterMeasurement, ...
         'FullOnMeas', false, ...
         'CalStateMeas', false, ...
         'DarkMeas', false, ...
-        'OBSERVER_AGE', observerAgeInYrs, ...
+        'REFERENCE_OBSERVER_AGE', observerAgeInYrs, ...
         'ReducedPowerLevels', false, ...
         'selectedCalType', theCalType, ...
         'CALCULATE_SPLATTER', false, ...
@@ -44,11 +51,14 @@ for d = 1:length(theDirections)
         'powerLevels', [0 1.0000], ...
         'doCorrection', theDirectionsCorrect(d), ...
         'postreceptoralCombinations', [1 1 1 0 ; 1 -1 0 0 ; 0 0 1 0 ; 0 0 0 1], ...
-        'outDir', fullfile(materialsPath, 'MaxMelPulsePsychophysics', todayDate));
+        'outDir', fullfile(materialsPath, 'MaxMelPulsePsychophysics', todayDate), ...
+        'takeTemperatureMeasurements', takeTemperatureMeasurements);
     fprintf(' * Spectrum seeking finished!\n');
     
     % Save the cache
     fprintf(' * Saving cache ...');
+    
+    
     params = cacheData.data(observerAgeInYrs).describe.params;
     params.modulationDirection = theDirections{d};
     params.cacheFile = ['Cache-' params.modulationDirection '_' observerID '_' todayDate '.mat'];
@@ -56,33 +66,36 @@ for d = 1:length(theDirections)
     fprintf('done!\n');
 end
 
-% Close radiometer if it is open
 if (~isempty(spectroRadiometerOBJ))
     spectroRadiometerOBJ.shutDown();
     spectroRadiometerOBJ = [];
 end
 toc;
-
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Generate the modulations
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Make the mod
+% LMS
+%%
 tic;
 customSuffix = ['_' observerID '_' todayDate];
-OLMakeModulations('Modulation-MaxMelPulsePsychophysics-PulseMaxLMS_3s_MaxContrast3sSegment.cfg', observerAgeInYrs, theCalType, theCalType, customSuffix);
-OLMakeModulations('Modulation-MaxMelPulsePsychophysics-PulseMaxMel_3s_MaxContrast3sSegment.cfg', observerAgeInYrs, theCalType, theCalType, customSuffix);
-OLMakeModulations('Modulation-MaxMelPulsePsychophysics-PulseMaxLightFlux_3s_MaxContrast3sSegment.cfg', observerAgeInYrs, theCalType, theCalType, customSuffix);
+OLMakeModulations('Modulation-MaxMelPulsePsychophysics-PulseMaxLMS_3s_MaxContrast3sSegment.cfg', observerAgeInYrs, theCalType, [], customSuffix);
+OLMakeModulations('Modulation-MaxMelPulsePsychophysics-PulseMaxMel_3s_MaxContrast3sSegment.cfg', observerAgeInYrs, theCalType, [], customSuffix);
+OLMakeModulations('Modulation-MaxMelPulsePsychophysics-PulseMaxLightFlux_3s_MaxContrast3sSegment.cfg', observerAgeInYrs, theCalType, [], customSuffix);
 toc;
 
 % Assign the default choice index the first time we run this script. We
 % clear this after the pre-experimental validation.
 choiceIndex = 1;
 
+%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Validate the spectrum before and after the experiment
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+tic;
+commandwindow;
 
 % Prompt the user to state if we're before or after the experiment
-commandwindow;
 if ~exist('choiceIndex', 'var')
     choiceIndex = ChoiceMenuFromList({'Before the experiment', 'After the experiment'}, '> Validation before or after the experiment?');
 end
@@ -93,31 +106,28 @@ if ~exist('observerID', 'var') || ~exist('observerAgeInYrs', 'var') || ~exist('t
     observerAgeInYrs = GetWithDefault('>> Enter <strong>observer age</strong>:', 32);
     todayDate = datestr(now, 'mmddyy');
 end
-tic;
 
 % Set up some parameters
-theCalType = 'BoxBRandomizedLongCableBStubby1_ND02';
+theCalType = 'BoxBRandomizedLongCableBEyePiece2_ND00';
 spectroRadiometerOBJ = [];
 spectroRadiometerOBJWillShutdownAfterMeasurement = false;
 theDirections = {['Cache-MelanopsinDirectedSuperMaxMel_' observerID '_' todayDate '.mat'] ...
-    ['Cache-LMSDirectedSuperMaxLMS_' observerID '_' todayDate '.mat']};
+    ['Cache-LMSDirectedSuperMaxLMS_' observerID '_' todayDate '.mat']};;
 NDirections = length(theDirections);
 cacheDir = getpref('OneLight', 'cachePath');
 materialsPath = getpref('OneLight', 'materialsPath');
-%Original value: 5
 NMeas = 5;
 
 % Set up a counter
 c = 1;
 NTotalMeas = NMeas*NDirections;
 
-% Make the validation measurements
 for ii = 1:NMeas;
     for d = 1:NDirections
         % Inform the user where we are in the validation
         fprintf('*** Validation %g / %g in total ***\n', c, NTotalMeas);
         
-        % We also take state measurements sometimes, which we define here
+        % We also take state measurements, which we define here
         if (choiceIndex == 1) && (c == 1)
             calStateFlag = true;
         elseif (choiceIndex == 2) && (c == NTotalMeas)
@@ -129,32 +139,29 @@ for ii = 1:NMeas;
         % Take the measurement
         [~, ~, ~, spectroRadiometerOBJ] = OLValidateCacheFileOOC(...
             fullfile(cacheDir, 'stimuli', theDirections{d}), ...
-            'jryan@mail.med.upenn.edu', ...
+            'igdalova@mail.med.upenn.edu', ...
             'PR-670', spectroRadiometerOBJ, spectroRadiometerOBJWillShutdownAfterMeasurement, ...
             'FullOnMeas', false, ...
             'CalStateMeas', calStateFlag, ...
             'DarkMeas', false, ...
-            'OBSERVER_AGE', observerAgeInYrs, ...
+            'REFERENCE_OBSERVER_AGE', observerAgeInYrs, ...
             'ReducedPowerLevels', false, ...
             'selectedCalType', theCalType, ...
             'CALCULATE_SPLATTER', false, ...
             'powerLevels', [0 1.0000], ...
             'pr670sensitivityMode', 'STANDARD', ...
             'postreceptoralCombinations', [1 1 1 0 ; 1 -1 0 0 ; 0 0 1 0 ; 0 0 0 1], ...
-            'outDir', fullfile(materialsPath, 'MaxMelPulsePsychophysics', datestr(now, 'mmddyy')));
-        
+            'outDir', fullfile(materialsPath, 'PIPRMaxPulse', datestr(now, 'mmddyy')), ...
+            'takeTemperatureMeasurements', takeTemperatureMeasurements);
         % Increment the counter
         c = c+1;
     end
 end
 
-% Close radiometer if it is open
 if (~isempty(spectroRadiometerOBJ))
     spectroRadiometerOBJ.shutDown();
     spectroRadiometerOBJ = [];
 end
-
-% Say that we're done with validations
 fprintf('\n************************************************');
 fprintf('\n*** <strong>Validation all complete</strong> ***');
 fprintf('\n************************************************\n');

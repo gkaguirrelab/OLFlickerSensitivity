@@ -7,6 +7,14 @@ observerID = GetWithDefault('>> Enter <strong>user name</strong>', 'HERO_test');
 observerAgeInYrs = GetWithDefault('>> Enter <strong>observer age</strong>:', 32);
 todayDate = datestr(now, 'mmddyy');
 
+% Query user whether to take temperature measurements
+takeTemperatureMeasurements = GetWithDefault('Take Temperature Measurements ?', false);
+if (takeTemperatureMeasurements ~= true) && (takeTemperatureMeasurements ~= 1)
+   takeTemperatureMeasurements = false;
+else
+   takeTemperatureMeasurements = true;
+end
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Correct the spectrum
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -44,7 +52,8 @@ for d = 1:length(theDirections)
         'powerLevels', [0 1.0000], ...
         'doCorrection', theDirectionsCorrect(d), ...
         'postreceptoralCombinations', [1 1 1 0 ; 1 -1 0 0 ; 0 0 1 0 ; 0 0 0 1], ...
-        'outDir', fullfile(materialsPath, 'PIPRMaxPulse', todayDate));
+        'outDir', fullfile(materialsPath, 'PIPRMaxPulse', todayDate), ...
+        'takeTemperatureMeasurements', takeTemperatureMeasurements);
     fprintf(' * Spectrum seeking finished!\n');
     
     % Save the cache
@@ -69,17 +78,17 @@ toc;
 %%
 tic;
 customSuffix = ['_' observerID '_' todayDate];
-OLMakeModulations('Modulation-PIPRMaxPulse-BackgroundLMS_45sSegment.cfg', observerAgeInYrs, theCalType, [], customSuffix);
-OLMakeModulations('Modulation-PIPRMaxPulse-PulseMaxLMS_3s_MaxContrast17sSegment.cfg', observerAgeInYrs, theCalType, [], customSuffix); % Attention task
+OLMakeModulations('Modulation-PIPRMaxPulse-BackgroundLMS_45sSegment.cfg', observerAgeInYrs, theCalType, theCalType, customSuffix);
+OLMakeModulations('Modulation-PIPRMaxPulse-PulseMaxLMS_3s_MaxContrast17sSegment.cfg', observerAgeInYrs, theCalType, theCalType, customSuffix); % Attention task
 
 % Mel
-OLMakeModulations('Modulation-PIPRMaxPulse-BackgroundMel_45sSegment.cfg', observerAgeInYrs, theCalType, [], customSuffix);
-OLMakeModulations('Modulation-PIPRMaxPulse-PulseMaxMel_3s_MaxContrast17sSegment.cfg', observerAgeInYrs, theCalType, [], customSuffix); % Attention task
+OLMakeModulations('Modulation-PIPRMaxPulse-BackgroundMel_45sSegment.cfg', observerAgeInYrs, theCalType, theCalType, customSuffix);
+OLMakeModulations('Modulation-PIPRMaxPulse-PulseMaxMel_3s_MaxContrast17sSegment.cfg', observerAgeInYrs, theCalType, theCalType, customSuffix); % Attention task
 
 % PIPR
-OLMakeModulations('Modulation-PIPRMaxPulse-BackgroundPIPR_45sSegment.cfg', observerAgeInYrs, theCalType, [], customSuffix); % Background.
-OLMakeModulations('Modulation-PIPRMaxPulse-PulsePIPRBlue_3s_MaxContrast17sSegment.cfg', observerAgeInYrs, theCalType, [], customSuffix); % Blue PIPR
-OLMakeModulations('Modulation-PIPRMaxPulse-PulsePIPRRed_3s_MaxContrast17sSegment.cfg', observerAgeInYrs, theCalType, [], customSuffix); % Red PIPR
+OLMakeModulations('Modulation-PIPRMaxPulse-BackgroundPIPR_45sSegment.cfg', observerAgeInYrs, theCalType, theCalType, customSuffix); % Background.
+OLMakeModulations('Modulation-PIPRMaxPulse-PulsePIPRBlue_3s_MaxContrast17sSegment.cfg', observerAgeInYrs, theCalType, theCalType, customSuffix); % Blue PIPR
+OLMakeModulations('Modulation-PIPRMaxPulse-PulsePIPRRed_3s_MaxContrast17sSegment.cfg', observerAgeInYrs, theCalType, theCalType, customSuffix); % Red PIPR
 
 toc;
 
@@ -152,7 +161,8 @@ for ii = 1:NMeas;
             'powerLevels', [0 1.0000], ...
             'pr670sensitivityMode', 'STANDARD', ...
             'postreceptoralCombinations', [1 1 1 0 ; 1 -1 0 0 ; 0 0 1 0 ; 0 0 0 1], ...
-            'outDir', fullfile(materialsPath, 'PIPRMaxPulse', datestr(now, 'mmddyy')));
+            'outDir', fullfile(materialsPath, 'PIPRMaxPulse', datestr(now, 'mmddyy')), ...
+            'takeTemperatureMeasurements', takeTemperatureMeasurements);
         % Increment the counter
         c = c+1;
     end
