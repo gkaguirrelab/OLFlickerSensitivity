@@ -20,8 +20,8 @@ end
 % Pull out S
 S = val.describe.S;
 
-theReceptors = data(val.describe.REFERENCE_OBSERVER_AGE).describe.photoreceptors;
-T_receptors = data(val.describe.REFERENCE_OBSERVER_AGE).describe.T_receptors;
+theReceptors = data(val.describe.OBSERVER_AGE).describe.photoreceptors;
+T_receptors = data(val.describe.OBSERVER_AGE).describe.T_receptors;
 
 load T_xyz1931
 T_xyz = SplineCmf(S_xyz1931,683*T_xyz1931,S);
@@ -30,7 +30,7 @@ photopicLuminanceCdM2 = T_xyz(2,:)*val.modulationBGMeas.meas.pr650.spectrum;
 fid = fopen(fullfile(validationDir, [valFileName '.txt']), 'w');
 fprintf(fid, 'Background luminance [cd/m2]: %.2f cd/m2\n', photopicLuminanceCdM2);
 fprintf('Background luminance [cd/m2]: %.2f cd/m2\n', photopicLuminanceCdM2);
-if ~strcmp(val.describe.cache.data(val.describe.REFERENCE_OBSERVER_AGE).describe.params.receptorIsolateMode, 'PIPR')
+if ~strcmp(val.describe.cache.data(val.describe.OBSERVER_AGE).describe.params.receptorIsolateMode, 'PIPR')
     % Calculate the receptor activations to the background
     bgSpd = val.modulationBGMeas.meas.pr650.spectrum;
     modSpd = val.modulationMaxMeas.meas.pr650.spectrum;
