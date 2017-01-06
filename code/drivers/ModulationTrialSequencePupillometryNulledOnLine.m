@@ -26,14 +26,16 @@ else
 end
 
 % Attempt to open the LabJack temperature sensing device
+
 if (takeTemperatureMeasurements)
     % Gracefully attempt to open the LabJack
-    [takeTemperatureMeasurements, quitNow] = OLCalibrator.OpenLabJackTemperatureProbe(takeTemperatureMeasurements);
+    [takeTemperatureMeasurements, quitNow, theLJdev] = OLCalibrator.OpenLabJackTemperatureProbe(takeTemperatureMeasurements);
     if (quitNow)
         return;
-    end
-end
-        
+     end
+else
+     theLJdev = [];
+end        
 [runCommTest, commTestRepeats] = OLVSGhelper.getCommTestParams();
 
 % Setup parameters and configure block of trials
@@ -328,7 +330,7 @@ for trial = params.whichTrialToStartAt:params.nTrials
     
     % Measure the temperature
     if (takeTemperatureMeasurements)
-        [status, dataStruct(trial).temperature] = LJTemperatureProbe('measure');
+        [status, dataStruct(trial).temperature] = theLJdev.measure();
         fprintf('OneLight temperatures: %2.1f %2.1f\n', dataStruct(trial).temperature(1), dataStruct(trial).temperature(2));
     end
     
