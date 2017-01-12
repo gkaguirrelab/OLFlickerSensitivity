@@ -14,8 +14,10 @@ cachePath = getpref('OneLight', 'materialsPath');
 % theBox = 'BoxBRandomizedLongCableBStubby1_ND02';
 % load(fullfile(cachePath, 'MaxMelPulsePsychophysics', '010417',  'Cache-MelanopsinDirectedSuperMaxMel_HERO_Lambda04_010417.mat'));
 % theBox = 'BoxBRandomizedLongCableBStubby1_ND02';
-load(fullfile(cachePath, 'PIPRMaxPulse', '122216',  'Cache-MelanopsinDirectedSuperMaxMel_HERO_Test122216_122216.mat'));
-theBox = 'BoxDRandomizedLongCableAEyePiece2_ND03';
+load(fullfile(cachePath, 'MaxMelPulsePsychophysics', '011017',  'Cache-MelanopsinDirectedSuperMaxMel_HERO_Lambda03_011017.mat'));
+theBox = 'BoxBRandomizedLongCableBStubby1_ND02';
+% load(fullfile(cachePath, 'PIPRMaxPulse', '122216',  'Cache-MelanopsinDirectedSuperMaxMel_HERO_Test122216_122216.mat'));
+% theBox = 'BoxDRandomizedLongCableAEyePiece2_ND03';
 
 % Convert data to standardized naming for here
 eval(['theData = ' theBox ';  clear ' theBox ';']);
@@ -51,8 +53,16 @@ movieObj.FrameRate = 2;
 movieObj.Quality = 100;
 open(movieObj);
 theColors = ['r' 'g' 'b' 'k' 'c'];
- 
+
+%% Get the calibration file, for some checks
+load TestCalFile
+
 %% Plot what we got
+%
+% For each iteration
+%   Dashed black line on each iteration is desired (spd or primary).
+%   Green solid line is what was measured (spd or primary).
+%   Red solid line is what to try next (primary only)
 for ii = 1:nIterations
     subplot(4, 4, 1); hold off;
     plot(wls, theData{1}.data(theObserverAge).correction.bgDesiredSpd,'k:','LineWidth',2);
@@ -63,6 +73,7 @@ for ii = 1:nIterations
     pbaspect([1 1 1]); set(gca, 'TickDir', 'out'); box off;
     text(700, 0.9*ylimMax, num2str(ii));
     title('Background');
+    %plot(wls,cal.computed.pr650MeanDark,'b');
     
     subplot(4, 4, 2); hold off;
     plot(wls, theData{1}.data(theObserverAge).correction.modDesiredSpd,'k:','LineWidth',2);
@@ -83,107 +94,109 @@ for ii = 1:nIterations
     pbaspect([1 1 1]); set(gca, 'TickDir', 'out'); box off;
     title('Contrast');
     
+    % The inferred primary should be obtainable from the measured spectrum
+    % and the calibratile file.  Let's try it and check
+    backgroundPrimaryInferredHereFromCal = OLSpdToPrimary(cal,theData{1}.data(theObserverAge).correction.bgSpdAll(:,ii));
+    backgroundPrimaryWeThinkOnFirstIter = theData{1}.data(theObserverAge).correction.backgroundPrimaryCorrectedNotTruncatedAll(:,ii) + 0.3 * ...
+        theData{1}.data(theObserverAge).correction.deltaBackgroundPrimaryInferredAll(:,ii);
+        
     subplot(4, 4, 5); hold off;
     plot(1:nPrimaries, theData{1}.data(theObserverAge).correction.backgroundPrimaryInitial,'k:','LineWidth',2);
     hold on; 
     plot(1:nPrimaries, theData{1}.data(theObserverAge).correction.backgroundPrimaryCorrectedAll(:,ii),'r');
-    plot(1:nPrimaries, theData{1}.data(theObserverAge).correction.deltaBackgroundPrimaryInferredAll(:,ii) + ...
-        theData{1}.data(theObserverAge).correction.backgroundPrimaryInitial,'g');
+    plot(1:nPrimaries, theData{1}.data(theObserverAge).correction.backgroundPrimaryInferredAll(:,ii),'g');
     xlabel('Primary #'); xlim([0 60]);
-    ylabel('Setting'); ylim([-0.1 1.1]);
+    ylabel('Primary Value'); ylim([-0.1 1.1]);
     pbaspect([1 1 1]); set(gca, 'TickDir', 'out'); box off;
        
     subplot(4, 4, 6); hold off;
     plot(1:nPrimaries, theData{1}.data(theObserverAge).correction.modulationPrimaryInitial,'k:','LineWidth',2);
     hold on;
     plot(1:nPrimaries, theData{1}.data(theObserverAge).correction.modulationPrimaryCorrectedAll(:,ii),'r');
-    plot(1:nPrimaries, theData{1}.data(theObserverAge).correction.deltaModulationPrimaryInferredAll(:,ii) + ...
-        theData{1}.data(theObserverAge).correction.modulationPrimaryInitial,'g');xlabel('Primary #');
+    plot(1:nPrimaries, theData{1}.data(theObserverAge).correction.modulationPrimaryInferredAll(:,ii),'g');
+    xlabel('Primary #');
     xlim([0 60]);
-    ylabel('Setting'); ylim([-0.1 1.1]);
+    ylabel('Primary Value'); ylim([-0.1 1.1]);
     pbaspect([1 1 1]); set(gca, 'TickDir', 'out'); box off;
      
     subplot(4, 4, 9); hold off;
     plot(1:nPrimaries, theData{1}.data(theObserverAge).correction.backgroundPrimaryInitial,'k:','LineWidth',2);
     hold on
     plot(1:nPrimaries, theData{1}.data(theObserverAge).correction.backgroundPrimaryCorrectedAll(:,ii),'r');
-    plot(1:nPrimaries, theData{1}.data(theObserverAge).correction.deltaBackgroundPrimaryInferredAll(:,ii) + ...
-        theData{1}.data(theObserverAge).correction.backgroundPrimaryInitial,'g');plot([0 60],[1 1],'k:','LineWidth',1);
+    plot(1:nPrimaries, theData{1}.data(theObserverAge).correction.backgroundPrimaryInferredAll(:,ii),'g');
+    plot([0 60],[1 1],'k:','LineWidth',1);
     xlabel('Primary #'); xlim([0 60]);
-    ylabel('Setting'); ylim([0.98 1.02]);
+    ylabel('Primary Value'); ylim([0.98 1.02]);
     pbaspect([1 1 1]); set(gca, 'TickDir', 'out'); box off;
        
     subplot(4, 4, 10); hold off;
     plot(1:nPrimaries, theData{1}.data(theObserverAge).correction.modulationPrimaryInitial,'k:','LineWidth',2);
     hold on;
     plot(1:nPrimaries, theData{1}.data(theObserverAge).correction.modulationPrimaryCorrectedAll(:,ii),'r');
-    plot(1:nPrimaries, theData{1}.data(theObserverAge).correction.deltaModulationPrimaryInferredAll(:,ii) + ...
-        theData{1}.data(theObserverAge).correction.modulationPrimaryInitial,'g');
+    plot(1:nPrimaries, theData{1}.data(theObserverAge).correction.modulationPrimaryInferredAll(:,ii),'g');
     plot([0 60],[1 1],'k:','LineWidth',1);plot([0 60],[1 1],'k:','LineWidth',1);
     xlabel('Primary #'); xlim([0 60]);
-    ylabel('Setting'); ylim([0.98 1.02]);
+    ylabel('Primary Value'); ylim([0.98 1.02]);
     pbaspect([1 1 1]); set(gca, 'TickDir', 'out'); box off;
     
     subplot(4, 4, 11); hold off;
     plot(1:nPrimaries, theData{1}.data(theObserverAge).correction.backgroundPrimaryInitial,'k:','LineWidth',2);
     hold on;
     plot(1:nPrimaries, theData{1}.data(theObserverAge).correction.backgroundPrimaryCorrectedNotTruncatedAll(:,ii),'r');
-    plot(1:nPrimaries, theData{1}.data(theObserverAge).correction.deltaBackgroundPrimaryInferredAll(:,ii) + ...
-        theData{1}.data(theObserverAge).correction.backgroundPrimaryInitial,'g');plot([0 60],[1 1],'k:','LineWidth',1);
+    plot(1:nPrimaries, theData{1}.data(theObserverAge).correction.backgroundPrimaryInferredAll(:,ii),'g');
+    plot([0 60],[1 1],'k:','LineWidth',1);
     xlabel('Primary #'); xlim([0 60]);
-    ylabel('Setting'); ylim([0.98 1.02]);
+    ylabel('Primary Value'); ylim([0.98 1.02]);
     pbaspect([1 1 1]); set(gca, 'TickDir', 'out'); box off;
        
     subplot(4, 4, 12); hold off;
     plot(1:nPrimaries, theData{1}.data(theObserverAge).correction.modulationPrimaryInitial,'k:','LineWidth',2);
     hold on;
     plot(1:nPrimaries, theData{1}.data(theObserverAge).correction.modulationPrimaryCorrectedNotTruncatedAll(:,ii),'r');
-    plot(1:nPrimaries, theData{1}.data(theObserverAge).correction.deltaModulationPrimaryInferredAll(:,ii) + ...
-        theData{1}.data(theObserverAge).correction.modulationPrimaryInitial,'g');
+    plot(1:nPrimaries, theData{1}.data(theObserverAge).correction.modulationPrimaryInferredAll(:,ii),'g');
     plot([0 60],[1 1],'k:','LineWidth',1);
     xlabel('Primary #'); xlim([0 60]);
-    ylabel('Setting'); ylim([0.98 1.02]);
+    ylabel('Primary Value'); ylim([0.98 1.02]);
     pbaspect([1 1 1]); set(gca, 'TickDir', 'out'); box off;
     
     subplot(4, 4, 13); hold off;
     plot(1:nPrimaries, theData{1}.data(theObserverAge).correction.backgroundPrimaryInitial,'k:','LineWidth',2);
     hold on;
     plot(1:nPrimaries, theData{1}.data(theObserverAge).correction.backgroundPrimaryCorrectedAll(:,ii),'r');
-    plot(1:nPrimaries, theData{1}.data(theObserverAge).correction.deltaBackgroundPrimaryInferredAll(:,ii) + ...
-        theData{1}.data(theObserverAge).correction.backgroundPrimaryInitial,'g');plot([0 60],[0 0],'k:','LineWidth',1);
+    plot(1:nPrimaries, theData{1}.data(theObserverAge).correction.backgroundPrimaryInferredAll(:,ii),'g');
+    plot([0 60],[0 0],'k:','LineWidth',1);
     xlabel('Primary #'); xlim([0 60]);
-    ylabel('Setting'); ylim([-0.02 0.02]);
+    ylabel('Primary Value'); ylim([-0.02 0.02]);
     pbaspect([1 1 1]); set(gca, 'TickDir', 'out'); box off;
        
     subplot(4, 4, 14); hold off;
     plot(1:nPrimaries, theData{1}.data(theObserverAge).correction.backgroundPrimaryInitial,'k:','LineWidth',2);
     hold on;
     plot(1:nPrimaries, theData{1}.data(theObserverAge).correction.modulationPrimaryCorrectedAll(:,ii),'r');
-    plot(1:nPrimaries, theData{1}.data(theObserverAge).correction.deltaModulationPrimaryInferredAll(:,ii) + ...
-        theData{1}.data(theObserverAge).correction.modulationPrimaryInitial,'g');
+    plot(1:nPrimaries, theData{1}.data(theObserverAge).correction.modulationPrimaryInferredAll(:,ii),'g');
     plot([0 60],[0 0],'k:','LineWidth',1);
     xlabel('Primary #'); xlim([0 60]);
-    ylabel('Setting'); ylim([-0.02 0.02]);
+    ylabel('Primary Value'); ylim([-0.02 0.02]);
     pbaspect([1 1 1]); set(gca, 'TickDir', 'out'); box off;
     
     subplot(4, 4, 15); hold off;
     plot(1:nPrimaries, theData{1}.data(theObserverAge).correction.backgroundPrimaryInitial,'k:','LineWidth',2);
     hold on;
     plot(1:nPrimaries, theData{1}.data(theObserverAge).correction.backgroundPrimaryCorrectedNotTruncatedAll(:,ii),'r');
-    plot(1:nPrimaries, theData{1}.data(theObserverAge).correction.deltaBackgroundPrimaryInferredAll(:,ii) + ...
-        theData{1}.data(theObserverAge).correction.backgroundPrimaryInitial,'g');plot([0 60],[0 0],'k:','LineWidth',1);
+    plot(1:nPrimaries, theData{1}.data(theObserverAge).correction.backgroundPrimaryInferredAll(:,ii),'g');
+    plot([0 60],[0 0],'k:','LineWidth',1);
     xlabel('Primary #'); xlim([0 60]);
-    ylabel('Setting'); ylim([-0.02 0.02]);
+    ylabel('Primary Value'); ylim([-0.02 0.02]);
     pbaspect([1 1 1]); set(gca, 'TickDir', 'out'); box off;
        
     subplot(4, 4, 16); hold off;
     plot(1:nPrimaries, theData{1}.data(theObserverAge).correction.backgroundPrimaryInitial,'k:','LineWidth',2);
     hold on;
     plot(1:nPrimaries, theData{1}.data(theObserverAge).correction.modulationPrimaryCorrectedNotTruncatedAll(:,ii),'r');
-    plot(1:nPrimaries, theData{1}.data(theObserverAge).correction.deltaModulationPrimaryInferredAll(:,ii) + ...
-        theData{1}.data(theObserverAge).correction.modulationPrimaryInitial,'g');plot([0 60],[0 0],'k:','LineWidth',1);
+    plot(1:nPrimaries, theData{1}.data(theObserverAge).correction.modulationPrimaryInferredAll(:,ii),'g');
+    plot([0 60],[0 0],'k:','LineWidth',1);
     xlabel('Primary #'); xlim([0 60]);
-    ylabel('Setting'); ylim([-0.02 0.02]);
+    ylabel('Primary Value'); ylim([-0.02 0.02]);
     pbaspect([1 1 1]); set(gca, 'TickDir', 'out'); box off;
     
     drawnow;
