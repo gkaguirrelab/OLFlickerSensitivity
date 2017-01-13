@@ -55,7 +55,7 @@ open(movieObj);
 theColors = ['r' 'g' 'b' 'k' 'c'];
 
 %% Get the calibration file, for some checks
-load TestCalFile
+%load TestCalFile
 
 %% Plot what we got
 %
@@ -96,9 +96,9 @@ for ii = 1:nIterations
     
     % The inferred primary should be obtainable from the measured spectrum
     % and the calibratile file.  Let's try it and check
-    backgroundPrimaryInferredHereFromCal = OLSpdToPrimary(cal,theData{1}.data(theObserverAge).correction.bgSpdAll(:,ii));
-    backgroundPrimaryWeThinkOnFirstIter = theData{1}.data(theObserverAge).correction.backgroundPrimaryCorrectedNotTruncatedAll(:,ii) + 0.3 * ...
-        theData{1}.data(theObserverAge).correction.deltaBackgroundPrimaryInferredAll(:,ii);
+%     backgroundPrimaryInferredHereFromCal = OLSpdToPrimary(cal,theData{1}.data(theObserverAge).correction.bgSpdAll(:,ii));
+%     backgroundPrimaryWeThinkOnFirstIter = theData{1}.data(theObserverAge).correction.backgroundPrimaryCorrectedNotTruncatedAll(:,ii) + 0.3 * ...
+%         theData{1}.data(theObserverAge).correction.deltaBackgroundPrimaryInferredAll(:,ii);
         
     subplot(4, 4, 5); hold off;
     plot(1:nPrimaries, theData{1}.data(theObserverAge).correction.backgroundPrimaryInitial,'k:','LineWidth',2);
