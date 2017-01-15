@@ -14,8 +14,12 @@ cachePath = getpref('OneLight', 'materialsPath');
 % theBox = 'BoxBRandomizedLongCableBStubby1_ND02';
 % load(fullfile(cachePath, 'MaxMelPulsePsychophysics', '010417',  'Cache-MelanopsinDirectedSuperMaxMel_HERO_Lambda04_010417.mat'));
 % theBox = 'BoxBRandomizedLongCableBStubby1_ND02';
-load(fullfile(cachePath, 'MaxMelPulsePsychophysics', '011017',  'Cache-MelanopsinDirectedSuperMaxMel_HERO_Lambda03_011017.mat'));
+% load(fullfile(cachePath, 'MaxMelPulsePsychophysics', '011017',  'Cache-MelanopsinDirectedSuperMaxMel_HERO_Lambda03_011017.mat'));
+% theBox = 'BoxBRandomizedLongCableBStubby1_ND02';
+load(fullfile(cachePath, 'MaxMelPulsePsychophysics', '011317',  'Cache-MelanopsinDirectedSuperMaxMel_HERO_Lambda03_011317.mat'));
 theBox = 'BoxBRandomizedLongCableBStubby1_ND02';
+% load(fullfile(cachePath, 'MaxMelPulsePsychophysics', '011317',  'Cache-MelanopsinDirectedSuperMaxMel_HERO_Lambda08_011317.mat'));
+% theBox = 'BoxBRandomizedLongCableBStubby1_ND02';
 % load(fullfile(cachePath, 'PIPRMaxPulse', '122216',  'Cache-MelanopsinDirectedSuperMaxMel_HERO_Test122216_122216.mat'));
 % theBox = 'BoxDRandomizedLongCableAEyePiece2_ND03';
 
@@ -55,7 +59,12 @@ open(movieObj);
 theColors = ['r' 'g' 'b' 'k' 'c'];
 
 %% Get the calibration file, for some checks
-%load TestCalFile
+cal = theData{1}.data(theObserverAge).cal;
+
+%% This is a temp fix for a typo in the correction routine
+if (isfield(theData{1}.data(theObserverAge).correction,'cal'))
+    theData{1}.data(theObserverAge).correction.deltaBackgroundPrimaryInferredAll = theData{1}.data(theObserverAge).correction.cal;
+end
 
 %% Plot what we got
 %
@@ -94,17 +103,73 @@ for ii = 1:nIterations
     pbaspect([1 1 1]); set(gca, 'TickDir', 'out'); box off;
     title('Contrast');
     
-    % The inferred primary should be obtainable from the measured spectrum
-    % and the calibratile file.  Let's try it and check
-%     backgroundPrimaryInferredHereFromCal = OLSpdToPrimary(cal,theData{1}.data(theObserverAge).correction.bgSpdAll(:,ii));
-%     backgroundPrimaryWeThinkOnFirstIter = theData{1}.data(theObserverAge).correction.backgroundPrimaryCorrectedNotTruncatedAll(:,ii) + 0.3 * ...
-%         theData{1}.data(theObserverAge).correction.deltaBackgroundPrimaryInferredAll(:,ii);
+    % A key part of our algorithm is being able to estimate the appropriate
+    % delta primaries given current primaries and measured/desired
+    % spectrum.  This does not seem to be working all that well.
+    % and the calibratile file.  Let's try it and check. 
+    backgroundSpectrumWeWant = theData{1}.data(theObserverAge).correction.bgDesiredSpd;
+    backgroundSpectrumWeMeasured = theData{1}.data(theObserverAge).correction.bgSpdAll(:,ii);
+    backgroundPrimaryInitial = theData{1}.data(theObserverAge).correction.backgroundPrimaryInitial;
+    backgroundPrimaryUsed = theData{1}.data(theObserverAge).correction.backgroundPrimaryMeasuredAll(:,ii);
+    backgroundSpectrumInferredInitial = OLPrimaryToSpd(cal,backgroundPrimaryInitial);
+         
+    backgroundPrimaryInferredLambda_00 = OLSpdToPrimary(cal,theData{1}.data(theObserverAge).correction.bgSpdAll(:,ii),'lambda',0);
+    backgroundSpectrumInferredLambda_00 = OLPrimaryToSpd(cal,backgroundPrimaryInferredLambda_00);
+     
+    backgroundPrimaryInferredLambda_001 = OLSpdToPrimary(cal,theData{1}.data(theObserverAge).correction.bgSpdAll(:,ii),'lambda',0.001);
+    backgroundSpectrumInferredLambda_001 = OLPrimaryToSpd(cal,backgroundPrimaryInferredLambda_001);
+    
+    backgroundPrimaryInferredLambda_01 = OLSpdToPrimary(cal,theData{1}.data(theObserverAge).correction.bgSpdAll(:,ii),'lambda',0.01);
+    backgroundSpectrumInferredLambda_01 = OLPrimaryToSpd(cal,backgroundPrimaryInferredLambda_01); 
+
+    backgroundDeltaPrimaryInferredLambda_0 = OLSpdToPrimary(cal,backgroundSpectrumWeMeasured-backgroundSpectrumWeWant,'differentialMode',true,'lambda',0.00);
+    backgroundPrimaryInferredDeltaLambda_0 = backgroundPrimaryUsed+backgroundDeltaPrimaryInferredLambda_0;
+    backgroundSpectrumInferredDeltaLambda_0 = OLPrimaryToSpd(cal,backgroundPrimaryInferredDeltaLambda_0);
+    
+    backgroundDeltaPrimaryInferredLambda_0001 = OLSpdToPrimary(cal,backgroundSpectrumWeMeasured-backgroundSpectrumWeWant,'differentialMode',true,'lambda',0.001);
+    backgroundPrimaryInferredDeltaLambda_0001 = backgroundPrimaryUsed+backgroundDeltaPrimaryInferredLambda_0001;
+    backgroundSpectrumInferredDeltaLambda_0001 = OLPrimaryToSpd(cal,backgroundPrimaryInferredDeltaLambda_0001);
+    
+    backgroundDeltaPrimaryInferredLambda_01 = OLSpdToPrimary(cal,backgroundSpectrumWeMeasured-backgroundSpectrumWeWant,'differentialMode',true,'lambda',0.1);
+    backgroundPrimaryInferredDeltaLambda_01 = backgroundPrimaryUsed+backgroundDeltaPrimaryInferredLambda_01;
+    backgroundSpectrumInferredDeltaLambda_01 = OLPrimaryToSpd(cal,backgroundPrimaryInferredDeltaLambda_01);
+
+    figure(2); clf;  
+    subplot(2,2,1); hold on 
+    plot(wls,backgroundSpectrumWeWant,'k:','LineWidth',2);
+    plot(wls,backgroundSpectrumInferredInitial,'k','LineWidth',1);
+    plot(wls,backgroundSpectrumWeMeasured,'g','LineWidth',2);
+    %plot(wls,backgroundSpectrumInferredLambda_00,'r','LineWidth',1);
+    %plot(wls,backgroundSpectrumInferredLambda_001,'k','LineWidth',1);
+    plot(wls,backgroundSpectrumInferredDeltaLambda_0,'k','LineWidth',1);
+    plot(wls,backgroundSpectrumInferredDeltaLambda_01,'b','LineWidth',1);
+    plot(wls,backgroundSpectrumInferredDeltaLambda_0001,'r','LineWidth',1);
+
+    subplot(2,2,2); hold on
+    plot(1:nPrimaries,backgroundPrimaryInitial,'k:','LineWidth',3);
+    plot(1:nPrimaries,backgroundPrimaryUsed,'g','LineWidth',1);
+    %plot(1:nPrimaries,backgroundPrimaryInferredLambda_00,'r','LineWidth',1);
+    %plot(1:nPrimaries,backgroundPrimaryInferredLambda_001,'k','LineWidth',1);
+    plot(1:nPrimaries,backgroundPrimaryInferredDeltaLambda_0,'k','LineWidth',1);
+    plot(1:nPrimaries,backgroundPrimaryInferredDeltaLambda_01,'b','LineWidth',1);
+    plot(1:nPrimaries,backgroundPrimaryInferredDeltaLambda_0001,'r','LineWidth',1);
+
+    subplot(2,2,3); hold on 
+    plot(wls,backgroundSpectrumWeMeasured-backgroundSpectrumInferredDeltaLambda_0,'k','LineWidth',2);
+    plot(wls,backgroundSpectrumWeMeasured-backgroundSpectrumInferredDeltaLambda_01,'g','LineWidth',2);
+    plot(wls,backgroundSpectrumWeMeasured-backgroundSpectrumInferredDeltaLambda_0001,'r','LineWidth',2);
+
+    subplot(2,2,4); hold on
+    plot(1:nPrimaries,backgroundPrimaryUsed-backgroundPrimaryInferredDeltaLambda_0,'k','LineWidth',2);
+    plot(1:nPrimaries,backgroundPrimaryUsed-backgroundPrimaryInferredDeltaLambda_01,'g','LineWidth',2);
+    plot(1:nPrimaries,backgroundPrimaryUsed-backgroundPrimaryInferredDeltaLambda_0001,'r','LineWidth',2);
         
     subplot(4, 4, 5); hold off;
     plot(1:nPrimaries, theData{1}.data(theObserverAge).correction.backgroundPrimaryInitial,'k:','LineWidth',2);
     hold on; 
     plot(1:nPrimaries, theData{1}.data(theObserverAge).correction.backgroundPrimaryCorrectedAll(:,ii),'r');
     plot(1:nPrimaries, theData{1}.data(theObserverAge).correction.backgroundPrimaryInferredAll(:,ii),'g');
+    plot(1:nPrimaries, backgroundPrimaryInferredHereFromCal,'g:');
     xlabel('Primary #'); xlim([0 60]);
     ylabel('Primary Value'); ylim([-0.1 1.1]);
     pbaspect([1 1 1]); set(gca, 'TickDir', 'out'); box off;
