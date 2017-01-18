@@ -16,10 +16,12 @@ cachePath = getpref('OneLight', 'materialsPath');
 % theBox = 'BoxBRandomizedLongCableBStubby1_ND02';
 % load(fullfile(cachePath, 'MaxMelPulsePsychophysics', '011017',  'Cache-MelanopsinDirectedSuperMaxMel_HERO_Lambda03_011017.mat'));
 % theBox = 'BoxBRandomizedLongCableBStubby1_ND02';
-load(fullfile(cachePath, 'MaxMelPulsePsychophysics', '011317',  'Cache-MelanopsinDirectedSuperMaxMel_HERO_Lambda03_011317.mat'));
-theBox = 'BoxBRandomizedLongCableBStubby1_ND02';
+% load(fullfile(cachePath, 'MaxMelPulsePsychophysics', '011317',  'Cache-MelanopsinDirectedSuperMaxMel_HERO_Lambda03_011317.mat'));
+% theBox = 'BoxBRandomizedLongCableBStubby1_ND02';
 % load(fullfile(cachePath, 'MaxMelPulsePsychophysics', '011317',  'Cache-MelanopsinDirectedSuperMaxMel_HERO_Lambda08_011317.mat'));
 % theBox = 'BoxBRandomizedLongCableBStubby1_ND02';
+load(fullfile(cachePath, 'MaxMelPulsePsychophysics', '011717',  'Cache-MelanopsinDirectedSuperMaxMel_HERO_LambdaSmoothness_011717.mat'));
+theBox = 'BoxBRandomizedLongCableBStubby1_ND02';
 % load(fullfile(cachePath, 'PIPRMaxPulse', '122216',  'Cache-MelanopsinDirectedSuperMaxMel_HERO_Test122216_122216.mat'));
 % theBox = 'BoxDRandomizedLongCableAEyePiece2_ND03';
 
@@ -163,13 +165,14 @@ for ii = 1:nIterations
     plot(1:nPrimaries,backgroundPrimaryUsed-backgroundPrimaryInferredDeltaLambda_0,'k','LineWidth',2);
     plot(1:nPrimaries,backgroundPrimaryUsed-backgroundPrimaryInferredDeltaLambda_01,'g','LineWidth',2);
     plot(1:nPrimaries,backgroundPrimaryUsed-backgroundPrimaryInferredDeltaLambda_0001,'r','LineWidth',2);
-        
+    
+    figure(1);
     subplot(4, 4, 5); hold off;
     plot(1:nPrimaries, theData{1}.data(theObserverAge).correction.backgroundPrimaryInitial,'k:','LineWidth',2);
     hold on; 
     plot(1:nPrimaries, theData{1}.data(theObserverAge).correction.backgroundPrimaryCorrectedAll(:,ii),'r');
     plot(1:nPrimaries, theData{1}.data(theObserverAge).correction.backgroundPrimaryInferredAll(:,ii),'g');
-    plot(1:nPrimaries, backgroundPrimaryInferredHereFromCal,'g:');
+    %plot(1:nPrimaries, backgroundPrimaryInferredHereFromCal,'g:');
     xlabel('Primary #'); xlim([0 60]);
     ylabel('Primary Value'); ylim([-0.1 1.1]);
     pbaspect([1 1 1]); set(gca, 'TickDir', 'out'); box off;
