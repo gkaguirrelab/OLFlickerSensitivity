@@ -30,7 +30,7 @@ params.primaryHeadRoom = 0.01;              % Original value 0.01
 % purposes
 params.pegBackground = false;
 params.modulationDirection = {'MelanopsinDirected'};
-params.modulationContrast = [3.75/5.75];
+params.modulationContrast = [4/6];
 params.whichReceptorsToIsolate = {[4]};
 params.whichReceptorsToIgnore = {[]};
 params.whichReceptorsToMinimize = {[]};
@@ -48,7 +48,7 @@ OLReceptorIsolateSaveCache(cacheDataBackground, olCache, params);
 params.primaryHeadRoom = 0.01;          % Original value: 0.005
 params.backgroundType = 'BackgroundMaxMel';
 params.modulationDirection = 'MelanopsinDirectedSuperMaxMel';
-params.modulationContrast = [3.75/5.75];
+params.modulationContrast = [4/6];
 params.whichReceptorsToIsolate = [4];
 params.whichReceptorsToIgnore = [];
 params.whichReceptorsToMinimize = [];
@@ -74,7 +74,7 @@ OLReceptorIsolateSaveCache(cacheDataMaxMel, olCacheMaxMel, paramsMaxMel);
 %% MaxLMS
 params.pegBackground = false;
 params.modulationDirection = {'LMSDirected'};
-params.modulationContrast = {[3.75/5.75 3.75/5.75 3.75/5.75]};
+params.modulationContrast = {[4/6 4/6 4/6]};
 params.whichReceptorsToIsolate = {[1 2 3]};
 params.whichReceptorsToIgnore = {[]};
 params.whichReceptorsToMinimize = {[]};
@@ -92,7 +92,7 @@ OLReceptorIsolateSaveCache(cacheDataBackground, olCache, params);
 params.primaryHeadRoom = 0.01;              % Original value 0.005
 params.backgroundType = 'BackgroundMaxLMS';
 params.modulationDirection = 'LMSDirectedSuperMaxLMS';
-params.modulationContrast = [3.75/5.75 3.75/5.75 3.75/5.75];
+params.modulationContrast = [4/6 4/6 4/6];
 params.whichReceptorsToIsolate = [1 2 3];
 params.whichReceptorsToIgnore = [];
 params.whichReceptorsToMinimize = [];
