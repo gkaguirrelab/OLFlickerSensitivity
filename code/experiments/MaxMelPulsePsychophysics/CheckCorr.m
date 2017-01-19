@@ -8,22 +8,8 @@ clear; close all;
 
 %% Get some data to analyze
 cachePath = getpref('OneLight', 'materialsPath');
-% load(fullfile(cachePath, 'MaxMelPulsePsychophysics', '121916',  'Cache-MelanopsinDirectedSuperMaxMel_HERO_JAR_test350_121916.mat'));
-% theBox = 'BoxARandomizedLongCableBStubby1_ND02';
-% load(fullfile(cachePath, 'MaxMelPulsePsychophysics', '122316',  'Cache-MelanopsinDirectedSuperMaxMel_HERO_IterTest_122316.mat'));
-% theBox = 'BoxBRandomizedLongCableBStubby1_ND02';
-% load(fullfile(cachePath, 'MaxMelPulsePsychophysics', '010417',  'Cache-MelanopsinDirectedSuperMaxMel_HERO_Lambda04_010417.mat'));
-% theBox = 'BoxBRandomizedLongCableBStubby1_ND02';
-% load(fullfile(cachePath, 'MaxMelPulsePsychophysics', '011017',  'Cache-MelanopsinDirectedSuperMaxMel_HERO_Lambda03_011017.mat'));
-% theBox = 'BoxBRandomizedLongCableBStubby1_ND02';
-% load(fullfile(cachePath, 'MaxMelPulsePsychophysics', '011317',  'Cache-MelanopsinDirectedSuperMaxMel_HERO_Lambda03_011317.mat'));
-% theBox = 'BoxBRandomizedLongCableBStubby1_ND02';
-% load(fullfile(cachePath, 'MaxMelPulsePsychophysics', '011317',  'Cache-MelanopsinDirectedSuperMaxMel_HERO_Lambda08_011317.mat'));
-% theBox = 'BoxBRandomizedLongCableBStubby1_ND02';
 load(fullfile(cachePath, 'MaxMelPulsePsychophysics', '011717',  'Cache-MelanopsinDirectedSuperMaxMel_HERO_LambdaSmoothness_011717.mat'));
 theBox = 'BoxBRandomizedLongCableBStubby1_ND02';
-% load(fullfile(cachePath, 'PIPRMaxPulse', '122216',  'Cache-MelanopsinDirectedSuperMaxMel_HERO_Test122216_122216.mat'));
-% theBox = 'BoxDRandomizedLongCableAEyePiece2_ND03';
 
 % Convert data to standardized naming for here
 eval(['theData = ' theBox ';  clear ' theBox ';']);
@@ -54,27 +40,118 @@ fprintf('Value of kScale: %0.2f\n',theData{1}.data(theObserverAge).correction.kS
 
 %% Start a diagnositic plot
 hFig = figure; set(hFig,'Position',[220 600 1150 725]);
-movieObj = VideoWriter('Mel_350.mp4','MPEG-4');
-movieObj.FrameRate = 2;
-movieObj.Quality = 100;
-open(movieObj);
+hFig2 = figure; clf;
+% movieObj = VideoWriter('Mel_350.mp4','MPEG-4');
+% movieObj.FrameRate = 2;
+% movieObj.Quality = 100;
+% open(movieObj);
 theColors = ['r' 'g' 'b' 'k' 'c'];
 
 %% Get the calibration file, for some checks
 cal = theData{1}.data(theObserverAge).cal;
+% cal.describe.useAverageGamma = true;
+% cal = OLInitCal(cal);
+% calAnalyzer = OLCalAnalyzer('cal',cal, ...
+%         'refitGammaTablesUsingLinearInterpolation', false, ...
+%         'forceOLInitCal', true);
+% gammaType = 'computed';
+% calAnalyzer.plotGamma(gammaType,'plotRatios', false);
 
 %% This is a temp fix for a typo in the correction routine
-if (isfield(theData{1}.data(theObserverAge).correction,'cal'))
-    theData{1}.data(theObserverAge).correction.deltaBackgroundPrimaryInferredAll = theData{1}.data(theObserverAge).correction.cal;
-end
+% if (isfield(theData{1}.data(theObserverAge).correction,'cal'))
+%     theData{1}.data(theObserverAge).correction.deltaBackgroundPrimaryInferredAll = theData{1}.data(theObserverAge).correction.cal;
+% end
 
 %% Plot what we got
-%
-% For each iteration
-%   Dashed black line on each iteration is desired (spd or primary).
-%   Green solid line is what was measured (spd or primary).
-%   Red solid line is what to try next (primary only)
+backgroundPredictedDifference = [];
 for ii = 1:nIterations
+    % Diagnostic figure.  Recreate what we think the iterative
+    % procedure does and plot.
+    learningRate = 0.8;
+    smoothnessParam = 0.001;
+    backgroundSpectrumWeWant = theData{1}.data(theObserverAge).correction.bgDesiredSpd;
+    backgroundSpectrumWeMeasured = theData{1}.data(theObserverAge).correction.bgSpdAll(:,ii);
+    backgroundPrimaryInitial = theData{1}.data(theObserverAge).correction.backgroundPrimaryInitial;
+    backgroundSpectrumInferredInitial = OLPrimaryToSpd(cal,backgroundPrimaryInitial);
+    backgroundPrimaryUsed = theData{1}.data(theObserverAge).correction.backgroundPrimaryMeasuredAll(:,ii);
+
+    % In a completely linear system with no learning rate and no gamut
+    % bounds, this is how much we'd tweak the primaries to exactly hit the
+    % target spectrum.
+    backgroundDeltaPrimaryIdealized = OLSpdToPrimary(cal,backgroundSpectrumWeWant-backgroundSpectrumWeMeasured,'differentialMode',true,'lambda',smoothnessParam);
+    
+    % How much would we change with and without truncation?
+    backgroundNextPrimaryNotTruncatedNoLearningRate = backgroundPrimaryUsed+backgroundDeltaPrimaryIdealized;
+    backgroundDeltaPrimaryNotTruncatedNoLearningRate = backgroundNextPrimaryNotTruncatedNoLearningRate - backgroundPrimaryUsed;
+    backgroundNextPrimaryTruncatedNoLearningRate = backgroundNextPrimaryNotTruncatedNoLearningRate;
+    backgroundNextPrimaryTruncatedNoLearningRate(backgroundNextPrimaryTruncatedNoLearningRate < 0) = 0;
+    backgroundNextPrimaryTruncatedNoLearningRate(backgroundNextPrimaryTruncatedNoLearningRate > 1) = 1;
+    backgroundDeltaPrimaryTruncatedNoLearningRate = backgroundNextPrimaryTruncatedNoLearningRate - backgroundPrimaryUsed;
+    
+    backgroundNextPrimaryNotTruncatedLearningRate = backgroundPrimaryUsed+learningRate*backgroundDeltaPrimaryIdealized;
+    backgroundDeltaPrimaryNotTruncatedLearningRate = backgroundNextPrimaryNotTruncatedLearningRate - backgroundPrimaryUsed;
+    backgroundNextPrimaryTruncatedLearningRate1 = backgroundNextPrimaryNotTruncatedLearningRate;
+    backgroundNextPrimaryTruncatedLearningRate1(backgroundNextPrimaryTruncatedLearningRate1 < 0) = 0;
+    backgroundNextPrimaryTruncatedLearningRate1(backgroundNextPrimaryTruncatedLearningRate1 > 1) = 1;
+    backgroundNextPrimaryTruncatedLearningRate = OLSettingsToPrimary(cal,OLPrimaryToSettings(cal,backgroundNextPrimaryTruncatedLearningRate1));
+    backgroundDeltaPrimaryTruncatedLearningRate1 = backgroundNextPrimaryTruncatedLearningRate1 - backgroundPrimaryUsed;
+    backgroundDeltaPrimaryTruncatedLearningRate = backgroundNextPrimaryTruncatedLearningRate - backgroundPrimaryUsed;
+
+    % Our prediction should be based on the local approximation.  We take the measurement and add the differential effect of the primary change. 
+    backgroundNextSpectrumNotTruncatedLearningRate = backgroundSpectrumWeMeasured + OLPrimaryToSpd(cal,backgroundDeltaPrimaryNotTruncatedLearningRate,'differentialMode',true);
+    backgroundNextSpectrumTruncatedLearningRate = backgroundSpectrumWeMeasured + OLPrimaryToSpd(cal,backgroundDeltaPrimaryTruncatedLearningRate,'differentialMode',true);
+    
+    realityCheck = theData{1}.data(theObserverAge).correction.backgroundPrimaryCorrectedNotTruncatedAll(:,ii)-backgroundNextPrimaryNotTruncatedLearningRate;
+    if (max(abs(realityCheck(:))) > 1e-8)
+        error('Cannot now reproduce the next non-truncated primaries in the iteration');
+    end
+    realityCheck = theData{1}.data(theObserverAge).correction.backgroundPrimaryCorrectedAll(:,ii)-backgroundNextPrimaryTruncatedLearningRate;
+    if (max(abs(realityCheck(:))) > 1e-8)
+        error('Cannot now reproduce the next primaries in the iteration');
+    end
+    
+    figure(hFig2); clf;
+    
+    % Black is the spectrum our little heart desires.
+    % Green is what we measured.
+    % Red is what our procedure thinks we'll get on the next iteration.
+    subplot(2,2,1); hold on 
+    plot(wls,backgroundSpectrumWeWant,'k:','LineWidth',3);
+    plot(wls,backgroundSpectrumInferredInitial,'k','LineWidth',2);
+    plot(wls,backgroundSpectrumWeMeasured,'g','LineWidth',2);
+    plot(wls,backgroundNextSpectrumNotTruncatedLearningRate,'r:','LineWidth',2);
+    plot(wls,backgroundNextSpectrumTruncatedLearningRate,'b','LineWidth',2);
+
+    % Black is the initial primaries we started with
+    % Green is what we used to measure the spectra on this iteration.
+    % Red is the primaries we'll ask for next iteration, with dashed
+    % version not truncated.
+    subplot(2,2,2); hold on
+    plot(1:nPrimaries,backgroundPrimaryInitial,'k:','LineWidth',3);
+    plot(1:nPrimaries,backgroundPrimaryUsed,'g','LineWidth',2);
+    plot(1:nPrimaries,backgroundNextPrimaryNotTruncatedLearningRate,'r','LineWidth',2);
+    plot(1:nPrimaries,backgroundNextPrimaryTruncatedLearningRate,'b','LineWidth',2);
+    plot(1:nPrimaries,backgroundNextPrimaryTruncatedLearningRate1,'c','LineWidth',1);
+
+    % Green is the difference between what we want and what we measured.
+    % Red is what we think this difference should be on the next iteration.
+    subplot(2,2,3); hold on 
+    plot(wls,backgroundSpectrumWeWant-backgroundSpectrumWeMeasured,'g','LineWidth',2);
+    plot(wls,backgroundSpectrumWeWant-backgroundNextSpectrumNotTruncatedLearningRate,'r:','LineWidth',2);
+    plot(wls,backgroundSpectrumWeWant-backgroundNextSpectrumTruncatedLearningRate,'r','LineWidth',2);
+    title('Predicted delta spectrum on next iteration');
+    
+    % Red is the difference between the primaries we will ask for on the
+    % next iteration and those we just used.
+    subplot(2,2,4); hold on
+    plot(1:nPrimaries,backgroundNextPrimaryTruncatedLearningRate-backgroundPrimaryUsed,'g','LineWidth',2);
+    title('Delta primary on next iteration');
+    
+    % For each iteration
+    %   Dashed black line on each iteration is desired (spd or primary).
+    %   Green solid line is what was measured (spd or primary).
+    %   Red solid line is what to try next (primary only)
+    figure(hFig);
     subplot(4, 4, 1); hold off;
     plot(wls, theData{1}.data(theObserverAge).correction.bgDesiredSpd,'k:','LineWidth',2);
     hold on;
@@ -84,7 +161,6 @@ for ii = 1:nIterations
     pbaspect([1 1 1]); set(gca, 'TickDir', 'out'); box off;
     text(700, 0.9*ylimMax, num2str(ii));
     title('Background');
-    %plot(wls,cal.computed.pr650MeanDark,'b');
     
     subplot(4, 4, 2); hold off;
     plot(wls, theData{1}.data(theObserverAge).correction.modDesiredSpd,'k:','LineWidth',2);
@@ -95,7 +171,18 @@ for ii = 1:nIterations
     pbaspect([1 1 1]); set(gca, 'TickDir', 'out'); box off;
     title('Modulation');
     
-    subplot(4, 4, 3);
+    subplot(4, 4, 3); hold off;
+    plot(wls, theData{1}.data(theObserverAge).correction.bgDesiredSpd-theData{1}.data(theObserverAge).correction.bgSpdAll(:,ii),'k','LineWidth',2);
+    hold on;
+    if (~isempty(backgroundPredictedDifference))
+        plot(wls,backgroundPredictedDifference,'r','LineWidth',2);
+    end
+    xlabel('Wavelength [nm]'); xlim([380 780]);
+    ylabel('Radiance');
+    pbaspect([1 1 1]); set(gca, 'TickDir', 'out'); box off;
+    title('Background Spectrum Difference');
+    
+    subplot(4, 4, 4);
     hold off;
     plot(1:ii, 100*theData{1}.data(theObserverAge).correction.contrasts(1, 1:ii), '-sr', 'MarkerFaceColor', 'r'); hold on
     plot(1:ii, 100*theData{1}.data(theObserverAge).correction.contrasts(2, 1:ii), '-sg', 'MarkerFaceColor', 'g');
@@ -105,74 +192,10 @@ for ii = 1:nIterations
     pbaspect([1 1 1]); set(gca, 'TickDir', 'out'); box off;
     title('Contrast');
     
-    % A key part of our algorithm is being able to estimate the appropriate
-    % delta primaries given current primaries and measured/desired
-    % spectrum.  This does not seem to be working all that well.
-    % and the calibratile file.  Let's try it and check. 
-    backgroundSpectrumWeWant = theData{1}.data(theObserverAge).correction.bgDesiredSpd;
-    backgroundSpectrumWeMeasured = theData{1}.data(theObserverAge).correction.bgSpdAll(:,ii);
-    backgroundPrimaryInitial = theData{1}.data(theObserverAge).correction.backgroundPrimaryInitial;
-    backgroundPrimaryUsed = theData{1}.data(theObserverAge).correction.backgroundPrimaryMeasuredAll(:,ii);
-    backgroundSpectrumInferredInitial = OLPrimaryToSpd(cal,backgroundPrimaryInitial);
-         
-    backgroundPrimaryInferredLambda_00 = OLSpdToPrimary(cal,theData{1}.data(theObserverAge).correction.bgSpdAll(:,ii),'lambda',0);
-    backgroundSpectrumInferredLambda_00 = OLPrimaryToSpd(cal,backgroundPrimaryInferredLambda_00);
-     
-    backgroundPrimaryInferredLambda_001 = OLSpdToPrimary(cal,theData{1}.data(theObserverAge).correction.bgSpdAll(:,ii),'lambda',0.001);
-    backgroundSpectrumInferredLambda_001 = OLPrimaryToSpd(cal,backgroundPrimaryInferredLambda_001);
-    
-    backgroundPrimaryInferredLambda_01 = OLSpdToPrimary(cal,theData{1}.data(theObserverAge).correction.bgSpdAll(:,ii),'lambda',0.01);
-    backgroundSpectrumInferredLambda_01 = OLPrimaryToSpd(cal,backgroundPrimaryInferredLambda_01); 
-
-    backgroundDeltaPrimaryInferredLambda_0 = OLSpdToPrimary(cal,backgroundSpectrumWeMeasured-backgroundSpectrumWeWant,'differentialMode',true,'lambda',0.00);
-    backgroundPrimaryInferredDeltaLambda_0 = backgroundPrimaryUsed+backgroundDeltaPrimaryInferredLambda_0;
-    backgroundSpectrumInferredDeltaLambda_0 = OLPrimaryToSpd(cal,backgroundPrimaryInferredDeltaLambda_0);
-    
-    backgroundDeltaPrimaryInferredLambda_0001 = OLSpdToPrimary(cal,backgroundSpectrumWeMeasured-backgroundSpectrumWeWant,'differentialMode',true,'lambda',0.001);
-    backgroundPrimaryInferredDeltaLambda_0001 = backgroundPrimaryUsed+backgroundDeltaPrimaryInferredLambda_0001;
-    backgroundSpectrumInferredDeltaLambda_0001 = OLPrimaryToSpd(cal,backgroundPrimaryInferredDeltaLambda_0001);
-    
-    backgroundDeltaPrimaryInferredLambda_01 = OLSpdToPrimary(cal,backgroundSpectrumWeMeasured-backgroundSpectrumWeWant,'differentialMode',true,'lambda',0.1);
-    backgroundPrimaryInferredDeltaLambda_01 = backgroundPrimaryUsed+backgroundDeltaPrimaryInferredLambda_01;
-    backgroundSpectrumInferredDeltaLambda_01 = OLPrimaryToSpd(cal,backgroundPrimaryInferredDeltaLambda_01);
-
-    figure(2); clf;  
-    subplot(2,2,1); hold on 
-    plot(wls,backgroundSpectrumWeWant,'k:','LineWidth',2);
-    plot(wls,backgroundSpectrumInferredInitial,'k','LineWidth',1);
-    plot(wls,backgroundSpectrumWeMeasured,'g','LineWidth',2);
-    %plot(wls,backgroundSpectrumInferredLambda_00,'r','LineWidth',1);
-    %plot(wls,backgroundSpectrumInferredLambda_001,'k','LineWidth',1);
-    plot(wls,backgroundSpectrumInferredDeltaLambda_0,'k','LineWidth',1);
-    plot(wls,backgroundSpectrumInferredDeltaLambda_01,'b','LineWidth',1);
-    plot(wls,backgroundSpectrumInferredDeltaLambda_0001,'r','LineWidth',1);
-
-    subplot(2,2,2); hold on
-    plot(1:nPrimaries,backgroundPrimaryInitial,'k:','LineWidth',3);
-    plot(1:nPrimaries,backgroundPrimaryUsed,'g','LineWidth',1);
-    %plot(1:nPrimaries,backgroundPrimaryInferredLambda_00,'r','LineWidth',1);
-    %plot(1:nPrimaries,backgroundPrimaryInferredLambda_001,'k','LineWidth',1);
-    plot(1:nPrimaries,backgroundPrimaryInferredDeltaLambda_0,'k','LineWidth',1);
-    plot(1:nPrimaries,backgroundPrimaryInferredDeltaLambda_01,'b','LineWidth',1);
-    plot(1:nPrimaries,backgroundPrimaryInferredDeltaLambda_0001,'r','LineWidth',1);
-
-    subplot(2,2,3); hold on 
-    plot(wls,backgroundSpectrumWeMeasured-backgroundSpectrumInferredDeltaLambda_0,'k','LineWidth',2);
-    plot(wls,backgroundSpectrumWeMeasured-backgroundSpectrumInferredDeltaLambda_01,'g','LineWidth',2);
-    plot(wls,backgroundSpectrumWeMeasured-backgroundSpectrumInferredDeltaLambda_0001,'r','LineWidth',2);
-
-    subplot(2,2,4); hold on
-    plot(1:nPrimaries,backgroundPrimaryUsed-backgroundPrimaryInferredDeltaLambda_0,'k','LineWidth',2);
-    plot(1:nPrimaries,backgroundPrimaryUsed-backgroundPrimaryInferredDeltaLambda_01,'g','LineWidth',2);
-    plot(1:nPrimaries,backgroundPrimaryUsed-backgroundPrimaryInferredDeltaLambda_0001,'r','LineWidth',2);
-    
-    figure(1);
     subplot(4, 4, 5); hold off;
     plot(1:nPrimaries, theData{1}.data(theObserverAge).correction.backgroundPrimaryInitial,'k:','LineWidth',2);
     hold on; 
-    plot(1:nPrimaries, theData{1}.data(theObserverAge).correction.backgroundPrimaryCorrectedAll(:,ii),'r');
-    plot(1:nPrimaries, theData{1}.data(theObserverAge).correction.backgroundPrimaryInferredAll(:,ii),'g');
-    %plot(1:nPrimaries, backgroundPrimaryInferredHereFromCal,'g:');
+    plot(1:nPrimaries, theData{1}.data(theObserverAge).correction.backgroundPrimaryCorrectedAll(:,ii),'r','LineWidth',2);
     xlabel('Primary #'); xlim([0 60]);
     ylabel('Primary Value'); ylim([-0.1 1.1]);
     pbaspect([1 1 1]); set(gca, 'TickDir', 'out'); box off;
@@ -180,8 +203,7 @@ for ii = 1:nIterations
     subplot(4, 4, 6); hold off;
     plot(1:nPrimaries, theData{1}.data(theObserverAge).correction.modulationPrimaryInitial,'k:','LineWidth',2);
     hold on;
-    plot(1:nPrimaries, theData{1}.data(theObserverAge).correction.modulationPrimaryCorrectedAll(:,ii),'r');
-    plot(1:nPrimaries, theData{1}.data(theObserverAge).correction.modulationPrimaryInferredAll(:,ii),'g');
+    plot(1:nPrimaries, theData{1}.data(theObserverAge).correction.modulationPrimaryCorrectedAll(:,ii),'r','LineWidth',2);
     xlabel('Primary #');
     xlim([0 60]);
     ylabel('Primary Value'); ylim([-0.1 1.1]);
@@ -190,8 +212,7 @@ for ii = 1:nIterations
     subplot(4, 4, 9); hold off;
     plot(1:nPrimaries, theData{1}.data(theObserverAge).correction.backgroundPrimaryInitial,'k:','LineWidth',2);
     hold on
-    plot(1:nPrimaries, theData{1}.data(theObserverAge).correction.backgroundPrimaryCorrectedAll(:,ii),'r');
-    plot(1:nPrimaries, theData{1}.data(theObserverAge).correction.backgroundPrimaryInferredAll(:,ii),'g');
+    plot(1:nPrimaries, theData{1}.data(theObserverAge).correction.backgroundPrimaryCorrectedAll(:,ii),'r','LineWidth',2);
     plot([0 60],[1 1],'k:','LineWidth',1);
     xlabel('Primary #'); xlim([0 60]);
     ylabel('Primary Value'); ylim([0.98 1.02]);
@@ -200,8 +221,7 @@ for ii = 1:nIterations
     subplot(4, 4, 10); hold off;
     plot(1:nPrimaries, theData{1}.data(theObserverAge).correction.modulationPrimaryInitial,'k:','LineWidth',2);
     hold on;
-    plot(1:nPrimaries, theData{1}.data(theObserverAge).correction.modulationPrimaryCorrectedAll(:,ii),'r');
-    plot(1:nPrimaries, theData{1}.data(theObserverAge).correction.modulationPrimaryInferredAll(:,ii),'g');
+    plot(1:nPrimaries, theData{1}.data(theObserverAge).correction.modulationPrimaryCorrectedAll(:,ii),'r','LineWidth',2);
     plot([0 60],[1 1],'k:','LineWidth',1);plot([0 60],[1 1],'k:','LineWidth',1);
     xlabel('Primary #'); xlim([0 60]);
     ylabel('Primary Value'); ylim([0.98 1.02]);
@@ -210,8 +230,7 @@ for ii = 1:nIterations
     subplot(4, 4, 11); hold off;
     plot(1:nPrimaries, theData{1}.data(theObserverAge).correction.backgroundPrimaryInitial,'k:','LineWidth',2);
     hold on;
-    plot(1:nPrimaries, theData{1}.data(theObserverAge).correction.backgroundPrimaryCorrectedNotTruncatedAll(:,ii),'r');
-    plot(1:nPrimaries, theData{1}.data(theObserverAge).correction.backgroundPrimaryInferredAll(:,ii),'g');
+    plot(1:nPrimaries, theData{1}.data(theObserverAge).correction.backgroundPrimaryCorrectedNotTruncatedAll(:,ii),'r','LineWidth',2);
     plot([0 60],[1 1],'k:','LineWidth',1);
     xlabel('Primary #'); xlim([0 60]);
     ylabel('Primary Value'); ylim([0.98 1.02]);
@@ -220,8 +239,7 @@ for ii = 1:nIterations
     subplot(4, 4, 12); hold off;
     plot(1:nPrimaries, theData{1}.data(theObserverAge).correction.modulationPrimaryInitial,'k:','LineWidth',2);
     hold on;
-    plot(1:nPrimaries, theData{1}.data(theObserverAge).correction.modulationPrimaryCorrectedNotTruncatedAll(:,ii),'r');
-    plot(1:nPrimaries, theData{1}.data(theObserverAge).correction.modulationPrimaryInferredAll(:,ii),'g');
+    plot(1:nPrimaries, theData{1}.data(theObserverAge).correction.modulationPrimaryCorrectedNotTruncatedAll(:,ii),'r','LineWidth',2);
     plot([0 60],[1 1],'k:','LineWidth',1);
     xlabel('Primary #'); xlim([0 60]);
     ylabel('Primary Value'); ylim([0.98 1.02]);
@@ -230,18 +248,16 @@ for ii = 1:nIterations
     subplot(4, 4, 13); hold off;
     plot(1:nPrimaries, theData{1}.data(theObserverAge).correction.backgroundPrimaryInitial,'k:','LineWidth',2);
     hold on;
-    plot(1:nPrimaries, theData{1}.data(theObserverAge).correction.backgroundPrimaryCorrectedAll(:,ii),'r');
-    plot(1:nPrimaries, theData{1}.data(theObserverAge).correction.backgroundPrimaryInferredAll(:,ii),'g');
+    plot(1:nPrimaries, theData{1}.data(theObserverAge).correction.backgroundPrimaryCorrectedAll(:,ii),'r','LineWidth',2);
     plot([0 60],[0 0],'k:','LineWidth',1);
     xlabel('Primary #'); xlim([0 60]);
     ylabel('Primary Value'); ylim([-0.02 0.02]);
     pbaspect([1 1 1]); set(gca, 'TickDir', 'out'); box off;
        
     subplot(4, 4, 14); hold off;
-    plot(1:nPrimaries, theData{1}.data(theObserverAge).correction.backgroundPrimaryInitial,'k:','LineWidth',2);
+    plot(1:nPrimaries, theData{1}.data(theObserverAge).correction.modulationPrimaryInitial,'k:','LineWidth',2);
     hold on;
-    plot(1:nPrimaries, theData{1}.data(theObserverAge).correction.modulationPrimaryCorrectedAll(:,ii),'r');
-    plot(1:nPrimaries, theData{1}.data(theObserverAge).correction.modulationPrimaryInferredAll(:,ii),'g');
+    plot(1:nPrimaries, theData{1}.data(theObserverAge).correction.modulationPrimaryCorrectedAll(:,ii),'r','LineWidth',2);
     plot([0 60],[0 0],'k:','LineWidth',1);
     xlabel('Primary #'); xlim([0 60]);
     ylabel('Primary Value'); ylim([-0.02 0.02]);
@@ -250,27 +266,28 @@ for ii = 1:nIterations
     subplot(4, 4, 15); hold off;
     plot(1:nPrimaries, theData{1}.data(theObserverAge).correction.backgroundPrimaryInitial,'k:','LineWidth',2);
     hold on;
-    plot(1:nPrimaries, theData{1}.data(theObserverAge).correction.backgroundPrimaryCorrectedNotTruncatedAll(:,ii),'r');
-    plot(1:nPrimaries, theData{1}.data(theObserverAge).correction.backgroundPrimaryInferredAll(:,ii),'g');
+    plot(1:nPrimaries, theData{1}.data(theObserverAge).correction.backgroundPrimaryCorrectedNotTruncatedAll(:,ii),'r','LineWidth',2);
     plot([0 60],[0 0],'k:','LineWidth',1);
     xlabel('Primary #'); xlim([0 60]);
     ylabel('Primary Value'); ylim([-0.02 0.02]);
     pbaspect([1 1 1]); set(gca, 'TickDir', 'out'); box off;
        
     subplot(4, 4, 16); hold off;
-    plot(1:nPrimaries, theData{1}.data(theObserverAge).correction.backgroundPrimaryInitial,'k:','LineWidth',2);
+    plot(1:nPrimaries, theData{1}.data(theObserverAge).correction.modulationPrimaryInitial,'k:','LineWidth',2);
     hold on;
-    plot(1:nPrimaries, theData{1}.data(theObserverAge).correction.modulationPrimaryCorrectedNotTruncatedAll(:,ii),'r');
-    plot(1:nPrimaries, theData{1}.data(theObserverAge).correction.modulationPrimaryInferredAll(:,ii),'g');
+    plot(1:nPrimaries, theData{1}.data(theObserverAge).correction.modulationPrimaryCorrectedNotTruncatedAll(:,ii),'r','LineWidth',2);
     plot([0 60],[0 0],'k:','LineWidth',1);
     xlabel('Primary #'); xlim([0 60]);
     ylabel('Primary Value'); ylim([-0.02 0.02]);
     pbaspect([1 1 1]); set(gca, 'TickDir', 'out'); box off;
     
-    drawnow;
+    drawnow; figure(hFig); figure(hFig2);
     %writeVideo(movieObj,getframe(hFig));
-      
-    %% Report some things we might want to know
+    
+    % For next iteration plotting
+    backgroundPredictedDifference = backgroundSpectrumWeWant - backgroundNextSpectrumTruncatedLearningRate;
+    
+    % Report some things we might want to know
     nZeroBgSettings(ii) = length(find(theData{1}.data(theObserverAge).correction.backgroundPrimaryCorrectedAll(:,ii) == 0));
     nOneBgSettings(ii) = length(find(theData{1}.data(theObserverAge).correction.backgroundPrimaryCorrectedAll(:,ii) == 1));
     nZeroModSettings(ii) = length(find(theData{1}.data(theObserverAge).correction.modulationPrimaryCorrectedAll(:,ii) == 0));
