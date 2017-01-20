@@ -47,8 +47,7 @@ for d = 1:length(theDirections)
         'ReducedPowerLevels', false, ...
         'selectedCalType', theCalType, ...
         'CALCULATE_SPLATTER', false, ...
-        'learningRate', 0.8, ...
-        'smoothness', 0.001, ...
+        'lambda', 0.8, ...
         'NIter', 20, ...
         'powerLevels', [0 1.0000], ...
         'doCorrection', theDirectionsCorrect(d), ...
@@ -103,10 +102,12 @@ if ~exist('choiceIndex', 'var')
 end
 
 % Ask for variables if they don't exist
-if ~exist('observerID', 'var') || ~exist('observerAgeInYrs', 'var') || ~exist('todayDate', 'var')
+if ~exist('observerID', 'var') || ~exist('observerAgeInYrs', 'var') || ~exist('todayDate', 'var') || ~exist('takeTemperatureMeasurements', 'var')
     observerID = GetWithDefault('>> Enter <strong>user name</strong>', 'HERO_test');
     observerAgeInYrs = GetWithDefault('>> Enter <strong>observer age</strong>:', 32);
-    todayDate = datestr(now, 'mmddyy');
+    todayDate = GetWithDefault('>> Enter <strong>date of modulations were created</strong>:', 'mmddyy');
+    %todayDate = datestr(now, 'mmddyy');
+    takeTemperatureMeasurements = true;
 end
 
 % Set up some parameters
@@ -114,7 +115,7 @@ theCalType = 'BoxDRandomizedLongCableAStubby1_ND02';
 spectroRadiometerOBJ = [];
 spectroRadiometerOBJWillShutdownAfterMeasurement = false;
 theDirections = {['Cache-MelanopsinDirectedSuperMaxMel_' observerID '_' todayDate '.mat'] ...
-    ['Cache-LMSDirectedSuperMaxLMS_' observerID '_' todayDate '.mat']};;
+    ['Cache-LMSDirectedSuperMaxLMS_' observerID '_' todayDate '.mat']};
 NDirections = length(theDirections);
 cacheDir = getpref('OneLight', 'cachePath');
 materialsPath = getpref('OneLight', 'materialsPath');
