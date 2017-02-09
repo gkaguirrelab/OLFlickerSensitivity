@@ -48,14 +48,14 @@ startsLightFlux = modFileLightFlux.modulationObj.modulation.starts;
 stopsLightFlux = modFileLightFlux.modulationObj.modulation.stops;
 
 stimLabels = {'Light Flux' 'MaxLMS' 'MaxMel' 'Light Flux' 'MaxLMS' 'MaxMel' }; 
-stimOrder = [1 2 3 1 2 3]; % Adjust stimulus presentation order here
+stimOrder = [1 3 2 1 3 2]; % Adjust stimulus presentation order here
 stimStarts = {startsLightFlux startsLMS startsMel startsLightFlux startsLMS startsMel};
 stimStops = {stopsLightFlux stopsLMS stopsMel stopsLightFlux stopsLMS stopsMel};
 stimStartsBG = {modFileLightFlux.modulationObj.modulation.background.starts modFileLMS.modulationObj.modulation.background.starts modFileMel.modulationObj.modulation.background.starts modFileLightFlux.modulationObj.modulation.background.starts modFileLMS.modulationObj.modulation.background.starts modFileMel.modulationObj.modulation.background.starts};
 stimStopsBG = {modFileLightFlux.modulationObj.modulation.background.stops modFileLMS.modulationObj.modulation.background.stops modFileMel.modulationObj.modulation.background.stops modFileLightFlux.modulationObj.modulation.background.stops modFileLMS.modulationObj.modulation.background.stops modFileMel.modulationObj.modulation.background.stops};
 
 % Perceptual dimensions
-perceptualDimensions = {'cool or warm', 'dull or glowing', 'colorless or colored', 'focused or blurred', 'slow or rapid', 'pleasant or unpleasant', 'dim or bright', 'smooth or jagged', 'uniform or blotchy'};
+perceptualDimensions = {'cool to warm', 'dull to glowing', 'colorless to colored', 'focused to blurred', 'slow to rapid', 'pleasant to unpleasant', 'dim to bright', 'smooth to jagged', 'constant to fading'};
 % Experimental stage
 params.NStimuli = length(stimOrder);
 params.NPerceptualDimensions = length(perceptualDimensions);
