@@ -3,7 +3,14 @@
 % Analyses rating data. Hacked up for now.
 %
 % 11/22/16  spitschan  Wrote it.
-% Proposed edits: Add in variable for subject id and date of experiment. 
+% 02/09/2017 JR proposed edits: Plot of average ratings across subjects
+% with standard error bars; Histogram of each rating value (1 -7) across subjects for each
+% perceptual dimension for each trial (1-3). This would be a figure with 3
+% bar plots in it containing the number of times subjects responded 1-7 for
+% each dimension.
+
+
+%% Individual Plots
 
 % Subject information:
 observerID = GetWithDefault('>> Enter <strong> subject ID </strong>', 'MELA_xxxx');
@@ -38,4 +45,30 @@ h = bar(aggregatedDataMean');
 set(gca, 'XTickLabel', uniqueDimensions);
 legend(h, uniqueLabels);
 ylim([0 7]);
+
+%% Average Plot
+
+% Set up:
+observers = {'MELA_0049'; 'MELA_0050'; 'MELA_0075'; 'MELA_0077'};
+expDate = {'020317', '020717', '020617', '020817'};
+dataPath = getpref('OneLight', 'dataPath');
+protocol = 'MaxPulsePsychophysics';
+
+% Loop over subjects:
+for i = length(observers)
+    load(fullfile(dataPath, protocol, char(observers(i)), char(expDate(i)), 'MatFiles',[char(observers(i)) '-' protocol '.mat'])); 
+    
+    % Get all the stimulus types
+    allLabels = {data.stimLabel};
+    [uniqueLabels, ~, allLabelsIdx] = unique(allLabels);
+    
+    % Get all the perceptual dimensions
+    allDimensions = {data.perceptualDimension};
+    [uniqueDimensions, ~, allDimensionsIdx] = unique(allDimensions);
+    
+    % Assemble all responses for this subject
+    subjectResponses = [data.response];
+    allResponses = [
+    
+end 
 
