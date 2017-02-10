@@ -1,5 +1,6 @@
 function waveform = OLCalculateStartsStopsModulation(waveform, cal, backgroundPrimary, diffPrimaryPos, diffPrimaryNeg)
 %% Pull out what we want
+dbstop if error
 
 % Figure out the power levels
 switch waveform.modulationMode
