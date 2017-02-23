@@ -175,7 +175,7 @@ switch optIndex
                 'selectedCalType', theCalType, ...
                 'CALCULATE_SPLATTER', false, ...
                 'lambda', 0.8, ...
-                'NIter', 10, ...
+                'nIter', 10, ...
                 'powerLevels', [0 1.0000], ...
                 'doCorrection', theDirectionsCorrect(d), ...
                 'postreceptoralCombinations', [1 1 1 0 0 0 ; 0 0 0 1 1 1 ; 1 -1 0 0 0 0 ; 0 0 0 1 -1 0 ; 0 0 1 0 0 0 ; 0 0 0 0 0 1], ...
@@ -268,7 +268,7 @@ switch optIndex
         for d = 1:length(theDirections)
             % Make the config file
             % Create an empty config file
-            basePath = '/Users/Shared/MATLAB/Experiments/OneLight/OLFlickerSensitivity/code/config/modulations';
+            basePath = '/Users/melanopsin/Documents/MATLAB/projects/Experiments/OLFlickerSensitivity/code/config/modulations';
             modulationFileName = ['Modulation-' theDirections{d} '-12sWindowedFrequencyModulation' params.whichScanner '.cfg'];
             fullPathCfgFile = fullfile(basePath, modulationFileName);
             fclose(fopen(fullPathCfgFile, 'w'));
@@ -311,7 +311,7 @@ switch optIndex
         for d = 1:length(theDirections)
             % Make the config file
             % Create an empty config file
-            basePath = '/Users/Shared/MATLAB/Experiments/OneLight/OLFlickerSensitivity/code/config/modulations';
+            basePath = '/Users/melanopsin/Documents/MATLAB/projects/Experiments/OLFlickerSensitivity/code/config/modulations';
             modulationFileName = ['Modulation-' theDirections{d} 'Scotopic-12sWindowedFrequencyModulation' params.whichScanner '.cfg'];
             fullPathCfgFile = fullfile(basePath, modulationFileName);
             fclose(fopen(fullPathCfgFile, 'w'));
@@ -380,7 +380,7 @@ switch optIndex
         runID = {'A', 'B'};
         for d = 1:length(theDirections)
             for r = 1:length(runID)
-                basePath = '/Users/Shared/MATLAB/Experiments/OneLight/OLFlickerSensitivity/code/config/protocols';
+                basePath = '/Users/melanopsin/Documents/MATLAB/projects/Experiments/OLFlickerSensitivity/code/config/protocols';
                 modulationName = [params.experimentSuffix '-300s' theDirections{d} '12sSegments' params.whichScanner '-' runID{r}];
                 modulationFileName = [modulationName '.cfg'];
                 fullPathCfgFile = fullfile(basePath, modulationFileName);
@@ -414,7 +414,7 @@ switch optIndex
                 cfgFile.write;
                 
                 % Add the protocol to the master config file
-                basePath = '/Users/Shared/MATLAB/Experiments/OneLight/OLFlickerSensitivity/code/config';
+                basePath = '/Users/melanopsin/Documents/MATLAB/projects/Experiments/OLFlickerSensitivity/code/config/';
                 fileName = 'OLFlickerSensitivityProtocols.cfg';
                 
                 name = modulationName;
