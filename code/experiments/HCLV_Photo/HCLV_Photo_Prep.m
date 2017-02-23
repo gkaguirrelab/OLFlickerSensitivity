@@ -49,7 +49,7 @@ switch params.whichScanner
     case '7T'
         params.calibrationType = 'BoxCRandomizedLongCableCStubby1NoLens_ND10_ContactLens_0_5mm';
     case '3T'
-        params.calibrationType = 'BoxBRandomizedLongCableBStubby1_ND00';
+        params.calibrationType = 'BoxBRandomizedLongCableBStubby1_ND02';
 end
 params.whichReceptorsToMinimize = [];
 params.CALCULATE_SPLATTER = false;
@@ -165,7 +165,7 @@ switch optIndex
             fprintf(' * Starting spectrum-seeking loop...\n');
             [cacheData olCache spectroRadiometerOBJ] = OLCorrectCacheFileOOC(...
                 fullfile(cacheDir, 'stimuli', ['Cache-' theDirections{d} '.mat']), ...
-                'igdalova@mail.med.upenn.edu', ...
+                'jryan@mail.med.upenn.edu', ...
                 'PR-670', spectroRadiometerOBJ, spectroRadiometerOBJWillShutdownAfterMeasurement, ...
                 'FullOnMeas', false, ...
                 'CalStateMeas', false, ...
@@ -359,7 +359,7 @@ switch optIndex
             modulationFileName = ['Modulation-' theDirections{d} '-12sWindowedFrequencyModulation' params.whichScanner '.cfg'];
             
             for o = 1:length(observerAges)
-                OLMakeModulations(modulationFileName, observerAges(o), params.calibrationType, []);
+                OLMakeModulations(modulationFileName, observerAges(o), params.calibrationType, params.calibrationType);
             end
         end
         
