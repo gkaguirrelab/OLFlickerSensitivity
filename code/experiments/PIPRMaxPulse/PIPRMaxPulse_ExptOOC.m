@@ -19,7 +19,7 @@ end
 % Correct the spectrum
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 tic;
-theCalType = 'BoxDRandomizedLongCableAEyePiece2_ND02';
+theCalType = 'BoxDRandomizedLongCableAEyePiece2_ND01';
 spectroRadiometerOBJ = [];
 spectroRadiometerOBJWillShutdownAfterMeasurement = false;
 theDirections = {'MelanopsinDirectedSuperMaxMel' 'LMSDirectedSuperMaxLMS' 'PIPRBlue', 'PIPRRed'};
@@ -116,7 +116,7 @@ if ~exist('observerID', 'var') || ~exist('observerAgeInYrs', 'var') || ~exist('t
 end
 
 % Set up some parameters
-theCalType = 'BoxDRandomizedLongCableAEyePiece2_ND02';
+theCalType = 'BoxDRandomizedLongCableAEyePiece2_ND01';
 spectroRadiometerOBJ = [];
 spectroRadiometerOBJWillShutdownAfterMeasurement = false;
 theDirections = {['Cache-MelanopsinDirectedSuperMaxMel_' observerID '_' todayDate '.mat'] ...
