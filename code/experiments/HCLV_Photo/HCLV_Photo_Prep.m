@@ -210,6 +210,9 @@ switch optIndex
         observerID = GetWithDefault('>> Enter <strong>user name</strong>', 'HERO_test');
         observerAgeInYrs = GetWithDefault('>> Enter <strong>observer age</strong>:', 32);
         todayDate = datestr(now, 'mmddyy');
+        theDirections = {['LightFluxXEccentricity_' observerID '_' todayDate] ...
+        ['LMinusMDirectedXEccentricity_' observerID '_' todayDate] ...
+        ['SDirectedXEccentricity_' observerID '_' todayDate};
         
         % Query user whether to take temperature measurements
         takeTemperatureMeasurements = GetWithDefault('Take Temperature Measurements ?', false);
@@ -228,7 +231,7 @@ switch optIndex
             fprintf(' * Date:\t<strong>%s</strong>\n', todayDate);
             
             
-            theDirections = {'LightFluxXEccentricity' 'LMinusMDirectedXEccentricity' 'SDirectedXEccentricity'};
+
             cacheDir = getpref('OneLight', 'cachePath');
             materialsPath = getpref('OneLight', 'materialsPath');
             
