@@ -225,18 +225,18 @@ switch optIndex
         spectroRadiometerOBJ = [];
         spectroRadiometerOBJWillShutdownAfterMeasurement = false;
         for i = 1:5
-            % Print out some information
-            fprintf(' * Direction:\t<strong>%s</strong>\n', theDirections{d});
-            fprintf(' * Observer:\t<strong>%s</strong>\n', observerID);
-            fprintf(' * Date:\t<strong>%s</strong>\n', todayDate);
-            
-            
 
             cacheDir = getpref('OneLight', 'cachePath');
             materialsPath = getpref('OneLight', 'materialsPath');
             
             WaitSecs(2);
             for d = 1:length(theDirections)
+                
+                % Print out some information
+                fprintf(' * Direction:\t<strong>%s</strong>\n', theDirections{d});
+                fprintf(' * Observer:\t<strong>%s</strong>\n', observerID);
+                fprintf(' * Date:\t<strong>%s</strong>\n', todayDate);
+                
                 [~, ~, validationPath{d}, spectroRadiometerOBJ] = OLValidateCacheFileOOC(...
                     fullfile(cacheDir, 'stimuli', ['Cache-' theDirections{d} '.mat']), ...
                     [], ...
@@ -251,7 +251,7 @@ switch optIndex
                     'takeTemperatureMeasurements', takeTemperatureMeasurements);
                 close all;
             end
-        end
+        end % loop over iterations
         if (~isempty(spectroRadiometerOBJ))
             spectroRadiometerOBJ.shutDown();
             spectroRadiometerOBJ = [];
