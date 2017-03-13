@@ -3,7 +3,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % Calibration file.  
-theCalType = 'BoxDRandomizedLongCableAStubby1_ND01';
+theCalType = 'BoxDRandomizedLongCableAStubby1_ND03';
 
 %% Standard parameters
 params.experiment = 'MaxMelPulsePsychophysics';
@@ -17,7 +17,7 @@ params.fieldSizeDegrees = 27.5;
 params.pupilDiameterMm = 8;                 % Assuming dilated pupil
 params.isActive = 1;
 params.useAmbient = 1;
-params.REFERENCE_OBSERVER_AGE = 32;
+params.OBSERVER_AGE = 32;
 params.primaryHeadRoom = 0.01;              % Original value 0.01
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
