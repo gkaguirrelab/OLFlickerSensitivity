@@ -4,8 +4,8 @@
 theCalType = 'BoxDRandomizedLongCableAEyePiece2_ND02';
 
 %% Standard parameters
-params.experiment = 'PIPRMaxLongPulse';
-params.experimentSuffix = 'PIPRMaxLongPulse';
+params.experiment = 'PIPRMaxPulse';
+params.experimentSuffix = 'PIPRMaxPulse';
 params.calibrationType = theCalType;
 params.whichReceptorsToMinimize = [];
 params.CALCULATE_SPLATTER = false;
@@ -15,7 +15,7 @@ params.fieldSizeDegrees = 27.5;
 params.pupilDiameterMm = 6;
 params.isActive = 1;
 params.useAmbient = 1;
-params.REFERENCE_OBSERVER_AGE = 32;
+params.OBSERVER_AGE = 32;
 params.primaryHeadRoom = 0.01;
 
 % 470 nm

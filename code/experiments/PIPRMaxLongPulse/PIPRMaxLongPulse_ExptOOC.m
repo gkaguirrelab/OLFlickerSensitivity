@@ -22,7 +22,7 @@ tic;
 theCalType = 'BoxDRandomizedLongCableAEyePiece2_ND02';
 spectroRadiometerOBJ = [];
 spectroRadiometerOBJWillShutdownAfterMeasurement = false;
-theDirections = {'MelanopsinDirectedSuperMaxMel' 'LMSDirectedSuperMaxLMS' 'PIPRBlue', 'PIPRRed'};
+theDirections = {'PIPRBlue', 'PIPRRed'};
 
 theDirectionsCorrect = [true true false false];
 cacheDir = getpref('OneLight', 'cachePath');
@@ -78,12 +78,12 @@ toc;
 %%
 tic;
 customSuffix = ['_' observerID '_' todayDate];
-OLMakeModulations('Modulation-PIPRMaxLongPulse-BackgroundLMS_45sSegment.cfg', observerAgeInYrs, theCalType, theCalType, customSuffix);
-OLMakeModulations('Modulation-PIPRMaxLongPulse-PulseMaxLMS_3s_MaxContrast17sSegment.cfg', observerAgeInYrs, theCalType, theCalType, customSuffix); % Attention task
+% OLMakeModulations('Modulation-PIPRMaxLongPulse-BackgroundLMS_45sSegment.cfg', observerAgeInYrs, theCalType, theCalType, customSuffix);
+% OLMakeModulations('Modulation-PIPRMaxLongPulse-PulseMaxLMS_3s_MaxContrast17sSegment.cfg', observerAgeInYrs, theCalType, theCalType, customSuffix); % Attention task
 
 % % Mel
-OLMakeModulations('Modulation-PIPRMaxLongPulse-BackgroundMel_45sSegment.cfg', observerAgeInYrs, theCalType, theCalType, customSuffix);
-OLMakeModulations('Modulation-PIPRMaxLongPulse-PulseMaxMel_3s_MaxContrast17sSegment.cfg', observerAgeInYrs, theCalType, theCalType, customSuffix); % Attention task
+% OLMakeModulations('Modulation-PIPRMaxLongPulse-BackgroundMel_45sSegment.cfg', observerAgeInYrs, theCalType, theCalType, customSuffix);
+% OLMakeModulations('Modulation-PIPRMaxLongPulse-PulseMaxMel_3s_MaxContrast17sSegment.cfg', observerAgeInYrs, theCalType, theCalType, customSuffix); % Attention task
 
 % PIPR
 OLMakeModulations('Modulation-PIPRMaxLongPulse-BackgroundPIPR_45sSegment.cfg', observerAgeInYrs, theCalType, theCalType, customSuffix); % Background.
@@ -119,8 +119,7 @@ end
 theCalType = 'BoxDRandomizedLongCableAEyePiece2_ND02';
 spectroRadiometerOBJ = [];
 spectroRadiometerOBJWillShutdownAfterMeasurement = false;
-theDirections = {['Cache-MelanopsinDirectedSuperMaxMel_' observerID '_' todayDate '.mat'] ...
-    ['Cache-LMSDirectedSuperMaxLMS_' observerID '_' todayDate '.mat'] ...
+theDirections = {...
     ['Cache-PIPRRed_' observerID '_' todayDate '.mat'] ...
     ['Cache-PIPRBlue_' observerID '_' todayDate '.mat']};
 NDirections = length(theDirections);
