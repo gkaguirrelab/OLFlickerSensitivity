@@ -22,7 +22,7 @@ tic;
 theCalType = 'BoxDRandomizedLongCableAEyePiece2_ND02';
 spectroRadiometerOBJ = [];
 spectroRadiometerOBJWillShutdownAfterMeasurement = false;
-theDirections = {'PIPRBlue', 'PIPRRed'};
+theDirections = {'MelanopsinDirectedSuperMaxMel' 'LMSDirectedSuperMaxLMS' 'PIPRBlue' 'PIPRRed'};
 
 theDirectionsCorrect = [true true false false];
 cacheDir = getpref('OneLight', 'cachePath');
@@ -79,11 +79,11 @@ toc;
 tic;
 customSuffix = ['_' observerID '_' todayDate];
 % OLMakeModulations('Modulation-PIPRMaxLongPulse-BackgroundLMS_45sSegment.cfg', observerAgeInYrs, theCalType, theCalType, customSuffix);
-% OLMakeModulations('Modulation-PIPRMaxLongPulse-PulseMaxLMS_3s_MaxContrast17sSegment.cfg', observerAgeInYrs, theCalType, theCalType, customSuffix); % Attention task
+% OLMakeModulations('Modulation-PIPRMaxLongPulse-PulseMaxLMS_10s_MaxContrast83sSegment.cfg', observerAgeInYrs, theCalType, theCalType, customSuffix); % Attention task
 
 % % Mel
 % OLMakeModulations('Modulation-PIPRMaxLongPulse-BackgroundMel_45sSegment.cfg', observerAgeInYrs, theCalType, theCalType, customSuffix);
-% OLMakeModulations('Modulation-PIPRMaxLongPulse-PulseMaxMel_3s_MaxContrast17sSegment.cfg', observerAgeInYrs, theCalType, theCalType, customSuffix); % Attention task
+% OLMakeModulations('Modulation-PIPRMaxLongPulse-PulseMaxMel_10s_MaxContrast83sSegment.cfg', observerAgeInYrs, theCalType, theCalType, customSuffix); % Attention task
 
 % PIPR
 OLMakeModulations('Modulation-PIPRMaxLongPulse-BackgroundPIPR_45sSegment.cfg', observerAgeInYrs, theCalType, theCalType, customSuffix); % Background.
