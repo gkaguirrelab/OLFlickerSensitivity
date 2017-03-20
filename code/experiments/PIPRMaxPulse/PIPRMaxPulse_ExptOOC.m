@@ -103,7 +103,7 @@ choiceIndex = 1;
 tic;
 commandwindow;
 
-% Prompt the user to state if we're before or after the experiment
+% Prompt the user to state if we're before or after the experiment 
 if ~exist('choiceIndex', 'var')
     choiceIndex = ChoiceMenuFromList({'Before the experiment', 'After the experiment'}, '> Validation before or after the experiment?');
 end
