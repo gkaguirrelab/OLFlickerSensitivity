@@ -20,7 +20,7 @@ end
 % Correct the spectrum
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 tic;
-theCalType = 'BoxDRandomizedLongCableAStubby1_ND03';
+theCalType = 'BoxDRandomizedLongCableAStubby1_ND02';
 spectroRadiometerOBJ = [];
 spectroRadiometerOBJWillShutdownAfterMeasurement = false;
 theDirections = {'MelanopsinDirectedSuperMaxMel' 'LMSDirectedSuperMaxLMS' 'LightFluxMaxPulse'};
@@ -99,7 +99,7 @@ commandwindow;
 % Prompt the user to state if we're before or after the experiment
 if ~exist('choiceIndex', 'var')
     choiceIndex = ChoiceMenuFromList({'Before the experiment', 'After the experiment'}, '> Validation before or after the experiment?');
-end
+end`
 
 % Ask for variables if they don't exist
 if ~exist('observerID', 'var') || ~exist('observerAgeInYrs', 'var') || ~exist('todayDate', 'var') || ~exist('takeTemperatureMeasurements', 'var')
@@ -111,7 +111,7 @@ if ~exist('observerID', 'var') || ~exist('observerAgeInYrs', 'var') || ~exist('t
 end
 
 % Set up some parameters
-theCalType = 'BoxDRandomizedLongCableAStubby1_ND03';
+theCalType = 'BoxDRandomizedLongCableAStubby1_ND02';
 spectroRadiometerOBJ = [];
 spectroRadiometerOBJWillShutdownAfterMeasurement = false;
 theDirections = {['Cache-MelanopsinDirectedSuperMaxMel_' observerID '_' todayDate '.mat'] ...
