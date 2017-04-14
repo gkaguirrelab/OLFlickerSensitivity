@@ -78,12 +78,12 @@ toc;
 %%
 tic;
 customSuffix = ['_' observerID '_' todayDate];
-% OLMakeModulations('Modulation-PIPRMaxLongPulse-BackgroundLMS_45sSegment.cfg', observerAgeInYrs, theCalType, theCalType, customSuffix);
-% OLMakeModulations('Modulation-PIPRMaxLongPulse-PulseMaxLMS_10s_MaxContrast83sSegment.cfg', observerAgeInYrs, theCalType, theCalType, customSuffix); % Attention task
+OLMakeModulations('Modulation-PIPRMaxLongPulse-BackgroundLMS_45sSegment.cfg', observerAgeInYrs, theCalType, theCalType, customSuffix);
+OLMakeModulations('Modulation-PIPRMaxLongPulse-PulseMaxLMS_10s_MaxContrast83sSegment.cfg', observerAgeInYrs, theCalType, theCalType, customSuffix); % Attention task
 
 % % Mel
-% OLMakeModulations('Modulation-PIPRMaxLongPulse-BackgroundMel_45sSegment.cfg', observerAgeInYrs, theCalType, theCalType, customSuffix);
-% OLMakeModulations('Modulation-PIPRMaxLongPulse-PulseMaxMel_10s_MaxContrast83sSegment.cfg', observerAgeInYrs, theCalType, theCalType, customSuffix); % Attention task
+OLMakeModulations('Modulation-PIPRMaxLongPulse-BackgroundMel_45sSegment.cfg', observerAgeInYrs, theCalType, theCalType, customSuffix);
+OLMakeModulations('Modulation-PIPRMaxLongPulse-PulseMaxMel_10s_MaxContrast83sSegment.cfg', observerAgeInYrs, theCalType, theCalType, customSuffix); % Attention task
 
 % PIPR
 OLMakeModulations('Modulation-PIPRMaxLongPulse-BackgroundPIPR_45sSegment.cfg', observerAgeInYrs, theCalType, theCalType, customSuffix); % Background.
