@@ -24,7 +24,7 @@ exp.dataDir = sprintf('%sdata', exp.baseDir(1:i));
 
 saveDropbox = GetWithDefault('>>> Save into Dropbox folder?', 1);
 if saveDropbox
-    dataPath = getpref('OneLight', 'dataPath');
+    dataPath = fullfile('Users', 'melanopsin', 'Dropbox (Aguirre-Brainard Lab)', 'MELA_data', 'Legacy');
     exp.protocolDataDir = fullfile(dataPath, exp.protocolList(exp.protocolIndex).dataDirectory);
 end
 
