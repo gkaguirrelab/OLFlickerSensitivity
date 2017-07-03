@@ -46,16 +46,16 @@ setpref('OneLight', 'dropboxPath', dropboxBaseDir);
 setpref('OneLight', 'dataPath', dataPath);
 
 % Set the modulation path
-setpref('OneLight', 'modulationPath', fullfile(dropboxBaseDir, 'MELA_materials', 'modulations/'));
+setpref('OneLight', 'modulationPath', fullfile(dropboxBaseDir, 'MELA_materials', 'Legacy', 'modulations/'));
 
 % Set the materials path
-setpref('OneLight', 'materialsPath', fullfile(dropboxBaseDir, 'MELA_materials/'));
+setpref('OneLight', 'materialsPath', fullfile(dropboxBaseDir, 'MELA_materials', 'Legacy/'));
 
 % Set the cache path
-setpref('OneLight', 'cachePath', fullfile(dropboxBaseDir, 'MELA_materials', 'cache/'));
+setpref('OneLight', 'cachePath', fullfile(dropboxBaseDir, 'MELA_materials', 'Legacy', 'cache/'));
 
-% Set the cache path
-setpref('OneLight', 'OneLightCalData', fullfile(dropboxBaseDir, 'MELA_materials', 'OneLightCalData/'));
+% Set the calibration path
+setpref('OneLight', 'OneLightCalData', fullfile(dropboxBaseDir, 'MELA_materials', 'Legacy', 'OneLightCalData/'));
 
 % Set the default speak rate
 setpref('OneLight', 'SpeakRateDefault', 230);
