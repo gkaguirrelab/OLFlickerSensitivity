@@ -3,7 +3,7 @@
 		"flavor": "",
 		"hook": "",
 		"importance": "",
-		"localHookTemplate": "configuration/OLFlickerSensitivityLocalHook",
+		"localHookTemplate": "configuration/OLFlickerSensitivityLocalHookTemplate.m",
 		"name": "OLFlickerSensitivity",
 		"pathPlacement": "append",
 		"subfolder": "code",
@@ -43,13 +43,13 @@
 		"hook": "",
 		"importance": "",
 		"localHookTemplate": "",
-		"name": "OneLightToolbox",
+		"name": "OneLightToolboxLegacy",
 		"pathPlacement": "append",
 		"subfolder": "",
 		"toolboxRoot": "",
-		"type": "git",
+		"type": "include",
 		"update": "",
-		"url": "https:\/\/github.com\/DavidBrainard\/OneLightToolbox.git"
+		"url": ""
 	},
 	{
 		"flavor": "",
