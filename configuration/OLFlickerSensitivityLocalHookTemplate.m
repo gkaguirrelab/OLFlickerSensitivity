@@ -19,6 +19,17 @@ function OLFlickerSensitivityLocalHook
 %% Say hello
 fprintf('Running OLFlickerSensitivitylocal hook\n');
 
+%% Clear prefs before setting
+%
+% 'OneLightToolbox' is used by new code, 'OneLight' by this legacy code.
+% We clear both, and then below set 'OneLight' to be what we want.
+if (ispref('OneLightToolbox'))
+    rmpref('OneLightToolbox');
+end
+if (ispref('OneLight'))
+    rmpref('OneLight');
+end
+
 %% Set preferences
 
 % Obtain the Dropbox path

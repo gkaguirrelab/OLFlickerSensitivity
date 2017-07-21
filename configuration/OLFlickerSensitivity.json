@@ -17,9 +17,22 @@
 		"hook": "",
 		"importance": "",
 		"localHookTemplate": "",
-		"name": "BrainardLabBase",
+		"name": "BrainardLabToolbox",
 		"pathPlacement": "append",
 		"subfolder": "",
+		"toolboxRoot": "",
+		"type": "include",
+		"update": "",
+		"url": ""
+	},
+	{
+		"flavor": "",
+		"hook": "",
+		"importance": "",
+		"localHookTemplate": "",
+		"name": "Psychtoolbox-3",
+		"pathPlacement": "append",
+		"subfolder": "Psychtoolbox",
 		"toolboxRoot": "",
 		"type": "include",
 		"update": "",
@@ -34,9 +47,9 @@
 		"pathPlacement": "append",
 		"subfolder": "",
 		"toolboxRoot": "",
-		"type": "git",
+		"type": "include",
 		"update": "",
-		"url": "https:\/\/github.com\/DavidBrainard\/OneLightDriver.git"
+		"url": ""
 	},
 	{
 		"flavor": "",
@@ -60,9 +73,9 @@
 		"pathPlacement": "append",
 		"subfolder": "",
 		"toolboxRoot": "",
-		"type": "git",
+		"type": "include",
 		"update": "",
-		"url": "https:\/\/github.com\/spitschan\/SilentSubstitutionToolbox.git"
+		"url": ""
 	},
 	{
 		"flavor": "",
