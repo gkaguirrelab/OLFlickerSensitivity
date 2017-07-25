@@ -2,7 +2,9 @@
 % Generate the cache
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 theCalType = 'BoxDRandomizedLongCableAEyePiece2_ND02';
-theCalType = 'BoxDRandomizedShortCableCEyePiece2_ND02';
+%theCalType = 'BoxDRandomizedShortCableCEyePiece2_ND02';
+theCalType = 'BoxDRandomizedShortCableAEyePiece2_ND02';
+
 %% Standard parameters
 params.experiment = 'PIPRMaxPulse';
 params.experimentSuffix = 'PIPRMaxPulse';
@@ -26,7 +28,7 @@ params.peakWavelengthNm = 475;
 params.fwhmNm = 25;
 params.filteredRetinalIrradianceLogPhotons = 12.30; % In log quanta/cm2/sec
 params.cacheFile = ['Cache-' params.modulationDirection '.mat'];
-[cacheData, olCache, params] = OLMakePIPR(params);
+[cacheData, olCache, params] = OLMakePIPR(params)
 OLReceptorIsolateSaveCache(cacheData, olCache, params);
 
 % 623 nm
@@ -37,7 +39,7 @@ params.peakWavelengthNm = 623;
 params.fwhmNm = 25;
 params.filteredRetinalIrradianceLogPhotons = 12.30; % In log quanta/cm2/sec
 params.cacheFile = ['Cache-' params.modulationDirection '.mat'];
-[cacheData, olCache, params] = OLMakePIPR(params);
+[cacheData, olCache, params] = OLMakePIPR(params)
 OLReceptorIsolateSaveCache(cacheData, olCache, params);
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
