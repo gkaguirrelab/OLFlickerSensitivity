@@ -19,9 +19,9 @@ end
 % Correct the spectrum
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 tic;
-%theCalType = 'BoxDRandomizedLongCableAEyePiece2_ND02';
-theCalType = 'BoxDRandomizedShortCableCEyePiece2_ND02';
-theCalType = 'BoxDRandomizedShortCableAEyePiece2_ND02';
+
+theCalType = 'BoxDLiquidShortCableCEyePiece2_ND02';
+
 
 spectroRadiometerOBJ = [];
 spectroRadiometerOBJWillShutdownAfterMeasurement = false;
@@ -119,9 +119,9 @@ if ~exist('observerID', 'var') || ~exist('observerAgeInYrs', 'var') || ~exist('t
 end
 
 % Set up some parameters
-%theCalType = 'BoxDRandomizedLongCableAEyePiece2_ND02';
-theCalType = 'BoxDRandomizedShortCableCEyePiece2_ND02';
-theCalType = 'BoxDRandomizedShortCableAEyePiece2_ND02';
+
+theCalType = 'BoxDLiquidShortCableCEyePiece2_ND02';
+
 
 spectroRadiometerOBJ = [];
 spectroRadiometerOBJWillShutdownAfterMeasurement = false;
