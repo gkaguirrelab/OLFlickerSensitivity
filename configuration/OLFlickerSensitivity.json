@@ -86,9 +86,9 @@
 		"pathPlacement": "append",
 		"subfolder": "",
 		"toolboxRoot": "",
-		"type": "include",
-		"update": "",
-		"url": ""
+		"type": "git",
+		"update": "never",
+		"url": "https://github.com/justingardner/mgl"
 	},
 	{
 		"flavor": "",
