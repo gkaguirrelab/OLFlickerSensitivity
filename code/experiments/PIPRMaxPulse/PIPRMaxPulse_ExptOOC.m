@@ -106,9 +106,16 @@ choiceIndex = 1;
 tic;
 commandwindow;
 
+
 % Prompt the user to state if we're before or after the experiment 
 if ~exist('choiceIndex', 'var')
     choiceIndex = ChoiceMenuFromList({'Before the experiment', 'After the experiment'}, '> Validation before or after the experiment?');
+    takeTemperatureMeasurements = GetWithDefault('Take Temperature Measurements ?', false);
+    if (takeTemperatureMeasurements ~= true) && (takeTemperatureMeasurements ~= 1)
+        takeTemperatureMeasurements = false;
+    else
+        takeTemperatureMeasurements = true;
+    end
 end
 
 % Ask for variables if they don't exist
@@ -116,12 +123,15 @@ if ~exist('observerID', 'var') || ~exist('observerAgeInYrs', 'var') || ~exist('t
     observerID = GetWithDefault('>> Enter <strong>user name</strong>', 'HERO_test');
     observerAgeInYrs = GetWithDefault('>> Enter <strong>observer age</strong>:', 32);
     todayDate = datestr(now, 'mmddyy');
+    
+    
 end
 
 % Set up some parameters
 
 theCalType = 'BoxDLiquidShortCableCEyePiece2_ND02';
-
+%takeTemperatureMeasurements = false; % trying to fix up after-experiment
+%validation procedure
 
 spectroRadiometerOBJ = [];
 spectroRadiometerOBJWillShutdownAfterMeasurement = false;
