@@ -20,7 +20,7 @@ end
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 tic;
 
-theCalType = 'BoxDLiquidShortCableCEyePiece2_ND02';
+theCalType = 'BoxDLiquidShortCableCEyePiece2_ND01';
 
 
 spectroRadiometerOBJ = [];
@@ -129,7 +129,7 @@ end
 
 % Set up some parameters
 
-theCalType = 'BoxDLiquidShortCableCEyePiece2_ND02';
+theCalType = 'BoxDLiquidShortCableCEyePiece2_ND01';
 %takeTemperatureMeasurements = false; % trying to fix up after-experiment
 %validation procedure
 
