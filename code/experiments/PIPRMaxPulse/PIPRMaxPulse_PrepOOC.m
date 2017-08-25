@@ -2,7 +2,7 @@
 % Generate the cache
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-theCalType = 'BoxDLiquidShortCableCEyePiece2_ND01';
+theCalType = 'BoxDLiquidShortCableCEyePiece2_ND00';
 
 %% Standard parameters
 params.experiment = 'PIPRMaxPulse';
