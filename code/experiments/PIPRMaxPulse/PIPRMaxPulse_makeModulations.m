@@ -12,6 +12,10 @@ theCalType = theCalType.CalFileName(3:length(theCalType.CalFileName));
 %% Determine the strongest blue PIPR stimulus we can deliver based on our most recent PIPR calculation
 [ maxBluePIPRIntensity ] = determineMaxPIPR(observerAgeInYrs, theCalType);
 
+maxBluePIPRIntensity = maxBluePIPRIntensity -  0.0001;
+if maxBluePIPRIntensity > 12.85
+    maxBluePIPRIntensity = 12.85;
+end
 
 %% run the prep script
 PIPRMaxPulse_PrepOOC_function(theCalType, maxBluePIPRIntensity)
