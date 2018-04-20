@@ -20,7 +20,7 @@ end
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 tic;
 
-theCalType = 'BoxDLiquidShortCableCEyePiece2_ND01';
+theCalType = 'BoxBShortLiquidLightGuideDEyePiece1_ND04';
 
 
 spectroRadiometerOBJ = [];
@@ -136,9 +136,7 @@ theCalType = 'BoxDLiquidShortCableCEyePiece2_ND01';
 spectroRadiometerOBJ = [];
 spectroRadiometerOBJWillShutdownAfterMeasurement = false;
 theDirections = {['Cache-MelanopsinDirectedSuperMaxMel_' observerID '_' todayDate '.mat'] ...
-    ['Cache-LMSDirectedSuperMaxLMS_' observerID '_' todayDate '.mat'] ...
-    ['Cache-PIPRRed_' observerID '_' todayDate '.mat'] ...
-    ['Cache-PIPRBlue_' observerID '_' todayDate '.mat']};
+    ['Cache-LMSDirectedSuperMaxLMS_' observerID '_' todayDate '.mat']};
 NDirections = length(theDirections);
 cacheDir = getpref('OneLight', 'cachePath');
 materialsPath = getpref('OneLight', 'materialsPath');

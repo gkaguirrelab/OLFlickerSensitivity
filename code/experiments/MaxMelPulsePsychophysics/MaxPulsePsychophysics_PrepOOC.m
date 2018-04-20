@@ -3,7 +3,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % Calibration file.  
-theCalType = 'BoxDRandomizedLongCableAStubby1_ND02';
+theCalType = 'BoxBShortLiquidLightGuideDEyePiece1_ND04';
 
 %% Standard parameters
 params.experiment = 'MaxMelPulsePsychophysics';
