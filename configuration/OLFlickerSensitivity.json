@@ -13,7 +13,7 @@
 		"url": ""
 	},
     {
-		"flavor": "",
+		"flavor": "b8f9fe5b",
 		"hook": "",
 		"importance": "",
 		"localHookTemplate": "",
@@ -21,9 +21,9 @@
 		"pathPlacement": "append",
 		"subfolder": "",
 		"toolboxRoot": "",
-		"type": "include",
+		"type": “git”,
 		"update": "",
-		"url": ""
+		"url": "https://github.com/BrainardLab/BrainardLabToolbox.git"
 	},
 	{
 		"flavor": "",
@@ -65,7 +65,7 @@
 		"url": ""
 	},
 	{
-		"flavor": "",
+		"flavor": "e8a3ed51",
 		"hook": "",
 		"importance": "",
 		"localHookTemplate": "",
@@ -73,9 +73,9 @@
 		"pathPlacement": "append",
 		"subfolder": "",
 		"toolboxRoot": "",
-		"type": "include",
+		"type": “git”,
 		"update": "",
-		"url": ""
+		"url": "https://github.com/spitschan/SilentSubstitutionToolbox.git”
 	},
 	{
 		"flavor": "",
